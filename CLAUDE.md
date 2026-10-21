@@ -65,8 +65,10 @@ npm test          # in a second terminal; or: node run-all.js burn_test tip_test
 
 ## Deploy
 
-Pushing to `main` deploys to production once the repo is connected to the Vercel project (Settings, then Git). After a
-deploy, load the live site, check the console, and confirm the changed files are the ones being served.
+The repo is connected to the Vercel project: every push to `main` deploys to production, and other branches get preview
+deployments. `.vercelignore` keeps `tests/` and this file off the site. After a deploy, load the live site, check the
+console, and confirm the changed files are the ones being served. To undo a bad deploy, roll back to the previous
+deployment in Vercel rather than rewriting history.
 
 ## Open items
 
