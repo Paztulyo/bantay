@@ -1,0 +1,154 @@
+/* The brief: section icons, the Benguet countdown, a one-line takeaway on every chart, burning fire markers,
+   red close buttons whose drawers burn away, the Be ready search, and the visitor count.
+   Urgency comes from dates and numbers set large and early, not from alarm styling. */
+
+/* ---------- section icons, coloured by topic ---------- */
+.hico{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:8px;flex:none;color:var(--hc);
+  background:color-mix(in srgb,var(--hc) 13%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--hc) 22%,transparent)}
+.hico svg{width:15px;height:15px;display:block}
+.hico.t-heat{--hc:var(--heat)}
+.hico.t-dry{--hc:var(--amber)}
+.hico.t-water{--hc:var(--water)}
+.hico.t-teal{--hc:var(--teal)}
+.sec-h h3,.events-h h3{display:flex;align-items:center;gap:9px}
+.month-h b{display:flex;align-items:center;gap:10px}
+.month-h b .hico{width:28px;height:28px;border-radius:9px}
+.month-h b .hico svg{width:17px;height:17px}
+.chart-h{align-items:center}
+.chart-h .hico{width:22px;height:22px;border-radius:7px;margin-right:2px}
+.chart-h .hico svg{width:14px;height:14px}
+.events-h{align-items:center}
+
+/* ---------- Benguet countdown ---------- */
+.cd{position:relative;overflow:hidden;isolation:isolate}
+.cd::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(120% 75% at 100% 0%,color-mix(in srgb,var(--heat) 11%,transparent),transparent 62%)}
+.cd .sec-h h3{font-size:14px}
+.cd-big{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cd-n{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:6px;align-items:baseline;min-width:0;
+  padding:10px 12px 11px;border-radius:12px;background:var(--g-inset,var(--pale));border:1px solid var(--g-hair,var(--line))}
+.cd-n b{font-family:var(--f-display);font-size:36px;font-weight:700;letter-spacing:-1.4px;line-height:.95;color:var(--amber);font-variant-numeric:tabular-nums}
+.cd-n span{font-family:var(--f-display);font-size:15px;font-weight:700;color:var(--amber)}
+.cd-n em{grid-column:1/-1;margin-top:7px;font-style:normal;font-size:12.5px;font-weight:600;color:var(--ink);line-height:1.25}
+.cd-n small{grid-column:1/-1;margin-top:2px;font-size:11px;color:var(--muted)}
+.cd-n.s3{background:color-mix(in srgb,var(--heat) 10%,transparent);border-color:color-mix(in srgb,var(--heat) 30%,transparent)}
+.cd-n.s3 b,.cd-n.s3 span{color:var(--heat)}
+.cd-path{list-style:none;margin:12px 0 0;padding:0}
+.cd-path li{position:relative;display:grid;grid-template-columns:14px 62px minmax(0,1fr) auto;column-gap:9px;align-items:center;padding:5px 0;font-size:12.5px}
+.cd-path li+li::before{content:"";position:absolute;left:6px;top:-5px;width:2px;height:10px;border-radius:1px;background:var(--line-strong)}
+.cd-dot{width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 2px var(--panel),0 0 0 3px color-mix(in srgb,var(--ink) 14%,transparent)}
+.cd-dot.s0{background:transparent;box-shadow:none;border:1.5px dashed var(--line-strong)}
+.cd-dot.s1{background:var(--stage1)}
+.cd-dot.s2{background:var(--stage2)}
+.cd-dot.s3{background:var(--stage3)}
+.cd-m{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);white-space:nowrap}
+.cd-s{font-weight:600;color:var(--ink)}
+.cd-path li.peak .cd-s{color:var(--heat)}
+.cd-tag{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:2px 6px;border-radius:5px;background:var(--gold);color:var(--gold-ink)}
+.cd-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+.cd-foot .src{margin:0;min-width:0}
+.cd-play{display:inline-flex;align-items:center;gap:6px;flex:none;font-size:12px;padding:6px 10px}
+.cd-play svg{width:12px;height:12px}
+
+/* ---------- the chart's point, in one line ---------- */
+.chart-say{margin:5px 0 3px;font-size:12px;line-height:1.3;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chart-say b{font-family:var(--f-display);font-weight:700;color:var(--forest)}
+.chart-say b.hot{color:var(--heat)}
+.chart-say b.dry{color:var(--amber)}
+.chart-say b.wet{color:var(--water)}
+
+/* ---------- active fires: burning flames, sized by fire power (lightFires in js/app.js sets --fs and a random --fd) ---------- */
+.lbl.fire{width:18px;height:18px;background:none;box-shadow:none;border-radius:50%;overflow:visible}
+.lbl.fire::after{display:none}
+.lbl.fire .flame{position:absolute;left:50%;bottom:50%;width:calc(20px * var(--fs,1));height:calc(23.3px * var(--fs,1));transform:translate(-50%,13%);
+  filter:drop-shadow(0 0 3px rgba(255,138,38,.8)) drop-shadow(0 1px 1px rgba(70,22,0,.35))}
+.flame{overflow:visible}
+.flame path,.flame ellipse{transform-box:fill-box;transform-origin:50% 100%}
+.flame .fl-g{fill:#ff7a2a;opacity:.5;transform-origin:50% 50%;animation:flg 1.3s ease-in-out infinite var(--fd,0s)}
+.flame .fl-o{fill:#d63e1c;animation:flo .9s ease-in-out infinite var(--fd,0s)}
+.flame .fl-m{fill:#ff8a26;animation:flm .7s ease-in-out infinite var(--fd,0s)}
+.flame .fl-i{fill:#ffe27a;animation:fli .55s ease-in-out infinite var(--fd,0s)}
+@keyframes flo{0%,100%{transform:scale(1,1) skewX(0)}25%{transform:scale(.95,1.06) skewX(-3deg)}50%{transform:scale(1.03,.94) skewX(2deg)}75%{transform:scale(.97,1.04) skewX(-1.5deg)}}
+@keyframes flm{0%,100%{transform:scale(1,1) skewX(0)}35%{transform:scale(1.06,.9) skewX(4deg)}70%{transform:scale(.92,1.08) skewX(-3deg)}}
+@keyframes fli{0%,100%{transform:scale(1,1)}50%{transform:scale(.85,1.15)}}
+@keyframes flg{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:.85;transform:scale(1.2)}}
+.lbl.fire .em{position:absolute;left:50%;bottom:50%;width:3px;height:3px;margin-left:-1.5px;border-radius:50%;background:#ffb347;box-shadow:0 0 4px #ff8a26;
+  opacity:0;pointer-events:none;animation:ember 1.9s ease-out infinite var(--fd,0s)}
+.lbl.fire .em:nth-of-type(2){--ex:6px;animation-delay:calc(var(--fd,0s) + .63s)}
+.lbl.fire .em:nth-of-type(3){--ex:-5px;animation-delay:calc(var(--fd,0s) + 1.27s)}
+@keyframes ember{0%{transform:translate(0,calc(-6px * var(--fs,1))) scale(1);opacity:0}12%{opacity:1}100%{transform:translate(var(--ex,-2px),calc(-32px * var(--fs,1))) scale(.35);opacity:0}}
+/* the legend and the layer list use the same flame, small */
+.firedot{display:inline-block;position:relative;width:14px;height:16px;margin:0 3px;background:none;box-shadow:none;border-radius:0}
+.firedot .flame{display:block;width:14px;height:16.3px;filter:drop-shadow(0 0 2px rgba(255,138,38,.7))}
+.layer .lsw-ico{display:grid;place-items:center;border:0;border-radius:0}
+.layer .lsw-ico .flame{width:13px;height:15px;filter:drop-shadow(0 0 2px rgba(255,138,38,.6))}
+.layer.dis .lsw-ico .flame *{animation:none}
+
+/* ---------- close buttons: red, and the drawer they close burns away into sparks and smoke (js/smoke.js) ---------- */
+:root{--xr:#b8362a;--xr-fill:#b8362a}
+:root[data-theme="dark"]{--xr:#f07a64;--xr-fill:#c23e2c}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--xr:#f07a64;--xr-fill:#c23e2c}}
+.btn.x-close{display:inline-flex;align-items:center;gap:6px;color:var(--xr);font-weight:600;
+  background:color-mix(in srgb,var(--xr) 11%,transparent);border-color:color-mix(in srgb,var(--xr) 34%,transparent);
+  transition:background-color .2s,color .2s,border-color .2s,box-shadow .2s,transform .15s}
+.btn.x-close svg{width:13px;height:13px;flex:none;transition:transform .4s cubic-bezier(.3,1.5,.5,1)}
+.btn.x-close:hover{background:var(--xr-fill);color:#fff;border-color:transparent;box-shadow:0 4px 14px color-mix(in srgb,var(--xr-fill) 35%,transparent)}
+.btn.x-close:hover svg{transform:rotate(90deg)}
+.btn.x-close:active{transform:scale(.94)}
+.btn.x-close:focus-visible{outline:2px solid var(--xr);outline-offset:2px}
+/* the frozen copy left behind when a drawer closes: the dimmed page clears while the panel burns away behind a line of
+   fire (js/smoke.js). The copy drops the glass blur, which would have to be redrawn on every frame of the burn. */
+.drawer-ghost{pointer-events:none;animation:ghDim .35s ease-out both}
+.drawer-ghost .drawer-c{-webkit-backdrop-filter:none;backdrop-filter:none;background:var(--panel);will-change:clip-path}
+@keyframes ghDim{to{background-color:transparent;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}}
+.smoke-cv{position:fixed;inset:0;width:100%;height:100%;z-index:60;pointer-events:none}
+
+/* ---------- be ready: search across hotlines and tips; it stays pinned with the tabs while the list scrolls ---------- */
+/* sticky offsets count from inside the drawer's padding, so the bar pulls back by that padding to pin flush with the
+   panel's top edge, and reaches across it sideways to span the panel's full width; the values mirror the padding */
+.guide-c{--gp-t:20px;--gp-l:22px;--gp-r:22px}
+.gbar{position:sticky;top:calc(-1 * var(--gp-t));z-index:3;
+  margin:12px calc(-1 * var(--gp-r)) 0 calc(-1 * var(--gp-l));padding:12px var(--gp-r) 8px var(--gp-l);
+  transition:background-color .2s,box-shadow .2s}
+.gbar.stuck{background:color-mix(in srgb,var(--panel) 95%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  box-shadow:0 1px 0 var(--g-hair,var(--line)),0 10px 14px -12px rgba(0,0,0,.35)}
+.gbar .gtabs{margin:10px 0 0}
+.gsearch{position:relative;display:flex;align-items:center}
+.gsearch .gs-ico{position:absolute;left:12px;width:17px;height:17px;color:var(--muted);pointer-events:none}
+.gsearch input{flex:1;min-width:0;height:42px;padding:0 40px 0 38px;border-radius:12px;font:inherit;font-size:14px;color:var(--ink);
+  background:var(--g-inset,var(--paper));border:1px solid var(--g-hair,var(--line));outline:none;transition:border-color .15s,box-shadow .15s}
+.gsearch input::placeholder{color:var(--muted)}
+.gsearch input:focus{border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 22%,transparent)}
+.gsearch input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;display:none}
+.gq-x{position:absolute;right:6px;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;color:var(--muted)}
+.gq-x:hover{color:var(--xr);background:color-mix(in srgb,var(--xr) 10%,transparent)}
+.gq-x svg{width:14px;height:14px}
+.gq-x[hidden]{display:none}
+.gcount{display:inline-block;min-width:18px;margin-left:4px;padding:1px 6px;border-radius:999px;font-size:11px;font-weight:700;text-align:center;
+  background:color-mix(in srgb,var(--teal) 16%,transparent);color:var(--teal)}
+.guide-c mark{background:color-mix(in srgb,var(--gold) 50%,transparent);color:inherit;border-radius:3px;padding:0 1px}
+.gnone{display:grid;gap:4px;padding:22px 4px;text-align:center;color:var(--muted);font-size:13px}
+.gnone b{color:var(--ink);font-size:14px}
+.gnone a{color:var(--xr);font-weight:700}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- visitor count (js/views.js); hidden until the count store answers ---------- */
+.chip.vis{color:var(--muted);animation:visIn .5s ease-out both}
+.chip.vis[hidden]{display:none}
+.chip.vis svg{width:12px;height:12px;flex:none;color:var(--teal)}
+.chip.vis b{margin-right:-2px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+@keyframes visIn{from{opacity:0;transform:translateY(-3px)}}
+/* it outranks the optional chips: where the header would spill onto another row, they give way, and in the tightest
+   spots so does the El Niño chip, which the status line repeats. Widths measured with the real fonts, ~50px spare. */
+@media (min-width:1101px) and (max-width:1619px){.ctx.has-vis #spanChip{display:none}}
+@media (min-width:1101px) and (max-width:1474px){.ctx.has-vis .chip.opt{display:none}}
+@media (min-width:1101px) and (max-width:1364px){.ctx.has-vis .chip:not(.vis){display:none}}
+@media (min-width:641px) and (max-width:767px){.ctx.has-vis #spanChip{display:none}}
+@media (max-width:640px){.ctx.has-vis .chip:not(.vis){display:none}}
+
+@media (max-width:640px){
+  #guide .guide-c{--gp-t:16px;--gp-l:max(16px,env(safe-area-inset-left,0px));--gp-r:max(16px,env(safe-area-inset-right,0px))}
+  .gsearch input{font-size:16px} /* 16px keeps iPhones from zooming in on focus */
+  .cd-n b{font-size:32px}
+  .cd-path li{grid-template-columns:14px 58px minmax(0,1fr) auto}
+}

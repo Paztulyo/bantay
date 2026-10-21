@@ -16,6 +16,7 @@ const MIRRORS = [
 ];
 
 // Hedged request: start on the main instance, add a mirror every 12 s until one answers.
+// Each attempt gives up after 110 s, so the whole call settles well inside the 300 s limit.
 function overpass(query) {
   return new Promise((resolve, reject) => {
     let done = false, failed = 0;
@@ -25,6 +26,7 @@ function overpass(query) {
         if (done) return;
         const ctrl = new AbortController(); ctrls.push(ctrl);
         const host = new URL(url).host;
+        const timer = setTimeout(() => ctrl.abort(new Error(`${host} timed out`)), 110000);
         try {
           const r = await fetch(url, {
             method: 'POST',
@@ -41,7 +43,7 @@ function overpass(query) {
           if (done) return;
           errors.push(String(e.message || e));
           if (++failed === MIRRORS.length) reject(new Error(errors.join('; ')));
-        }
+        } finally { clearTimeout(timer); }
       }, i * 12000);
     });
   });

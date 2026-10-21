@@ -1,0 +1,193 @@
+/* Glass: one material for every card. Cards float over a soft ambient wash, so the translucency
+   has something to show; the cards on the map blur the live terrain behind them. Map labels stay
+   solid on purpose: they must read over any terrain, and blurring 100+ of them every frame is costly. */
+:root{
+  --g-fill:linear-gradient(150deg,color-mix(in srgb,var(--panel) 78%,transparent),color-mix(in srgb,var(--panel) 56%,transparent));
+  --g-fill-map:linear-gradient(150deg,color-mix(in srgb,var(--panel) 82%,transparent),color-mix(in srgb,var(--panel) 62%,transparent));
+  --g-fill-strong:linear-gradient(150deg,color-mix(in srgb,var(--panel) 90%,transparent),color-mix(in srgb,var(--panel) 74%,transparent));
+  --g-inset:color-mix(in srgb,var(--panel) 52%,transparent);
+  --g-edge:rgba(255,255,255,.66);
+  --g-hair:color-mix(in srgb,var(--ink) 11%,transparent);
+  --g-shadow:0 10px 30px rgba(21,63,54,.12),0 1px 2px rgba(21,63,54,.07),inset 0 1px 0 rgba(255,255,255,.72);
+  --g-blur:blur(18px) saturate(1.5);
+  --g-r:16px;
+  --wash:radial-gradient(1100px 640px at 6% -10%,rgba(230,197,106,.34),transparent 62%),
+    radial-gradient(900px 720px at 104% 20%,rgba(55,111,97,.22),transparent 60%),
+    radial-gradient(1000px 640px at 26% 110%,rgba(43,122,150,.2),transparent 62%),
+    radial-gradient(760px 520px at 72% 74%,rgba(180,69,42,.08),transparent 60%);
+}
+:root[data-theme="dark"]{
+  --g-fill:linear-gradient(150deg,color-mix(in srgb,var(--panel) 74%,transparent),color-mix(in srgb,var(--panel) 50%,transparent));
+  --g-fill-map:linear-gradient(150deg,color-mix(in srgb,var(--panel) 80%,transparent),color-mix(in srgb,var(--panel) 58%,transparent));
+  --g-fill-strong:linear-gradient(150deg,color-mix(in srgb,var(--panel) 90%,transparent),color-mix(in srgb,var(--panel) 72%,transparent));
+  --g-inset:rgba(255,255,255,.045);
+  --g-edge:rgba(255,255,255,.12);
+  --g-hair:rgba(255,255,255,.08);
+  --g-shadow:0 10px 30px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.07);
+  --wash:radial-gradient(1100px 640px at 6% -10%,rgba(121,187,168,.16),transparent 62%),
+    radial-gradient(900px 720px at 104% 20%,rgba(230,197,106,.09),transparent 60%),
+    radial-gradient(1000px 640px at 26% 110%,rgba(98,182,210,.12),transparent 62%),
+    radial-gradient(760px 520px at 72% 74%,rgba(226,128,90,.06),transparent 60%);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --g-fill:linear-gradient(150deg,color-mix(in srgb,var(--panel) 74%,transparent),color-mix(in srgb,var(--panel) 50%,transparent));
+    --g-fill-map:linear-gradient(150deg,color-mix(in srgb,var(--panel) 80%,transparent),color-mix(in srgb,var(--panel) 58%,transparent));
+    --g-fill-strong:linear-gradient(150deg,color-mix(in srgb,var(--panel) 90%,transparent),color-mix(in srgb,var(--panel) 72%,transparent));
+    --g-inset:rgba(255,255,255,.045);
+    --g-edge:rgba(255,255,255,.12);
+    --g-hair:rgba(255,255,255,.08);
+    --g-shadow:0 10px 30px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.07);
+    --wash:radial-gradient(1100px 640px at 6% -10%,rgba(121,187,168,.16),transparent 62%),
+      radial-gradient(900px 720px at 104% 20%,rgba(230,197,106,.09),transparent 60%),
+      radial-gradient(1000px 640px at 26% 110%,rgba(98,182,210,.12),transparent 62%),
+      radial-gradient(760px 520px at 72% 74%,rgba(226,128,90,.06),transparent 60%);
+  }
+}
+
+/* the ambient wash behind everything */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--wash),var(--paper)}
+
+/* the shared material */
+.top,.sec,.tl,.chart,.events,.drawer-c,
+.vp-title,.mbadge,.legend,.ctrl,.compass,.loading,.wxcard{
+  background:var(--g-fill);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);
+  border:1px solid var(--g-edge);box-shadow:var(--g-shadow)}
+.vp-title,.mbadge,.legend,.ctrl,.compass,.loading,.wxcard{background:var(--g-fill-map)}
+
+/* top bar: a glass strip */
+.top{border-width:0 0 1px;box-shadow:0 1px 0 var(--g-hair),0 8px 24px rgba(21,63,54,.05);position:relative;z-index:6}
+.chip,.modes{background:var(--g-inset);border-color:var(--g-hair)}
+.modes button[aria-pressed="true"]{background:var(--g-fill-strong);box-shadow:0 1px 2px rgba(0,0,0,.08),inset 0 0 0 1px var(--g-edge)}
+.btn{background:var(--g-inset);border-color:var(--g-hair)}
+.btn:hover{border-color:color-mix(in srgb,var(--ink) 24%,transparent)}
+.btn.hot,.btn.sos{background:var(--heat)} /* actions stay solid */
+.cta{background:var(--forest)}
+
+/* map and rail float as cards */
+.main{gap:10px;padding:10px 10px 0}
+.viewport{border-radius:18px;border:1px solid var(--g-edge);box-shadow:var(--g-shadow)}
+.rail{background:transparent;border-left:0;padding:0 2px 2px}
+.secs{display:flex;flex-direction:column;gap:10px}
+.sec{border-radius:var(--g-r);padding:14px 16px}
+
+/* cards on the map */
+.vp-title{border-radius:14px}
+.mbadge{border-radius:var(--g-r);flex:none}
+.legend{border-radius:14px}
+.ctrl{border-radius:11px}
+.ctrl button+button{border-left-color:var(--g-hair)}
+.compass{border-radius:50%}
+.attrib{background:color-mix(in srgb,var(--panel) 58%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top-left-radius:8px}
+.tip{background:color-mix(in srgb,var(--forest) 86%,transparent);-webkit-backdrop-filter:blur(10px) saturate(1.4);backdrop-filter:blur(10px) saturate(1.4);border:1px solid rgba(255,255,255,.16)}
+body:has(.drawer:not([hidden])) .tip{opacity:0!important} /* a hover label never sits over an open drawer */
+/* the badge and weather card never run into the camera controls; the card scrolls if space is short */
+.ov-tr{max-height:calc(100% - 92px)}
+.ov-tr .wxcard{min-height:0;overflow:auto;flex:0 1 auto;scrollbar-width:thin}
+
+/* tiles inside cards: a lighter inset glass */
+.stagebox,.stat,.res,.gtabs,.wxc-tabs,.hl,.hnum,.tl-ctl button:not(.play),.chart-h button,.sosbig.alt{background:var(--g-inset);border-color:var(--g-hair)}
+.guide .gphase,.gphase.now{background:color-mix(in srgb,var(--teal) 10%,transparent);border:1px solid var(--g-hair)}
+.place{background:color-mix(in srgb,var(--gold) 14%,transparent);border-color:color-mix(in srgb,var(--gold) 70%,transparent)}
+.res[aria-pressed="true"]{border-color:var(--water)}
+.gtabs button[aria-selected="true"]{background:var(--g-fill-strong);box-shadow:0 1px 2px rgba(0,0,0,.08),inset 0 0 0 1px var(--g-edge)}
+.hl li+li{border-top-color:var(--g-hair)}
+.kv dd,.ntable td{border-color:var(--g-hair)}
+.ntable td{border-bottom-color:var(--g-hair)}
+.wxc-place{border-top-color:var(--g-hair)}
+
+/* timeline and the bottom row */
+.tl{margin:10px 10px 0;border-radius:var(--g-r)}
+.track .outlook-band span{background:color-mix(in srgb,var(--panel) 82%,transparent);border-radius:3px}
+.bottom{background:transparent;border-top:0;gap:10px;padding:10px;height:240px}
+.chart{border-radius:var(--g-r);padding:10px 14px 8px}
+.chart:first-child{padding-left:14px}
+.events{border-radius:var(--g-r);padding-top:10px}
+.evlist li button:hover{background:var(--g-inset)}
+.plot .tbl th,.plot .tbl td,table.health th,table.health td{border-bottom-color:var(--g-hair)}
+
+/* modals: glass panel over a softly blurred page */
+.drawer{background:rgba(10,25,20,.26);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.drawer-c{background:var(--g-fill-strong);border-radius:18px;box-shadow:var(--g-shadow),0 30px 80px rgba(0,0,0,.22)}
+
+@media (max-width:1100px){
+  .main{padding:8px 8px 0;gap:8px}
+  .rail{padding:0}
+  .rail .secs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px}
+  .tl{margin:8px 8px 0}
+  .bottom{padding:8px;gap:8px;height:auto}
+  .chart{border-right:1px solid var(--g-edge);border-bottom:1px solid var(--g-edge)}
+}
+@media (max-width:640px){
+  .main{padding:6px 6px 0;gap:6px}
+  .viewport{border-radius:14px}
+  .tl{margin:6px 6px 0}
+  .bottom{padding:6px;gap:6px}
+  .rail .secs{gap:6px}
+  #guide .guide-c{border-radius:18px 18px 0 0}
+}
+/* phones: cards off the map sit on a still background, so skip the blur there and save the GPU */
+@media (max-width:760px){
+  .sec,.tl,.chart,.events,.top{-webkit-backdrop-filter:none;backdrop-filter:none}
+}
+/* Cards on the map fold to its edges (js/ovpanel.js): the month badge and weather card into a pull tab on the right
+   edge, the legend into one on the left. Phones start folded (.open shows the panel); larger screens start open (.tucked
+   folds it) and remember the choice. While the panel is away, the right tab previews the temperature. */
+.ov-tab,.lg-tab{display:flex;align-items:center;position:absolute;white-space:nowrap;color:var(--ink);
+  background:var(--g-fill-map);-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);
+  border:1px solid var(--g-edge);box-shadow:var(--g-shadow);-webkit-tap-highlight-color:transparent;transition:gap .36s,padding .36s}
+.ov-tab>*,.lg-tab>*{pointer-events:none} /* taps always land on the button itself */
+.ov-tab:focus-visible,.lg-tab:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.ov-tab{gap:6px;top:0;right:100%;width:max-content;height:42px;padding:0 11px 0 8px;border-right:0;border-radius:14px 0 0 14px}
+.ot-chev{width:16px;height:16px;flex:none;color:var(--muted);transition:transform .36s}
+.ot-sum{display:grid;grid-template-columns:1fr;transition:grid-template-columns .36s cubic-bezier(.22,.8,.24,1),opacity .2s}
+.ot-in{min-width:0;overflow:hidden;display:flex;align-items:center;gap:5px}
+.ot-in .wg{width:24px;height:24px;flex:none}
+.ot-in b{font-family:var(--f-display);font-size:17px;font-weight:700;letter-spacing:-.4px;color:var(--forest)}
+.ov-tab[data-k="hot"] .ot-in b{color:var(--heat)}
+.ot-town,.ot-month{font-size:12px;font-weight:600;max-width:88px;overflow:hidden;text-overflow:ellipsis}
+.ov-tr,.ov-bl{transition:transform .36s cubic-bezier(.22,.8,.24,1)}
+.ov-tr>.mbadge,.ov-tr>.wxcard,.ov-bl>.legend{transition:border-radius .36s}
+/* a remembered fold goes in place without the slide */
+.ov-instant .ov-tr,.ov-instant .ov-bl,.ov-instant .ov-tr *,.ov-instant .ov-bl *{transition:none!important}
+/* larger screens: open unless tucked; until the panel is away its tab is a small handle on the panel's inner edge */
+@media (min-width:641px){
+  .ov-tr.tucked{transform:translateX(calc(100% + 15px))}
+  .ov-bl.tucked{transform:translateX(calc(-100% - 15px))}
+  .ov-tr.tucked>.mbadge,.ov-tr.tucked>.wxcard,.ov-bl.tucked>.legend{visibility:hidden;transition:visibility 0s linear .36s,border-radius .36s}
+  .ov-tr:not(.tucked)>.mbadge{border-top-left-radius:5px}
+  .ov-tr:not(.tucked) .ov-tab{gap:0;padding:0 10px}
+  .ov-tr:not(.tucked) .ot-chev{transform:rotate(180deg)}
+  .ov-tr:not(.tucked) .ot-sum{grid-template-columns:0fr;opacity:0}
+  .lg-tab{gap:0;left:100%;top:9px;width:max-content;height:34px;padding:0 9px;border-left:0;border-radius:0 12px 12px 0;font-size:12px;font-weight:600}
+  .ov-bl:not(.tucked)>.legend{border-top-right-radius:5px}
+  .ov-bl.tucked .lg-tab{gap:6px;padding:0 11px 0 9px}
+  .ov-bl.tucked .lg-tab .ot-chev{transform:rotate(180deg)}
+  .lg-lbl{display:grid;grid-template-columns:0fr;opacity:0;transition:grid-template-columns .36s cubic-bezier(.22,.8,.24,1),opacity .2s}
+  .lg-lbl>span{min-width:0;overflow:hidden}
+  .ov-bl.tucked .lg-lbl{grid-template-columns:1fr;opacity:1}
+  .ov-tab:hover,.lg-tab:hover{background:var(--g-fill-strong)}
+}
+/* phones: folded unless open, and the tab previews the live temperature; there is no legend */
+@media (max-width:640px){
+  .ov-tr{top:12px;right:10px;width:min(276px,calc(100% - 56px));max-width:none;max-height:calc(100% - 90px);touch-action:pan-y;transform:translateX(calc(100% + 10px))}
+  .ov-tr.open{transform:none}
+  /* hidden once tucked away, so it leaves the tab order and the screen reader; it hides after the slide finishes */
+  .ov-tr>.mbadge,.ov-tr>.wxcard{visibility:hidden;transition:visibility 0s linear .36s,border-radius .36s}
+  .ov-tr.open>.mbadge,.ov-tr.open>.wxcard{visibility:visible;transition-delay:0s}
+  .ov-tr.open>.mbadge{border-top-left-radius:5px}
+  .ov-tr .wxcard{min-width:0}
+  /* opened on purpose, so there's room for the details */
+  .ov-tr .mbadge small,.ov-tr .wxcard.collapsed .wxc-meta{display:block}
+  .ov-tr.open .ov-tab{gap:0;padding:0 10px}
+  .ov-tr.open .ot-chev{transform:rotate(180deg)}
+  .ov-tr.open .ot-sum{grid-template-columns:0fr;opacity:0}
+  .lg-tab{display:none}
+  .compass{transition:opacity .2s}
+  .ov-open .compass{opacity:0;pointer-events:none}
+}
+
+/* people who ask for less transparency get solid cards */
+@media (prefers-reduced-transparency: reduce){
+  .top,.sec,.tl,.chart,.events,.drawer-c,.vp-title,.mbadge,.legend,.ctrl,.compass,.loading,.wxcard,.ov-tab,.lg-tab{background:var(--panel);-webkit-backdrop-filter:none;backdrop-filter:none}
+}

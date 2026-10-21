@@ -11,6 +11,9 @@
 <link rel="preconnect" href="https://elevation-tiles-prod.s3.amazonaws.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Manrope:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="/css/extra.css">
+<link rel="stylesheet" href="/css/glass.css">
+<link rel="stylesheet" href="/css/brief.css">
 </head>
 <body>
 <div class="app" id="app">
@@ -23,6 +26,7 @@
       <span class="chip"><span class="dot" aria-hidden="true"></span>El Niño 2026–27</span>
       <span class="chip opt">Benguet · CAR</span>
       <span class="chip opt" id="spanChip">Mar 2026 – Jun 2027</span>
+      <span class="chip vis" id="visChip" hidden title="People who have opened this page since the counter started. Each browser counts once."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.1 2.8-5 5.5-5s4.9 1.9 5.5 5"/><path d="M15.5 5.6a3 3 0 010 5.8M17.5 14.3c1.6.7 2.6 2.4 3 4.7"/></svg><b>0</b> <span>visitors</span></span>
     </div>
     <nav class="modes" aria-label="View">
       <button data-mode="outlook" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 19l6-9 4 5 3-4 5 8z"/></svg>Outlook</button>
@@ -31,6 +35,7 @@
     </nav>
     <div class="top-right">
       <div class="status" id="status" aria-live="polite"><b>PAGASA: strong to very strong El Niño</b><br><span class="dim">Connecting to live sources…</span></div>
+      <button class="btn hot" id="guideBtn" aria-haspopup="dialog"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6.6 3.8l2.6-.3 1.6 4-1.9 1.4a11 11 0 005.4 5.4l1.4-1.9 4 1.6-.3 2.6a2 2 0 01-2 1.8A15.6 15.6 0 014.8 5.8a2 2 0 011.8-2z"/></svg>Hotlines</button>
       <button class="btn" id="srcBtn" aria-haspopup="dialog"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg>Sources</button>
     </div>
   </header>
@@ -45,7 +50,10 @@
         <div class="compass" id="compass" title="North"><svg viewBox="0 0 26 26"><path d="M13 3l4 10h-8z" fill="var(--heat)"/><path d="M13 23l-4-10h8z" fill="var(--line-strong)"/></svg></div>
         <div class="vp-title" id="vpTitle"><h2>Benguet, measured</h2><p>Loading…</p></div>
       </div>
-      <div class="ov ov-tr"><div class="mbadge" id="mbadge"></div></div>
+      <div class="ov ov-tr" id="ovPanel">
+        <button class="ov-tab" id="ovTab" type="button" aria-controls="mbadge wxcard" aria-expanded="false" aria-label="Show the month and weather"><svg class="ot-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg><span class="ot-sum" aria-hidden="true"><span class="ot-in" id="ovSum"></span></span></button>
+        <div class="mbadge" id="mbadge"></div><div class="wxcard" id="wxcard" hidden></div>
+      </div>
       <div class="ov ov-bl"><div class="legend" id="legend"></div></div>
       <div class="ov ov-br" id="vpCtl">
         <div class="ctrl" role="group" aria-label="Camera">
@@ -58,6 +66,7 @@
           <button id="zreset" aria-label="Reset view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></button>
         </div>
       </div>
+      <div class="attrib" id="attrib">© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors · <a href="https://openmaptiles.org/" target="_blank" rel="noopener">OpenMapTiles</a> · <a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> · <a href="https://esa-worldcover.org/" target="_blank" rel="noopener">ESA WorldCover</a> · <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">AWS Terrain Tiles</a></div>
       <div class="tip" id="tip" role="status" aria-live="polite"></div>
     </section>
     <aside class="rail" id="rail" aria-label="Details"><div class="secs" id="secs"></div></aside>
@@ -87,17 +96,22 @@
 
 <div class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="srcTitle">
   <div class="drawer-c">
-    <button class="btn drawer-x" id="srcClose">Close</button>
+    <button class="btn drawer-x x-close" id="srcClose"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>Close</button>
     <h2 id="srcTitle">Sources and method</h2>
     <p>Live readings come from NOAA’s Climate Prediction Center, PAGASA, NASA FIRMS and Open-Meteo, cached by this site. The month-by-month outlook is quoted from PAGASA’s latest climate outlook. This is an independent tool, not an official warning. For decisions, check PAGASA’s latest advisory.</p>
     <div id="srcBody"></div>
   </div>
 </div>
+<div class="drawer" id="guide" hidden role="dialog" aria-modal="true" aria-labelledby="guideTitle"></div>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/lines/LineSegmentsGeometry.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/lines/LineMaterial.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/lines/LineSegments2.js"></script>
 <script type="module" src="/js/app.js"></script>
+<script type="module" src="/js/weather.js"></script>
+<script type="module" src="/js/ovpanel.js"></script>
+<script type="module" src="/js/smoke.js"></script>
+<script type="module" src="/js/views.js"></script>
 </body>
 </html>

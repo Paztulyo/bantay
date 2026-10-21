@@ -38,8 +38,12 @@ export function ago(iso) {
 }
 
 // tooltip
-let tip;
+// Touch has no hover, so on a phone a tooltip only lives while the finger is down: it goes when the finger lifts, and a
+// late hover update can't bring it back (the map picks on the next frame, which can land after the lift). Scrolling
+// anything, or leaving the page, clears a tooltip on any device, so none is left hanging over the page.
+let tip, fingerDown = false, lastPointer = 'mouse';
 export function showTip(html, x, y) {
+  if (lastPointer !== 'mouse' && !fingerDown) return;
   tip = tip || document.getElementById('tip');
   tip.innerHTML = html; tip.style.opacity = '1';
   let tx = x + 14, ty = y + 14; const tw = tip.offsetWidth, th = tip.offsetHeight;
@@ -47,13 +51,31 @@ export function showTip(html, x, y) {
   if (ty + th > innerHeight - 8) ty = y - th - 14;
   tip.style.left = Math.max(8, tx) + 'px'; tip.style.top = Math.max(8, ty) + 'px';
 }
-export function hideTip() { (tip || document.getElementById('tip')).style.opacity = '0'; }
+export function hideTip() { const t = tip || document.getElementById('tip'); if (t) t.style.opacity = '0'; }
+{
+  const opt = { capture: true, passive: true };
+  addEventListener('pointerdown', e => { lastPointer = e.pointerType || 'mouse'; if (lastPointer !== 'mouse') fingerDown = true; }, opt);
+  addEventListener('pointermove', e => { lastPointer = e.pointerType || 'mouse'; }, opt);
+  const lift = e => { if (e.pointerType !== 'mouse') { fingerDown = false; hideTip(); } };
+  addEventListener('pointerup', lift, opt);
+  addEventListener('pointercancel', lift, opt);
+  addEventListener('scroll', hideTip, opt);
+  addEventListener('blur', hideTip);
+}
 
 export async function getJSON(url, timeout = 25000) {
   const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), timeout);
   try {
     const r = await fetch(url, { signal: ctrl.signal });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
+    if (!r.ok) {
+      const err = new Error('HTTP ' + r.status);
+      try { // the site's API explains its failures in the body: keep that for the data-health table
+        const j = await r.json();
+        const bad = (j.sources || []).filter(s => s.error).map(s => `${s.name}: ${s.error}`);
+        if (bad.length) err.detail = `HTTP ${r.status} · ${[...new Set(bad)].join('; ')}`;
+      } catch (e) { /* not JSON */ }
+      throw err;
+    }
     return await r.json();
   } finally { clearTimeout(t); }
 }

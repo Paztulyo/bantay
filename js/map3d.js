@@ -142,19 +142,22 @@ export function createMap({ canvas, vp, labelsEl, msgEl, state, onSelect, hoverE
     water: { pos: new THREE.Vector3(-22, 26, 50), tgt: new THREE.Vector3(10, 0.6, 8) },
   };
   const fit = v => { const f = Math.max(1, 1.55 / Math.max(0.3, camera.aspect)); return { pos: v.tgt.clone().add(v.pos.clone().sub(v.tgt).multiplyScalar(f)), tgt: v.tgt.clone() }; };
-  let tween = null;
-  const flyTo = (pos, tgt, ms) => { tween = { p0: camera.position.clone(), t0: controls.target.clone(), p1: pos.clone(), t1: tgt.clone(), s: performance.now(), ms: ms || 800 }; G.dirty = true; };
-  const flyPreset = (name, ms) => { const p = fit(PRESET[name]); flyTo(p.pos, p.tgt, ms); };
-  { const p = fit(PRESET.d3); camera.position.copy(p.pos); controls.target.copy(p.tgt); controls.update(); }
+  let tween = null, userMoved = false, curPreset = 'd3';
+  const tweenTo = (pos, tgt, ms) => { tween = { p0: camera.position.clone(), t0: controls.target.clone(), p1: pos.clone(), t1: tgt.clone(), s: performance.now(), ms: ms || 800 }; G.dirty = true; };
+  const flyTo = (pos, tgt, ms) => { userMoved = true; tweenTo(pos, tgt, ms); };
+  const flyPreset = (name, ms) => { curPreset = name; userMoved = false; const p = fit(PRESET[name]); tweenTo(p.pos, p.tgt, ms); };
+  // dragging or zooming takes over from any camera flight, and stops the view re-framing on resize
+  controls.addEventListener('start', () => { userMoved = true; tween = null; });
 
   const lineMats = [];
   function resize() {
     const r = vp.getBoundingClientRect(); const w = Math.max(1, r.width), h = Math.max(1, r.height);
     renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
     lineMats.forEach(m => m.resolution.set(w, h)); G.dirty = true;
+    // until the user moves the camera, keep the current preset framed for the new shape
+    if (!userMoved && !tween) { const p = fit(PRESET[curPreset]); camera.position.copy(p.pos); controls.target.copy(p.tgt); controls.update(); }
   }
   new ResizeObserver(resize).observe(vp); resize();
-  { const p = fit(PRESET.d3); camera.position.copy(p.pos); controls.target.copy(p.tgt); controls.update(); }
 
   // ---------- shared uniforms ----------
   const U = {
@@ -315,7 +318,7 @@ export function createMap({ canvas, vp, labelsEl, msgEl, state, onSelect, hoverE
     g.setAttribute('position', new THREE.Float32BufferAttribute(P, 3)); g.setAttribute('normal', new THREE.Float32BufferAttribute(Nn, 3)); g.setAttribute('part', new THREE.Float32BufferAttribute(Pt, 1));
     return g;
   }
-  const flat = g => { const n = g.toNonIndexed(); n.computeVertexNormals(); return n; };
+  const flat = g => { const n = g.index ? g.toNonIndexed() : g; n.computeVertexNormals(); return n; };
   function pineGeo() {
     const t = new THREE.CylinderGeometry(0.03, 0.045, 0.22, 5, 1, true); t.translate(0, 0.11, 0);
     const a = new THREE.ConeGeometry(0.30, 0.60, 6, 1, true); a.translate(0, 0.46, 0);
@@ -434,9 +437,7 @@ export function createMap({ canvas, vp, labelsEl, msgEl, state, onSelect, hoverE
   }
   function disposeSet(grp) { if (!grp) return; scene.remove(grp); grp.children.forEach(m => m.geometry.dispose()); }
   function buildFarTrees() {
-    const t0 = performance.now();
     TREE.far = makeSet(genTrees(0, 0, GW, GH, 3, MOBILE ? 12000 : 30000, 11, 0.9, 0.3));
-    console.info('trees (far)', TREE.far.children.reduce((a, m) => a + (m.material === MAT.shadow ? 0 : m.geometry.instanceCount), 0), Math.round(performance.now() - t0) + ' ms');
   }
   function updateNearTrees(dist) {
     if (!treeFrac) return;
@@ -744,7 +745,7 @@ export function createMap({ canvas, vp, labelsEl, msgEl, state, onSelect, hoverE
       const c = cOfLon(lon), r = rOfLat(lat), y = meshH(c, r) / 1000 * state.layers.relief;
       const tgt = new THREE.Vector3(xOfC(c), y, zOfR(r)), t = tiltDeg * Math.PI / 180, a = azDeg * Math.PI / 180;
       const pos = tgt.clone().add(new THREE.Vector3(-Math.sin(a) * Math.sin(t), Math.cos(t), Math.cos(a) * Math.sin(t)).multiplyScalar(dist));
-      if (ms) flyTo(pos, tgt, ms); else { camera.position.copy(pos); controls.target.copy(tgt); controls.update(); G.dirty = true; }
+      if (ms) flyTo(pos, tgt, ms); else { userMoved = true; camera.position.copy(pos); controls.target.copy(tgt); controls.update(); G.dirty = true; }
     },
   });
   return G;

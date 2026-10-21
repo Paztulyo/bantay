@@ -1,9 +1,22 @@
 // Active fire detections from NASA FIRMS (VIIRS + MODIS, near real time).
 // Needs a free MAP_KEY in the FIRMS_MAP_KEY environment variable.
-import { fetchText, send, attempt, nowISO } from './_lib.js';
+import { UA, send, attempt, nowISO } from './_lib.js';
 
 const AREA = '120.35,16.05,121.05,17.02'; // west,south,east,north (Benguet + Baguio, padded)
 const SOURCES = ['VIIRS_SNPP_NRT', 'VIIRS_NOAA20_NRT', 'VIIRS_NOAA21_NRT', 'MODIS_NRT'];
+const MAX_DAYS = 5; // the FIRMS area API accepts a day range of 1..5
+
+// like fetchText, but keeps FIRMS's own error message ("Invalid MAP_KEY.", "Invalid day range...")
+async function firms(url) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), 20000);
+  try {
+    const r = await fetch(url, { headers: { 'User-Agent': UA }, signal: ctrl.signal });
+    const txt = await r.text();
+    if (!r.ok) throw new Error(`HTTP ${r.status}: ${txt.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 140)}`);
+    return txt;
+  } finally { clearTimeout(t); }
+}
 
 function parseCSV(txt, src) {
   const lines = txt.trim().split(/\r?\n/);
@@ -34,7 +47,7 @@ function parseCSV(txt, src) {
 
 export default async function handler(req, res) {
   const key = process.env.FIRMS_MAP_KEY;
-  const days = Math.max(1, Math.min(10, parseInt(req.query?.days, 10) || 7));
+  const days = Math.max(1, Math.min(MAX_DAYS, parseInt(req.query?.days, 10) || MAX_DAYS));
   if (!key) {
     return send(res, {
       ok: true, status: 'no_key', fetched_at: nowISO(), days, fires: [],
@@ -43,7 +56,7 @@ export default async function handler(req, res) {
   }
   const results = await Promise.all(SOURCES.map(s => attempt(
     { id: 'firms_' + s.toLowerCase(), name: `NASA FIRMS ${s.replace(/_/g, ' ')}`, url: 'https://firms.modaps.eosdis.nasa.gov/' },
-    async () => parseCSV(await fetchText(`https://firms.modaps.eosdis.nasa.gov/api/area/csv/${key}/${s}/${AREA}/${days}`, { timeout: 20000 }), s),
+    async () => parseCSV(await firms(`https://firms.modaps.eosdis.nasa.gov/api/area/csv/${encodeURIComponent(key.trim())}/${s}/${AREA}/${days}`), s),
   )));
   const fires = results.flatMap(r => r.value || []).sort((a, b) => (b.date + b.time).localeCompare(a.date + a.time));
   const ok = results.some(r => r.value);

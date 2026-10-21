@@ -2,6 +2,7 @@
 // weather from Open-Meteo, fetched by the browser. Every source keeps a health record so the
 // page can say what is fresh, what is stale and what failed.
 import { getJSON, TEST, manila } from './util.js';
+import { loadOSMTiles } from './osm.js';
 
 export const LIVE = { enso: null, dams: null, fires: null, osm: null, wx: null, health: {} };
 export const SOURCES = {
@@ -9,7 +10,7 @@ export const SOURCES = {
   dams: { name: 'Agno dam levels', by: 'PAGASA', every: 30 * 60e3, url: '/api/dams' },
   wx: { name: 'Rain and temperature by town', by: 'Open-Meteo weather models', every: 60 * 60e3 },
   fires: { name: 'Active fire detections', by: 'NASA FIRMS (VIIRS, MODIS)', every: 30 * 60e3, url: '/api/fires' },
-  osm: { name: 'Roads, rivers and places', by: 'OpenStreetMap', every: 0, url: '/api/osm' },
+  osm: { name: 'Roads, rivers and places', by: 'OpenStreetMap, via OpenFreeMap tiles', every: 0, url: '/api/osm' },
   terrain: { name: 'Terrain', by: 'AWS Terrain Tiles (SRTM)', every: 0 },
   cover: { name: 'Land cover', by: 'ESA WorldCover 2021', every: 0 },
 };
@@ -24,25 +25,49 @@ function asOf(key, j) {
   if (key === 'fires') return j.fires?.[0] ? `${j.fires[0].date}T${j.fires[0].time}:00Z` : null;
   return null;
 }
-async function loadAPI(key) {
+const inflight = new Set(); // a source is never requested twice at once
+async function loadAPI(key, timeout = 30000) {
+  if (inflight.has(key)) return;
+  inflight.add(key);
   setHealth(key, { status: LIVE.health[key]?.status === 'ok' ? 'ok' : 'loading' });
   try {
-    const j = await getJSON(SOURCES[key].url, key === 'osm' ? 90000 : 30000);
+    const j = await getJSON(SOURCES[key].url, timeout);
     LIVE[key] = j;
     const bad = (j.sources || []).filter(s => s.status === 'error');
     const status = j.status === 'no_key' ? 'no_key' : !j.ok ? 'error' : bad.length ? 'partial' : 'ok';
     setHealth(key, { status, fetched: j.fetched_at || new Date().toISOString(), checked: new Date().toISOString(), asof: asOf(key, j), sub: j.sources || [], error: bad.map(s => `${s.name}: ${s.error}`).join('; ') || null });
     emit(key);
   } catch (e) {
-    setHealth(key, { status: LIVE[key] ? 'stale' : 'error', checked: new Date().toISOString(), error: String(e.message || e) });
-  }
+    // a failed request can still carry the API's own explanation (HTTP 503 with a JSON body)
+    setHealth(key, { status: LIVE[key] ? 'stale' : 'error', checked: new Date().toISOString(), error: e.detail || String(e.message || e) });
+  } finally { inflight.delete(key); }
+}
+
+// Roads, rivers and places: OpenFreeMap's vector tiles first (fast, CDN-cached);
+// the site's Overpass endpoint only if the tiles can't be reached.
+async function loadOSM() {
+  if (inflight.has('osm')) return;
+  inflight.add('osm');
+  setHealth('osm', { status: 'loading' });
+  let j = null;
+  try { if (!TEST) j = await loadOSMTiles(); } // test mode uses the mock endpoint
+  catch (e) { console.warn('OpenFreeMap tiles unavailable, trying the Overpass endpoint:', e && e.message); }
+  inflight.delete('osm');
+  if (!j) return loadAPI('osm', 150000);
+  LIVE.osm = j;
+  setHealth('osm', { status: j.failed ? 'partial' : 'ok', fetched: j.fetched_at, checked: j.fetched_at, asof: j.asof, sub: j.sources, error: j.failed ? `${j.failed} of ${j.tiles} map tiles did not load` : null });
+  emit('osm');
 }
 
 /* ---------------- Open-Meteo, per municipality ---------------- */
 let POINTS = [];
 const ymd = d => d.toISOString().slice(0, 10);
 export async function loadWeather() {
-  if (!POINTS.length) return;
+  if (!POINTS.length || inflight.has('wx')) return;
+  inflight.add('wx');
+  try { await weather(); } finally { inflight.delete('wx'); }
+}
+async function weather() {
   setHealth('wx', { status: LIVE.wx ? 'ok' : 'loading' });
   const base = TEST ? '/mock/om' : 'https://api.open-meteo.com/v1/forecast';
   const q = new URLSearchParams({
@@ -87,9 +112,9 @@ export async function loadWeather() {
 export function startLive(points) {
   POINTS = points;
   for (const k of ['enso', 'dams', 'fires']) loadAPI(k);
-  loadAPI('osm');
+  loadOSM();
   loadWeather();
-  const due = k => { const h = LIVE.health[k]; return !h?.checked || Date.now() - new Date(h.checked).getTime() > SOURCES[k].every; };
+  const due = k => { if (inflight.has(k)) return false; const h = LIVE.health[k]; return !h?.checked || Date.now() - new Date(h.checked).getTime() > SOURCES[k].every; };
   const tick = () => {
     if (document.hidden) return;
     for (const k of ['enso', 'dams', 'fires']) if (due(k)) loadAPI(k);

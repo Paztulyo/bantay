@@ -1,0 +1,13 @@
+{
+  "name": "bantay-tests",
+  "private": true,
+  "description": "Browser tests for Bantay El Niño. Start the server with `npm run serve`, then `npm test` in a second terminal.",
+  "scripts": {
+    "serve": "node server.mjs",
+    "test": "node run-all.js"
+  },
+  "devDependencies": {
+    "playwright": "1.47.2",
+    "three": "0.147.0"
+  }
+}
