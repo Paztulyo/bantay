@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Bantay El Niño</title>
+<meta name="description" content="Live El Niño monitor for Benguet and Baguio: NOAA and PAGASA readings, PAGASA's dry-stage outlook, Agno dam levels, town rainfall and fire detections on a 3D map of measured terrain and land cover.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23153f36'/%3E%3Cpath d='M3 18l5.5-8 3.5 5 2.5-3.5L21 18' stroke='%23f8faf7' stroke-width='1.8' fill='none' stroke-linejoin='round'/%3E%3Ccircle cx='17' cy='6' r='2.2' fill='%23e6c56a'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://elevation-tiles-prod.s3.amazonaws.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Manrope:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/css/app.css">
+</head>
+<body>
+<div class="app" id="app">
+  <header class="top">
+    <div class="brand">
+      <div class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M3 18l5.5-8 3.5 5 2.5-3.5L21 18" stroke="#f8faf7" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><path d="M3 21c2-1.2 4-1.2 6 0s4 1.2 6 0 4-1.2 6 0" stroke="#e6c56a" stroke-width="1.6" stroke-linecap="round"/><circle cx="17" cy="6" r="2.2" fill="#e6c56a"/></svg></div>
+      <div class="brand-t"><b>Bantay El Niño</b><span>Live ENSO desk · Benguet</span></div>
+    </div>
+    <div class="ctx" aria-label="Context">
+      <span class="chip"><span class="dot" aria-hidden="true"></span>El Niño 2026–27</span>
+      <span class="chip opt">Benguet · CAR</span>
+      <span class="chip opt" id="spanChip">Mar 2026 – Jun 2027</span>
+    </div>
+    <nav class="modes" aria-label="View">
+      <button data-mode="outlook" aria-pressed="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 19l6-9 4 5 3-4 5 8z"/></svg>Outlook</button>
+      <button data-mode="pacific" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c3 3 3 14 0 17M12 3.5c-3 3-3 14 0 17"/></svg>Pacific</button>
+      <button data-mode="water" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 3.5c3.5 4.2 6 7.4 6 10.5a6 6 0 01-12 0c0-3.1 2.5-6.3 6-10.5z"/></svg>Water</button>
+    </nav>
+    <div class="top-right">
+      <div class="status" id="status" aria-live="polite"><b>PAGASA: strong to very strong El Niño</b><br><span class="dim">Connecting to live sources…</span></div>
+      <button class="btn" id="srcBtn" aria-haspopup="dialog"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg>Sources</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <section class="viewport" id="vp" aria-label="Map view">
+      <canvas id="gl" aria-label="3D terrain of Benguet. Drag to orbit, scroll to zoom."></canvas>
+      <svg id="pac" hidden role="img" aria-label="Map of the tropical Pacific with the Niño monitoring regions"></svg>
+      <div class="labels" id="labels"></div>
+      <div class="vp-msg" id="vpMsg" hidden></div>
+      <div class="ov ov-tl">
+        <div class="compass" id="compass" title="North"><svg viewBox="0 0 26 26"><path d="M13 3l4 10h-8z" fill="var(--heat)"/><path d="M13 23l-4-10h8z" fill="var(--line-strong)"/></svg></div>
+        <div class="vp-title" id="vpTitle"><h2>Benguet, measured</h2><p>Loading…</p></div>
+      </div>
+      <div class="ov ov-tr"><div class="mbadge" id="mbadge"></div></div>
+      <div class="ov ov-bl"><div class="legend" id="legend"></div></div>
+      <div class="ov ov-br" id="vpCtl">
+        <div class="ctrl" role="group" aria-label="Camera">
+          <button id="v3d" aria-pressed="true" title="Perspective view">3D</button>
+          <button id="v2d" aria-pressed="false" title="Top view">Top</button>
+        </div>
+        <div class="ctrl" role="group" aria-label="Zoom">
+          <button id="zin" aria-label="Zoom in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button>
+          <button id="zout" aria-label="Zoom out"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg></button>
+          <button id="zreset" aria-label="Reset view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4"/></svg></button>
+        </div>
+      </div>
+      <div class="tip" id="tip" role="status" aria-live="polite"></div>
+    </section>
+    <aside class="rail" id="rail" aria-label="Details"><div class="secs" id="secs"></div></aside>
+  </div>
+
+  <section class="tl" aria-label="Timeline">
+    <div class="tl-ctl">
+      <button id="prev" aria-label="Previous month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button id="play" class="play" aria-label="Play months"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></svg></button>
+      <button id="next" aria-label="Next month"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button id="speed" class="speed" aria-label="Playback speed">1×</button>
+    </div>
+    <div class="track" id="track" tabindex="0" role="slider" aria-label="Month" aria-valuemin="0" aria-valuemax="15"></div>
+    <div class="tl-read" id="tlRead"></div>
+  </section>
+
+  <section class="bottom" aria-label="Charts and events">
+    <div class="chart" id="c1"></div>
+    <div class="chart" id="c2"></div>
+    <div class="chart" id="c3"></div>
+    <div class="events">
+      <div class="events-h"><h3>Key events</h3><span id="evCount"></span></div>
+      <ul class="evlist" id="evlist"></ul>
+    </div>
+  </section>
+</div>
+
+<div class="drawer" id="drawer" hidden role="dialog" aria-modal="true" aria-labelledby="srcTitle">
+  <div class="drawer-c">
+    <button class="btn drawer-x" id="srcClose">Close</button>
+    <h2 id="srcTitle">Sources and method</h2>
+    <p>Live readings come from NOAA’s Climate Prediction Center, PAGASA, NASA FIRMS and Open-Meteo, cached by this site. The month-by-month outlook is quoted from PAGASA’s latest climate outlook. This is an independent tool, not an official warning. For decisions, check PAGASA’s latest advisory.</p>
+    <div id="srcBody"></div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/lines/LineSegmentsGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/lines/LineMaterial.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/lines/LineSegments2.js"></script>
+<script type="module" src="/js/app.js"></script>
+</body>
+</html>

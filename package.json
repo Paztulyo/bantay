@@ -1,0 +1,12 @@
+{
+  "name": "bantay-el-nino",
+  "private": true,
+  "type": "module",
+  "description": "Live El Niño monitor for Benguet and Baguio",
+  "engines": {
+    "node": "24.x"
+  },
+  "dependencies": {
+    "geotiff": "2.1.3"
+  }
+}
