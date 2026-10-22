@@ -1,5 +1,5 @@
 /* The brief: section icons, the Benguet countdown, a one-line takeaway on every chart, burning fire markers,
-   red close buttons whose drawers burn away, the Be ready search, and the visitor count.
+   red close buttons whose drawers burn away, the Be ready search, the visitor count, and the language switch.
    Urgency comes from dates and numbers set large and early, not from alarm styling. */
 
 /* ---------- section icons, coloured by topic ---------- */
@@ -139,12 +139,62 @@
 .chip.vis b{margin-right:-2px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
 @keyframes visIn{from{opacity:0;transform:translateY(-3px)}}
 /* it outranks the optional chips: where the header would spill onto another row, they give way, and in the tightest
-   spots so does the El Niño chip, which the status line repeats. Widths measured with the real fonts, ~50px spare. */
-@media (min-width:1101px) and (max-width:1619px){.ctx.has-vis #spanChip{display:none}}
-@media (min-width:1101px) and (max-width:1474px){.ctx.has-vis .chip.opt{display:none}}
-@media (min-width:1101px) and (max-width:1364px){.ctx.has-vis .chip:not(.vis){display:none}}
+   spots so does the El Niño chip, which the status line repeats. Widths fit today's advisory line with the language
+   switch, measured with the real fonts (tests/header_test.js); js/headfit.js hides more if a line runs longer. */
+@media (min-width:1101px) and (max-width:1713px){.ctx.has-vis #spanChip{display:none}}
+@media (min-width:1101px) and (max-width:1566px){.ctx.has-vis .chip.opt{display:none}}
+@media (min-width:1101px) and (max-width:1458px){.ctx.has-vis .chip:not(.vis){display:none}}
 @media (min-width:641px) and (max-width:767px){.ctx.has-vis #spanChip{display:none}}
 @media (max-width:640px){.ctx.has-vis .chip:not(.vis){display:none}}
+
+/* ---------- language switch (js/i18n.js): English, Tagalog, Ilocano ---------- */
+.lang{display:flex;flex:none;gap:2px;padding:3px;margin-left:auto;border:1px solid var(--g-hair,var(--line));border-radius:10px;background:var(--g-inset,var(--paper))}
+.lang button{min-width:30px;padding:5px 6px;border-radius:7px;font-size:11px;font-weight:700;letter-spacing:.6px;color:var(--muted)}
+.lang button:hover{color:var(--ink)}
+.lang button[aria-pressed="true"]{background:var(--g-fill-strong,var(--panel));color:var(--forest);box-shadow:0 1px 2px rgba(0,0,0,.08),inset 0 0 0 1px var(--g-edge,var(--line))}
+.lang button:focus-visible{outline:2px solid var(--teal);outline-offset:1px}
+.lang + .top-right{margin-left:0}
+/* the Live line wraps on phones, more so in Tagalog and Ilocano: its second line starts on the left, not centred */
+.livebtn{text-align:left}
+/* Tagalog and Ilocano labels run wider: the context chips give way sooner (the English widths are in css/extra.css) */
+@media (min-width:1101px) and (max-width:1660px){html:not([lang="en"]) #spanChip{display:none}}
+@media (min-width:1101px) and (max-width:1511px){html:not([lang="en"]) .ctx .chip.opt{display:none}}
+@media (min-width:1101px) and (max-width:1404px){html:not([lang="en"]) .ctx{display:none}}
+@media (min-width:1101px) and (max-width:1793px){html:not([lang="en"]) .ctx.has-vis #spanChip{display:none}}
+@media (min-width:1101px) and (max-width:1644px){html:not([lang="en"]) .ctx.has-vis .chip.opt{display:none}}
+@media (min-width:1101px) and (max-width:1536px){html:not([lang="en"]) .ctx.has-vis .chip:not(.vis){display:none}}
+/* narrow desktop widths (iPad landscape among them): Sources shows its icon only (the Live status line opens Sources
+   too) and the views tighten. Tagalog and Ilocano labels run wider, so there it starts sooner and the tagline steps
+   aside. Mid tablets and small phones in Tagalog and Ilocano get the Sources icon only too. */
+@media (min-width:1101px) and (max-width:1199px){#srcBtn{font-size:0;gap:0;padding-inline:9px}}
+@media (min-width:1101px) and (max-width:1174px){.top{column-gap:12px}.modes button{padding-inline:9px}html:not([lang="en"]) .modes button{padding-inline:8px}}
+@media (min-width:1101px) and (max-width:1261px){html:not([lang="en"]) #srcBtn{font-size:0;gap:0;padding-inline:9px}html:not([lang="en"]) .brand-t span{display:none}}
+@media (min-width:769px) and (max-width:940px),(max-width:480px){html:not([lang="en"]) #srcBtn{font-size:0;gap:0;padding-inline:9px}}
+/* desktop: the header stays one row. If the status line runs long (a long advisory headline, or a wordier language),
+   it ends in an ellipsis instead of pushing the buttons to a second row; screen readers still get the whole line.
+   The padding keeps the Live button's focus ring inside the clip. */
+@media (min-width:1101px){
+  .top{flex-wrap:nowrap;min-width:0}
+  .top .fit-hide{display:none}
+  .top>*,.top-right>*{flex-shrink:0}
+  .top>.top-right{flex-shrink:1;min-width:0}
+  .top-right>.status{flex-shrink:1;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;padding:4px;margin:-4px}
+}
+/* tablets: the switch sits at the end of the first row, beside the chips, so the second row keeps the views and the
+   status as before */
+@media (min-width:641px) and (max-width:1100px){
+  .lang{order:1}
+  .modes,.top-right{order:2}
+  .lang + .top-right{margin-left:auto}
+}
+@media (min-width:641px) and (max-width:767px){#spanChip{display:none}}
+/* phones: beside the site's name, in the space the context chips had (the status line says the same) */
+@media (max-width:640px){
+  .lang{order:1}
+  .ctx{display:none}
+  .modes,.top-right{order:2}
+  .lang button{min-width:34px;padding:4px 7px;line-height:18px}
+}
 
 @media (max-width:640px){
   #guide .guide-c{--gp-t:16px;--gp-l:max(16px,env(safe-area-inset-left,0px));--gp-r:max(16px,env(safe-area-inset-right,0px))}

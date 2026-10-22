@@ -1,7 +1,11 @@
 // What to do and who to call: tips keyed to PAGASA's dry stage for the month on screen,
 // and a hotline drawer with tap-to-call numbers checked against official sites.
+// The rail cards are written in English and translated on the page like everything else (js/i18n.js); the drawer
+// writes itself in the chosen language, so search can match and highlight words in that language, and redraws when
+// the language changes.
 import { $, esc, getJSON, MN, fmtDate } from './util.js';
 import { hico } from './icons.js';
+import { t, tf, ld, getLang } from './i18n.js';
 
 let G = null; // data/guide.json
 let opener = null;
@@ -68,7 +72,7 @@ export function guideWater() {
 
 /* ---------------- drawer ---------------- */
 function numLink(n) {
-  return `<a class="hnum" href="${telHref(n.v)}">${n.l ? `<small>${esc(n.l)}</small>` : ''}<span class="mono">${esc(n.v)}</span></a>`;
+  return `<a class="hnum" href="${telHref(n.v)}">${n.l ? `<small>${esc(t(n.l))}</small>` : ''}<span class="mono">${esc(ld(n.v))}</span></a>`;
 }
 /* ---------------- search ---------------- */
 // Words people type, mapped to words the entries use, so "ambulance", "sunog" or "brownout" still find the right line.
@@ -81,6 +85,13 @@ const SYN = {
   tubig: ['water'], leak: ['water', 'leaks'], power: ['beneco', 'power'], electric: ['beneco'], electricity: ['beneco'],
   kuryente: ['beneco'], brownout: ['beneco'], outage: ['beneco'], blood: ['red cross'], redcross: ['red cross'],
   farmer: ['farm', 'agriculturist'], crop: ['farm', 'crop', 'agriculturist'], agri: ['agriculturist', 'farm'],
+  // Tagalog and Ilocano
+  danum: ['water'], apuy: ['fire'], uram: ['fire'], asuk: ['fire', 'smoke'], usok: ['fire', 'smoke'], koryente: ['beneco'],
+  doktor: ['hospital', 'health'], klinika: ['hospital', 'health'], sakit: ['health', 'hospital'], agsakit: ['health', 'hospital'],
+  init: ['heat', 'health'], pudot: ['heat', 'health'], ulan: ['water', 'rain'], tudo: ['water', 'rain'],
+  magsasaka: ['farm', 'agriculturist'], mannalon: ['farm', 'agriculturist'], tanim: ['farm', 'crop'], mula: ['farm', 'crop'],
+  baha: ['disaster'], layus: ['disaster'], bagyo: ['disaster'], kalamidad: ['disaster'], didigra: ['disaster'],
+  tulong: ['emergency', 'rescue', 'red cross'], saklolo: ['emergency', 'rescue'], tulongan: ['emergency', 'rescue'],
 };
 const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -95,8 +106,8 @@ function parseQuery(q) {
   });
 }
 function hits(Q, text) {
-  const t = norm(text), toks = t.split(/[^a-z0-9]+/), dg = t.replace(/\D/g, '');
-  return Q.every(({ alts, digits }) => (digits && dg.includes(digits)) || alts.some(a => (a.includes(' ') ? t.includes(a) : toks.some(k => k.startsWith(a)))));
+  const s = norm(text), toks = s.split(/[^a-z0-9]+/), dg = s.replace(/\D/g, '');
+  return Q.every(({ alts, digits }) => (digits && dg.includes(digits)) || alts.some(a => (a.includes(' ') ? s.includes(a) : toks.some(k => k.startsWith(a)))));
 }
 // escaped text with the matched words wrapped in <mark>
 function hl(text, Q) {
@@ -112,17 +123,17 @@ function hl(text, Q) {
   }
   return out + esc(text.slice(last));
 }
-const noMatch = q => `<div class="gnone"><b>Nothing matches “${esc(q)}”.</b><span>Try water, hospital, fire, power or a town name. In an emergency, call <a href="tel:911">911</a>.</span></div>`;
+const noMatch = q => `<div class="gnone"><b>${esc(t('Nothing matches “{q}”.')).replace('{q}', esc(q))}</b><span>${esc(t('Try water, hospital, fire, power or a town name. In an emergency, call'))} <a href="tel:911">911</a>.</span></div>`;
 
 function hotlinesHTML(Q) {
   let n = 0;
   const html = G.hotlines.map(g => {
-    const items = g.items.filter(it => !Q || hits(Q, [g.g, it.n, it.note, it.link && G.src[it.link] ? G.src[it.link].s : '', ...it.nums.map(x => `${x.l || ''} ${x.v}`)].join(' ')));
+    const items = g.items.filter(it => !Q || hits(Q, [g.g, it.n, it.note, t(g.g), t(it.n), t(it.note), it.link && G.src[it.link] ? G.src[it.link].s : '', ...it.nums.map(x => `${x.l || ''} ${t(x.l) || ''} ${x.v}`)].join(' ')));
     n += items.length;
-    return items.length ? `<div class="hgrp"><h3><span>${hl(g.g, Q)}</span></h3><ul class="hl">${items.map(it => `<li>
-      <div class="hname"><b>${hl(it.n, Q)}</b>${it.note ? `<span>${hl(it.note, Q)}</span>` : ''}</div>
-      <div class="hnums">${it.nums.map(numLink).join('')}${it.link && G.src[it.link] ? `<a class="btn" href="${esc(G.src[it.link].u)}" target="_blank" rel="noopener">Open ${esc(G.src[it.link].s)} site</a>` : ''}</div>
-      ${it.src ? `<div class="src">Source: ${srcLinks(it.src)}</div>` : ''}</li>`).join('')}</ul></div>` : '';
+    return items.length ? `<div class="hgrp"><h3><span>${hl(t(g.g), Q)}</span></h3><ul class="hl">${items.map(it => `<li>
+      <div class="hname"><b>${hl(t(it.n), Q)}</b>${it.note ? `<span>${hl(t(it.note), Q)}</span>` : ''}</div>
+      <div class="hnums">${it.nums.map(numLink).join('')}${it.link && G.src[it.link] ? `<a class="btn" href="${esc(G.src[it.link].u)}" target="_blank" rel="noopener">${esc(tf('Open {site} site', { site: G.src[it.link].s }))}</a>` : ''}</div>
+      ${it.src ? `<div class="src">${esc(t('Source:'))} ${srcLinks(it.src)}</div>` : ''}</li>`).join('')}</ul></div>` : '';
   }).join('');
   return { html, n };
 }
@@ -130,11 +141,11 @@ function tipsHTML(phaseId, Q) {
   const ph = G.phases[phaseId];
   let n = 0;
   const cats = G.cats.map(c => {
-    const items = c.items.filter(it => !Q || hits(Q, c.n + ' ' + it.t));
+    const items = c.items.filter(it => !Q || hits(Q, [c.n, it.t, t(c.n), t(it.t)].join(' ')));
     n += items.length;
-    return items.length ? `<div class="hgrp"><h3><span class="gi c-${c.id}" aria-hidden="true">${ICON[c.id] || ''}</span><span>${hl(c.n, Q)}</span></h3><ul class="glist plain">${items.map(it => `<li>${hl(it.t, Q)}${it.src ? ` <span class="src">${srcLinks(it.src)}</span>` : ''}</li>`).join('')}</ul></div>` : '';
+    return items.length ? `<div class="hgrp"><h3><span class="gi c-${c.id}" aria-hidden="true">${ICON[c.id] || ''}</span><span>${hl(t(c.n), Q)}</span></h3><ul class="glist plain">${items.map(it => `<li>${hl(t(it.t), Q)}${it.src ? ` <span class="src">${srcLinks(it.src)}</span>` : ''}</li>`).join('')}</ul></div>` : '';
   }).join('');
-  return { html: `${ph && !Q ? `<div class="gphase now"><b>Right now: ${esc(ph.n)}</b><span>${esc(ph.d)}</span></div>` : ''}${cats}`, n };
+  return { html: `${ph && !Q ? `<div class="gphase now"><b>${esc(tf('Right now: {phase}', { phase: t(ph.n) }))}</b><span>${esc(t(ph.d))}</span></div>` : ''}${cats}`, n };
 }
 let query = '', sayT = 0;
 // redraw both lists for the search, put counts on the tabs, and jump to the tab that has results
@@ -142,8 +153,8 @@ function renderLists() {
   const Q = parseQuery(query), H = hotlinesHTML(Q), T = tipsHTML(nowPhase, Q);
   $('#gpanH').innerHTML = H.n || !Q ? H.html : noMatch(query);
   $('#gpanT').innerHTML = T.n || !Q ? T.html : noMatch(query);
-  $('#gtabH').innerHTML = 'Hotlines' + (Q ? ` <span class="gcount">${H.n}</span>` : '');
-  $('#gtabT').innerHTML = 'What to do' + (Q ? ` <span class="gcount">${T.n}</span>` : '');
+  $('#gtabH').innerHTML = esc(t('Hotlines')) + (Q ? ` <span class="gcount">${H.n}</span>` : '');
+  $('#gtabT').innerHTML = esc(t('What to do')) + (Q ? ` <span class="gcount">${T.n}</span>` : '');
   const onTips = $('#gtabT').getAttribute('aria-selected') === 'true';
   if (Q && onTips && !T.n && H.n) selectTab('hotlines');
   else if (Q && !onTips && !H.n && T.n) selectTab('tips');
@@ -155,41 +166,42 @@ function renderLists() {
     if (over < 0) pan.scrollTop += over;
   }
   clearTimeout(sayT);
-  sayT = setTimeout(() => { $('#gqRes').textContent = !Q ? '' : H.n + T.n ? `${H.n} hotline${H.n === 1 ? '' : 's'} and ${T.n} tip${T.n === 1 ? '' : 's'} match.` : 'No matches.'; }, 400);
+  const say = getLang() === 'en' ? `${H.n} hotline${H.n === 1 ? '' : 's'} and ${T.n} tip${T.n === 1 ? '' : 's'} match.` : tf('{h} hotlines and {t} tips match.', { h: H.n, t: T.n });
+  sayT = setTimeout(() => { $('#gqRes').textContent = !Q ? '' : H.n + T.n ? say : t('No matches.'); }, 400);
 }
 function setQuery(v) { const qi = $('#gq'); if (qi) qi.value = v; query = v; renderLists(); }
 
-let built = false, inited = false, nowPhase = 'prepare';
+let built = false, inited = false, nowPhase = 'prepare', lastInit = {};
 export const guideInited = () => inited;
 // Without the outlook (the page failed to start) the tips fall back to "before the dry months".
 export function initGuide({ nowKey = '', stageMap = {}, outlook = { to: '9999-12' } } = {}) {
   if (!G) return;
-  inited = true;
+  inited = true; lastInit = { nowKey, stageMap, outlook };
   nowPhase = phaseFor(nowKey, stageMap, outlook);
   const dr = $('#guide');
   if (!dr) return;
   dr.innerHTML = `<div class="drawer-c guide-c">
-    <button class="btn drawer-x x-close" id="guideClose">${ICON.x}Close</button>
-    <h2 id="guideTitle">Be ready</h2>
-    <p>${esc(G.naming)} Numbers checked against official sites on ${fmtDate(G.checked, true)}. Tap a number to call.</p>
-    <div class="sosrow">${G.emergency.map(e => `<a class="sosbig${e.v === '911' ? '' : ' alt'}" href="${telHref(e.v)}"><b class="mono">${esc(e.v)}</b><span><strong>${esc(e.n)}</strong>${esc(e.note)}</span></a>`).join('')}</div>
-    <p class="src" style="margin-top:6px">Sources: ${srcLinks(G.emergency.map(e => e.src))}</p>
+    <button class="btn drawer-x x-close" id="guideClose">${ICON.x}${esc(t('Close'))}</button>
+    <h2 id="guideTitle">${esc(t('Be ready'))}</h2>
+    <p>${esc(t(G.naming))} ${esc(tf('Numbers checked against official sites on {date}. Tap a number to call.', { date: ld(fmtDate(G.checked, true)) }))}</p>
+    <div class="sosrow">${G.emergency.map(e => `<a class="sosbig${e.v === '911' ? '' : ' alt'}" href="${telHref(e.v)}"><b class="mono">${esc(e.v)}</b><span><strong>${esc(t(e.n))}</strong>${esc(t(e.note))}</span></a>`).join('')}</div>
+    <p class="src" style="margin-top:6px">${esc(t('Sources:'))} ${srcLinks(G.emergency.map(e => e.src))}</p>
     <div class="gbar">
-      <div class="gsearch" role="search">${ICON.search}<input type="search" id="gq" placeholder="Search hotlines and tips: water, hospital, a town" aria-label="Search hotlines and tips" autocomplete="off" spellcheck="false" enterkeyhint="search"><button type="button" class="gq-x" id="gqX" aria-label="Clear the search" hidden>${ICON.x}</button></div>
-      <div class="gtabs" role="tablist" aria-label="Be ready">
-        <button role="tab" id="gtabH" aria-controls="gpanH" aria-selected="true">Hotlines</button>
-        <button role="tab" id="gtabT" aria-controls="gpanT" aria-selected="false" tabindex="-1">What to do</button>
+      <div class="gsearch" role="search">${ICON.search}<input type="search" id="gq" placeholder="${esc(t('Search hotlines and tips: water, hospital, a town'))}" aria-label="${esc(t('Search hotlines and tips'))}" autocomplete="off" spellcheck="false" enterkeyhint="search"><button type="button" class="gq-x" id="gqX" aria-label="${esc(t('Clear the search'))}" hidden>${ICON.x}</button></div>
+      <div class="gtabs" role="tablist" aria-label="${esc(t('Be ready'))}">
+        <button role="tab" id="gtabH" aria-controls="gpanH" aria-selected="true">${esc(t('Hotlines'))}</button>
+        <button role="tab" id="gtabT" aria-controls="gpanT" aria-selected="false" tabindex="-1">${esc(t('What to do'))}</button>
       </div>
     </div>
     <p class="sr-only" id="gqRes" aria-live="polite"></p>
     <div role="tabpanel" id="gpanH" aria-labelledby="gtabH"></div>
     <div role="tabpanel" id="gpanT" aria-labelledby="gtabT" hidden></div>
-    <p class="src gfoot">This site is not an official warning channel. In an emergency, call 911. For official El Niño advisories, see <a href="${esc(G.src.pag_adv5.u)}" target="_blank" rel="noopener">PAGASA</a>.</p>
+    <p class="src gfoot">${esc(t('This site is not an official warning channel. In an emergency, call 911. For official El Niño advisories, see'))} <a href="${esc(G.src.pag_adv5.u)}" target="_blank" rel="noopener">PAGASA</a>.</p>
   </div>`;
   const tabs = [$('#gtabH'), $('#gtabT')];
-  tabs.forEach((t, i) => {
-    t.addEventListener('click', () => selectTab(i ? 'tips' : 'hotlines'));
-    t.addEventListener('keydown', e => {
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => selectTab(i ? 'tips' : 'hotlines'));
+    tab.addEventListener('keydown', e => {
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
       e.preventDefault(); const j = 1 - i; selectTab(j ? 'tips' : 'hotlines'); tabs[j].focus();
     });
@@ -235,3 +247,16 @@ export function closeGuide() {
   if (opener && document.contains(opener)) opener.focus();
   else { const b = $('#guideBtn'); if (b) b.focus(); }
 }
+
+// a new language: redraw the drawer in it, keeping the search, the tab, the scroll and the focus
+addEventListener('bantay:lang', () => {
+  const dr = $('#guide');
+  if (!inited || !dr || !dr.querySelector('.drawer-c')) return;
+  const q = query, tips = $('#gtabT')?.getAttribute('aria-selected') === 'true', top = dr.querySelector('.drawer-c').scrollTop;
+  const focus = document.activeElement && dr.contains(document.activeElement) ? document.activeElement.id : '';
+  initGuide(lastInit);
+  if (q) setQuery(q);
+  selectTab(tips ? 'tips' : 'hotlines');
+  dr.querySelector('.drawer-c').scrollTop = top;
+  if (focus && !dr.hidden) $('#' + focus)?.focus();
+});

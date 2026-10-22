@@ -1,0 +1,445 @@
+Where it shows,English,Tagalog,Ilocano
+Header,visitors,bisita,sangaili
+Header,visitor,bisita,sangaili
+Header,Pacific,Pasipiko,Pasipiko
+Header,Water,Tubig,Danum
+Header,Hotlines,Hotline,Hotline
+Header,Sources,Sanggunian,Gubuayan
+Header,Connecting to live sources…,Kumokonekta sa mga live na sanggunian…,Agkonkonekta kadagiti live a gubuayan…
+Header,strong to very strong El Niño,malakas hanggang napakalakas na El Niño,napigsa agingga iti napigsa unay nga El Niño
+Header,a strong to very strong El Niño is present,may malakas hanggang napakalakas na El Niño,adda napigsa agingga iti napigsa unay nga El Niño
+Header,Context,Konteksto,Konteksto
+Header,View,Tanaw,Buya
+Header,People who have opened this page since the counter started. Each browser counts once.,Mga taong nagbukas ng pahinang ito mula nang magsimula ang pagbilang. Isang beses lang binibilang ang bawat browser.,Dagiti tattao a nangluktat iti daytoy a panid manipud idi nangrugi ti panagbilang. Maminsan laeng a mabilang ti tunggal browser.
+Page regions and map controls,Map view,Mapa,Mapa
+Page regions and map controls,"3D terrain of Benguet. Drag to orbit, scroll to zoom.","3D na anyo ng lupa ng Benguet. I-drag para paikutin, mag-scroll para mag-zoom.","3D a daga ti Benguet. I-drag tapno iikot, i-scroll tapno i-zoom."
+Page regions and map controls,Map of the tropical Pacific with the Niño monitoring regions,Mapa ng tropikal na Pasipiko at ng mga rehiyong binabantayan para sa Niño,Mapa ti tropikal a Pasipiko ken dagiti rehion a bambantayan para iti Niño
+Page regions and map controls,Details,Mga detalye,Dagiti detalye
+Page regions and map controls,Timeline,Timeline,Timeline
+Page regions and map controls,Previous month,Nakaraang buwan,Napalabas a bulan
+Page regions and map controls,Next month,Susunod na buwan,Sumaruno a bulan
+Page regions and map controls,Play months,I-play ang mga buwan,I-play dagiti bulan
+Page regions and map controls,Playback speed,Bilis ng pag-play,Kapartak ti panag-play
+Page regions and map controls,Pause,I-pause,I-pause
+Page regions and map controls,Charts and events,Mga tsart at pangyayari,Dagiti tsart ken pasamak
+Page regions and map controls,Month,Buwan,Bulan
+Page regions and map controls,North,Hilaga,Amianan
+Page regions and map controls,Camera,Kamera,Kamera
+Page regions and map controls,Zoom,Zoom,Zoom
+Page regions and map controls,Top,Itaas,Ngato
+Page regions and map controls,Perspective view,3D na tanaw,3D a buya
+Page regions and map controls,Top view,Tanaw mula sa itaas,Buya manipud ngato
+Page regions and map controls,Zoom in,Lumapit,Iasideg
+Page regions and map controls,Zoom out,Lumayo,Iadayo
+Page regions and map controls,Reset view,Ibalik ang tanaw,Isubli ti buya
+Page regions and map controls,Hide the month and weather,Itago ang buwan at panahon,Ilemmeng ti bulan ken tiempo
+Page regions and map controls,Hide the legend,Itago ang palatandaan,Ilemmeng ti pagilasinan
+Page regions and map controls,Show the legend,Ipakita ang palatandaan,Ipakita ti pagilasinan
+Page regions and map controls,Legend,Palatandaan,Pagilasinan
+Page regions and map controls,Previous day,Nakaraang araw,Napalabas nga aldaw
+Page regions and map controls,Next day,Susunod na araw,Sumaruno nga aldaw
+Page regions and map controls,Pause the week,I-pause ang linggo,I-pause ti lawas
+Page regions and map controls,Live,Live,Live
+Page regions and map controls,Equator,Ekwador,Ekwador
+Page regions and map controls,Loading…,Naglo-load…,Agkarkarga…
+Page regions and map controls,"The 3D view needs WebGL and three.js, which didn’t load.","Kailangan ng 3D view ang WebGL at three.js, pero hindi sila nag-load.","Kasapulan ti 3D view ti WebGL ken three.js, ngem saan a nag-load dagitoy."
+Page regions and map controls,"The timeline, charts and the Pacific map still work.","Gumagana pa rin ang timeline, mga tsart at mapa ng Pasipiko.","Agandar latta ti timeline, dagiti tsart ken ti mapa ti Pasipiko."
+Page regions and map controls,Loading terrain…,Naglo-load ang anyo ng lupa…,Agkarkarga ti daga…
+Page regions and map controls,Reading land cover…,Binabasa ang takip ng lupa…,Basbasaen ti abbong ti daga…
+Page regions and map controls,Building the map…,Binubuo ang mapa…,Bukbukelen ti mapa…
+Page regions and map controls,Terrain tiles didn’t load.,Hindi nag-load ang mga tile ng anyo ng lupa.,Saan a nag-load dagiti tile ti daga.
+Page regions and map controls,The rest of the page still works.,Gumagana pa rin ang ibang bahagi ng pahina.,Agandar latta ti dadduma a paset ti panid.
+Map titles,"Benguet, measured","Benguet, mula sa sukat","Benguet, manipud iti rukod"
+Map titles,Terrain from SRTM · land cover from ESA WorldCover · roads and rivers from OpenStreetMap,Anyo ng lupa mula sa SRTM · takip ng lupa mula sa ESA WorldCover · mga kalsada at ilog mula sa OpenStreetMap,Daga manipud SRTM · abbong ti daga manipud ESA WorldCover · kalsada ken karayan manipud OpenStreetMap
+Map titles,The tropical Pacific,Ang tropikal na Pasipiko,Ti tropikal a Pasipiko
+Map titles,"Niño regions, coloured by NOAA CPC relative indices","Mga rehiyon ng Niño, kinulayan ayon sa relative index ng NOAA CPC","Dagiti rehion ti Niño, nakoloran segun iti relative index ti NOAA CPC"
+Map titles,"The Agno, from source to San Roque","Ang Agno, mula sa pinagmumulan hanggang San Roque","Ti Agno, manipud ubbog agingga San Roque"
+Map titles,Live reservoir levels from PAGASA,"Live na antas ng tubig sa mga dam, mula sa PAGASA","Live a kangato ti danum kadagiti dam, manipud PAGASA"
+Map titles,"El Niño warms the central and eastern Pacific. Rain-making storms follow the warm water east, so the western Pacific, including Luzon, gets less rain.","Pinapainit ng El Niño ang gitna at silangang Pasipiko. Sinusundan ng mga bagyong nagdadala ng ulan ang mainit na tubig pasilangan, kaya mas kaunti ang ulan sa kanlurang Pasipiko, kasama ang Luzon.","Pabaraen ti El Niño ti tengnga ken daya a Pasipiko. Dagiti bagyo nga agyeg ti tudo ket sumurot iti nabara a danum nga agturong iti daya, isu a basbassit ti tudo iti laud a Pasipiko, agraman ti Luzon."
+Map titles,Why a warm Pacific dries Benguet,Bakit natutuyo ang Benguet kapag mainit ang Pasipiko,Apay a mamaga ti Benguet no nabara ti Pasipiko
+Legend,Benguet dry stage (PAGASA),Dry stage ng Benguet (PAGASA),Dry stage ti Benguet (PAGASA)
+Legend,Stripes: outlook month,Guhit: buwan ng outlook,Guhit: bulan ti outlook
+Legend,Ground dries with the stage,Natutuyo ang lupa ayon sa stage,Mamaga ti daga segun iti stage
+Legend,Trees: ESA WorldCover tree cover,Mga puno: tree cover ng ESA WorldCover,Kaykayo: tree cover ti ESA WorldCover
+Legend,"Sea-surface anomaly, relative","Anomalya ng init sa ibabaw ng dagat, relative","Anomalia ti temperatura iti rabaw ti baybay, relative"
+Legend,No value for this month,Walang halaga ngayong buwan,Awan ti bilang para iti daytoy a bulan
+Legend,Agno River (OpenStreetMap),Ilog Agno (OpenStreetMap),Karayan Agno (OpenStreetMap)
+Legend,Other rivers (OpenStreetMap),Iba pang ilog (OpenStreetMap),Dadduma a karayan (OpenStreetMap)
+Legend,Water (ESA WorldCover 2021),Tubig (ESA WorldCover 2021),Danum (ESA WorldCover 2021)
+Month badge,Now,Ngayon,Ita
+Month badge,Today,Ngayon,Ita nga aldaw
+Month badge,Observed,Naitala,Narukod
+Month badge,Benguet: no dry stage listed,Benguet: walang nakalistang dry stage,Benguet: awan ti nailista a dry stage
+Month badge,"PAGASA Baguio, as of May.","PAGASA Baguio, noong Mayo.","PAGASA Baguio, idi Mayo."
+Month badge,Beyond outlook,Lampas sa outlook,Labes iti outlook
+Month badge,Beyond the current outlook,Lampas sa kasalukuyang outlook,Labes iti agdama nga outlook
+Month badge,Niño 3.4: no value quoted,Niño 3.4: walang binanggit na halaga,Niño 3.4: awan ti nadakamat a bilang
+Month badge,Niño 3.4: not out yet,Niño 3.4: wala pa,Niño 3.4: awan pay
+Month badge,Relative indices as quoted by NOAA CPC; weekly readings where no monthly value was given.,Mga relative index ayon sa NOAA CPC; lingguhang sukat kapag walang ibinigay na buwanang halaga.,Dagiti relative index segun iti NOAA CPC; linawas a rukod no awan ti naited a binulan a bilang.
+Month badge,Latest reading,Pinakabagong sukat,Kabaruan a rukod
+Month badge,Agno dams near normal high water,Malapit sa normal high water ang mga dam ng Agno,Asideg iti normal high water dagiti dam ti Agno
+Month badge,All three dams near normal high water,Malapit sa normal high water ang tatlong dam,Asideg iti normal high water ti tallo a dam
+Weather card,Next 24 h,Sa 24 oras,Iti 24 oras
+Weather card,7 days,7 araw,7 nga aldaw
+Weather card,Show weather on the map,Ipakita ang panahon sa mapa,Ipakita ti tiempo iti mapa
+Weather card,"Open-Meteo model, not a weather station. Tap a town on the map to switch.","Modelo ng Open-Meteo, hindi weather station. Pindutin ang isang bayan sa mapa para lumipat dito.","Modelo ti Open-Meteo, saan a weather station. Pinduten ti maysa nga ili iti mapa tapno isu ti maipakita."
+Weather card,Hide the forecast,Itago ang pagtataya,Ilemmeng ti padto
+Weather card,Forecast,Pagtataya,Padto
+Weather card,forecast,· pagtataya,· padto
+Weather card,7-day forecast. Pick a day to show it on the map.,Pagtataya sa 7 araw. Pumili ng araw para ipakita ito sa mapa.,Padto iti 7 nga aldaw. Mangpili ti aldaw tapno maipakita iti mapa.
+Weather card,Temperature,Temperatura,Temperatura
+Weather card,Chance of rain,Tsansa ng ulan,Tsansa ti tudo
+Weather card,Play the week,I-play ang linggo,I-play ti lawas
+Weather card,Play again,I-play ulit,I-play manen
+Weather card,Tap a day to map it,Pumili ng araw para makita sa mapa,Pinduten ti aldaw tapno makita iti mapa
+Weather card,Back to live,Bumalik sa live,Agsubli iti live
+Weather card,’s forecast, · pagtataya, · padto
+Weather card,Weather feed unavailable right now,Hindi makuha ang datos ng panahon sa ngayon,Saan a magun-od ti datos ti tiempo ita
+Weather card,Loading town weather…,Naglo-load ang panahon sa mga bayan…,Agkarkarga ti tiempo kadagiti ili…
+Weather card,Town weather could not be loaded,Hindi ma-load ang panahon sa mga bayan,Saan a ma-load ti tiempo kadagiti ili
+Weather card,3D weather could not start,Hindi masimulan ang 3D na panahon,Saan a mangrugi ti 3D a tiempo
+Weather card,Town list did not load,Hindi nag-load ang listahan ng mga bayan,Saan a nag-load ti listaan dagiti ili
+Weather conditions,Clear,Maaliwalas,Nalawag
+Weather conditions,Clear night,Maaliwalas na gabi,Nalawag a rabii
+Weather conditions,Mostly clear,Halos maaliwalas,Nalawlawag
+Weather conditions,Partly cloudy,Bahagyang maulap,Medio naulep
+Weather conditions,Overcast,Makulimlim,Nalidem
+Weather conditions,Cloudy,Maulap,Naulep
+Weather conditions,Fog,Makapal na ulap,Angep
+Weather conditions,Light drizzle,Mahinang ambon,Bassit nga arimukamok
+Weather conditions,Drizzle,Ambon,Arimukamok
+Weather conditions,Heavy drizzle,Malakas na ambon,Napigsa nga arimukamok
+Weather conditions,Light rain,Mahinang ulan,Bassit a tudo
+Weather conditions,Rain,Ulan,Tudo
+Weather conditions,Heavy rain,Malakas na ulan,Napigsa a tudo
+Weather conditions,Light showers,Mahinang pag-ulan,Bassit a tudtudo
+Weather conditions,Showers,Pag-ulan,Tudtudo
+Weather conditions,Heavy showers,Malakas na pag-ulan,Napigsa a tudtudo
+Weather conditions,Thunderstorm,Kulog at kidlat,Gurruod ken kimat
+Weather conditions,Thunderstorm with hail,Kulog at kidlat na may yelo,Gurruod ken kimat nga addaan uraro
+Benguet countdown,Benguet countdown,Countdown ng Benguet,Countdown ti Benguet
+Benguet countdown,PAGASA outlook,Outlook ng PAGASA,Outlook ti PAGASA
+Benguet countdown,· revised monthly,· binabago buwan-buwan,· mabaliwan binulan
+Benguet countdown,Play it on the map,I-play sa mapa,I-play iti mapa
+Benguet countdown,weeks,na linggo,a lawas
+Benguet countdown,week,linggo,a lawas
+Benguet countdown,months,na buwan,a bulan
+Benguet countdown,month,buwan,a bulan
+Benguet countdown,to dry condition,bago ang dry condition,sakbay ti dry condition
+Benguet countdown,to drought,bago ang drought,sakbay ti drought
+Benguet countdown,"PAGASA, this month","PAGASA, ngayong buwan","PAGASA, ita a bulan"
+Benguet countdown,No dry stage yet,Wala pang dry stage,Awan pay ti dry stage
+What to do,What to do,Ano ang gagawin,Ti aramiden
+What to do,Emergency 911,Emergency 911,Emerhensia 911
+What to do,All hotlines,Lahat ng hotline,Amin a hotline
+What to do,More tips,Iba pang payo,Dadduma pay a balakad
+What to do,Save water at home,Magtipid ng tubig sa bahay,Agtipid ti danum iti balay
+What to do,Showing tips for now. You’re viewing a past month.,Ipinapakita ang mga payo para ngayon. Nakaraang buwan ang tinitingnan mo.,Maipakpakita dagiti balakad para ita. Napalabas a bulan ti kitkitaem.
+Layers,Layers,Mga layer,Dagiti layer
+Layers,Relief,Taas ng lupa,Kangato ti daga
+Layers,Land cover,Takip ng lupa,Abbong ti daga
+Layers,Trees,Mga puno,Kaykayo
+Layers,PAGASA dry stage,Dry stage ng PAGASA,Dry stage ti PAGASA
+Layers,"Dry days, last 30","Tuyong araw, huling 30","Namaga nga aldaw, naudi a 30"
+Layers,Active fires,Aktibong sunog,Aktibo nga uram
+Layers,Rivers and reservoirs,Mga ilog at dam,Dagiti karayan ken dam
+Layers,Roads,Mga kalsada,Dagiti kalsada
+Layers,Contours,Mga contour,Dagiti contour
+Layers,Municipal boundaries,Hangganan ng mga bayan,Beddeng dagiti ili
+Layers,Place labels,Pangalan ng mga lugar,Nagan dagiti lugar
+Layers,Where WorldCover maps tree cover,Kung saan may tree cover sa WorldCover,No sadino ti adda tree cover iti WorldCover
+Layers,Province-wide · stripes mark outlook,Buong lalawigan · guhit para sa outlook,Intero a probinsia · guhit para iti outlook
+Layers,By town · Open-Meteo models,Bawat bayan · mga modelo ng Open-Meteo,Tunggal ili · dagiti modelo ti Open-Meteo
+Layers,Coloured by CPC relative indices,Kinulayan ayon sa relative index ng CPC,Nakoloran segun iti relative index ti CPC
+Layers,Relief exaggeration,Paglaki ng taas ng lupa,Panangpadakkel ti kangato ti daga
+Layers,Dry-stage opacity,Kapal ng kulay ng dry stage,Kapuskol ti kolor ti dry stage
+Layers,Niño regions,Mga rehiyon ng Niño,Dagiti rehion ti Niño
+Layers,Land,Lupa,Daga
+Layers,Grid and equator,Grid at ekwador,Grid ken ekwador
+Layers,Needs a NASA FIRMS key,Kailangan ng susi mula sa NASA FIRMS,Kasapulan ti tulbek manipud NASA FIRMS
+Event overview,Event overview,Buod ng pangyayari,Pakabuklan ti pasamak
+Event overview,A strong to very strong El Niño is present in the Tropical Pacific.,May malakas hanggang napakalakas na El Niño sa Tropical Pacific.,Adda napigsa agingga iti napigsa unay nga El Niño iti Tropical Pacific.
+Event overview,Historic chance,Tsansang makasaysayan,Tsansa a historiko
+Event overview,Area,Lugar,Lugar
+Event overview,"Benguet, CAR · 13 municipalities and Baguio City","Benguet, CAR · 13 bayan at Baguio City","Benguet, CAR · 13 nga ili ken Baguio City"
+The month on screen,No dry stage listed,Walang nakalistang dry stage,Awan ti nailista a dry stage
+The month on screen,PAGASA assigns dry stages to whole provinces at the end of each month.,Nagtatakda ang PAGASA ng dry stage para sa buong lalawigan tuwing katapusan ng buwan.,Mangikeddeng ti PAGASA ti dry stage para iti intero a probinsia iti ngudo ti tunggal bulan.
+The month on screen,Stage:,Stage:,Stage:
+The month on screen,Stage: — · Notes:,Stage: — · Mga tala:,Stage: — · Dagiti nota:
+The month on screen,· Notes:,· Mga tala:,· Dagiti nota:
+The month on screen,· Normals:,· Karaniwan:,· Kadawyan:
+The month on screen,"· Dry days, temperature:","· Tuyong araw, temperatura:","· Namaga nga aldaw, temperatura:"
+The month on screen,· Cyclones:,· Bagyo:,· Bagyo:
+The month on screen,Right now in Benguet,Sa Benguet ngayon,Iti Benguet ita
+The month on screen,"Weather models at each town’s centre point (Open-Meteo), not rain-gauge readings. A dry day has under 1 mm of rain.","Mga modelo ng panahon sa gitna ng bawat bayan (Open-Meteo), hindi sukat ng rain gauge. Ang tuyong araw ay may ulang mas mababa sa 1 mm.","Dagiti modelo ti tiempo iti tengnga ti tunggal ili (Open-Meteo), saan a rukod ti rain gauge. Ti namaga nga aldaw ket addaan iti tudo a basbassit ngem 1 mm."
+The month on screen,PAGASA lists no dry stage for Benguet.,Walang dry stage ang Benguet sa listahan ng PAGASA.,Awan ti dry stage ti Benguet iti listaan ti PAGASA.
+The month on screen,Two months in a row of below-normal rain (21–60% below average).,Dalawang magkasunod na buwan ng ulang mas mababa sa normal (21–60% na mas mababa sa karaniwan).,Dua a sumaruno a bulan ti tudo a nababbaba ngem normal (21–60% a nababbaba ngem kadawyan).
+The month on screen,"Three months in a row of below-normal rain, or two months in a row way below normal (more than 60% below).","Tatlong magkakasunod na buwan ng ulang mas mababa sa normal, o dalawang magkasunod na buwan ng ulang napakababa sa normal (higit 60% na mas mababa).","Tallo a sumaruno a bulan ti tudo a nababbaba ngem normal, wenno dua a sumaruno a bulan ti tudo a nababbaba unay ngem normal (nasurok a 60% a nababbaba)."
+The month on screen,"Three months in a row way below normal, or five months in a row below normal.","Tatlong magkakasunod na buwan ng ulang napakababa sa normal, o limang magkakasunod na buwan ng ulang mas mababa sa normal.","Tallo a sumaruno a bulan ti tudo a nababbaba unay ngem normal, wenno lima a sumaruno a bulan ti tudo a nababbaba ngem normal."
+The month on screen,Two months in a row of below-normal rain.,Dalawang magkasunod na buwan ng ulang mas mababa sa normal.,Dua a sumaruno a bulan ti tudo a nababbaba ngem normal.
+The month on screen,Months of below-normal rain.,Ilang buwan ng ulang mas mababa sa normal.,Bulbulan a tudo a nababbaba ngem normal.
+The month on screen,Rain way below normal for months.,Napakababa sa normal ang ulan sa loob ng ilang buwan.,Nababbaba unay ngem normal ti tudo iti bulbulan.
+The month on screen,Before the dry months,Bago ang mga tuyong buwan,Sakbay dagiti namaga a bulan
+The month on screen,PAGASA’s outlook has Benguet drying from November and in drought by February.,"Sa outlook ng PAGASA, matutuyo ang Benguet simula Nobyembre at nasa drought na pagsapit ng Pebrero.","Iti outlook ti PAGASA, mamaga ti Benguet manipud Nobiembre ken adda iti drought inton Pebrero."
+The month on screen,After the outlook,Pagkatapos ng outlook,Kalpasan ti outlook
+The month on screen,Beyond the outlook,Lampas sa outlook,Labes iti outlook
+The month on screen,PAGASA’s outlook ends in March. It says El Niño could last through the first half of 2027.,Nagtatapos sa Marso ang outlook ng PAGASA. Sinasabi nitong maaaring tumagal ang El Niño hanggang sa unang kalahati ng 2027.,Agpatingga iti Marso ti outlook ti PAGASA. Kunana a mabalin nga agbayag ti El Niño agingga iti umuna a kagudua ti 2027.
+The month on screen,Beyond PAGASA’s current six-month outlook. El Niño is expected to last into the first half of 2027.,Lampas sa kasalukuyang anim na buwang outlook ng PAGASA. Inaasahang tatagal ang El Niño hanggang sa unang kalahati ng 2027.,Labes iti agdama nga innem a bulan nga outlook ti PAGASA. Mapagpagarup nga agbayag ti El Niño agingga iti umuna a kagudua ti 2027.
+The month on screen,Beyond the current outlook. A new PAGASA outlook will extend the months covered.,Lampas sa kasalukuyang outlook. Madaragdagan ang mga buwang sakop kapag may bagong outlook ang PAGASA.,Labes iti agdama nga outlook. Manayonan dagiti bulan a masakupan no adda baro nga outlook ti PAGASA.
+The month on screen,Beyond the current outlook.,Lampas sa kasalukuyang outlook.,Labes iti agdama nga outlook.
+The month-by-month notes,PAGASA expects below-normal rain over most of Luzon this month and the switch to the northeast monsoon. Benguet is not on the end-of-October dry lists.,"Inaasahan ng PAGASA ang ulang mas mababa sa normal sa halos buong Luzon ngayong buwan, at ang paglipat sa amihan. Wala ang Benguet sa mga listahan ng tuyo sa katapusan ng Oktubre.","Namnamaen ti PAGASA ti tudo a nababbaba ngem normal iti kaaduan a paset ti Luzon ita a bulan, ken ti panagbaliw nga agturong iti amian. Awan ti Benguet kadagiti listaan ti namaga iti ngudo ti Oktubre."
+The month-by-month notes,La Niña ended on 9 March. PAGASA issued an El Niño Watch on 25 March.,Natapos ang La Niña noong 9 Marso. Naglabas ang PAGASA ng El Niño Watch noong 25 Marso.,Nalpas ti La Niña idi 9 Marso. Nangipablaak ti PAGASA ti El Niño Watch idi 25 Marso.
+The month-by-month notes,PAGASA raised an El Niño Alert on 22 April and put the chance of El Niño forming in June–August at 79%.,Itinaas ng PAGASA ang El Niño Alert noong 22 Abril at sinabing 79% ang tsansang mabuo ang El Niño sa Hunyo–Agosto.,Intayag ti PAGASA ti El Niño Alert idi 22 Abril ket kinunana a 79% ti tsansa a mabukel ti El Niño iti Hunio–Agosto.
+The month-by-month notes,PAGASA Baguio said the whole Cordillera was already in drought after five months of below-normal rain. The Pacific reached the El Niño threshold of +0.5°C on 26 May.,Sinabi ng PAGASA Baguio na nasa drought na ang buong Cordillera matapos ang limang buwan ng ulang mas mababa sa normal. Naabot ng Pasipiko ang hangganan ng El Niño na +0.5°C noong 26 Mayo.,Kinuna ti PAGASA Baguio nga adda iti drought ti intero a Cordillera kalpasan ti lima a bulan ti tudo a nababbaba ngem normal. Dimmanon ti Pasipiko iti threshold ti El Niño a +0.5°C idi 26 Mayo.
+The month-by-month notes,"NOAA listed an El Niño Advisory on 11 June. PAGASA Baguio expected near-normal June rain, with more than 300 mm in Benguet.","Naglista ang NOAA ng El Niño Advisory noong 11 Hunyo. Inasahan ng PAGASA Baguio ang halos normal na ulan sa Hunyo, na higit 300 mm sa Benguet.","Nangilista ti NOAA ti El Niño Advisory idi 11 Hunio. Ninamnama ti PAGASA Baguio ti tudo nga asideg iti normal iti Hunio, a nasurok a 300 mm iti Benguet."
+The month-by-month notes,Monsoon season. PAGASA Baguio expected above-normal rain in July and August from the southwest monsoon and tropical cyclones.,Panahon ng habagat. Inasahan ng PAGASA Baguio ang ulang mas mataas sa normal sa Hulyo at Agosto dahil sa habagat at mga bagyo.,Panawen ti abagat. Ninamnama ti PAGASA Baguio ti tudo a nangatngato ngem normal iti Hulio ken Agosto gapu iti abagat ken dagiti bagyo.
+The month-by-month notes,PAGASA Baguio expected above-normal rain to continue through August.,Inasahan ng PAGASA Baguio na magpapatuloy ang ulang mas mataas sa normal hanggang Agosto.,Ninamnama ti PAGASA Baguio nga agtultuloy ti tudo a nangatngato ngem normal agingga Agosto.
+The month-by-month notes,Patches of above-normal rain fell in Benguet and Baguio ran cooler than average. Storm Pilandok and Typhoon Queenie crossed the Philippine Area of Responsibility.,"May mga bahagi ng Benguet na nakatanggap ng ulang mas mataas sa normal, at mas malamig kaysa karaniwan ang Baguio. Dumaan sa Philippine Area of Responsibility ang Bagyong Pilandok at Bagyong Queenie.","Adda dagiti paset ti Benguet a nakaawat ti tudo a nangatngato ngem normal, ken nalamlamiis ngem kadawyan ti Baguio. Limmasat iti Philippine Area of Responsibility ti Bagyo a Pilandok ken Bagyo a Queenie."
+The month-by-month notes,PAGASA Baguio expects only about 6 rainy days in Baguio and Benguet. Usually there are 7.,Inaasahan ng PAGASA Baguio na mga 6 na araw lang ang may ulan sa Baguio at Benguet. Karaniwan ay 7.,Namnamaen ti PAGASA Baguio nga agarup 6 laeng nga aldaw ti addaan tudo iti Baguio ken Benguet. Kadawyan nga 7.
+The month-by-month notes,"The outlook calls for more of the country to dry out. December is one of Baguio’s driest months, usually about 42 mm.","Ayon sa outlook, mas maraming bahagi ng bansa ang matutuyo. Isa ang Disyembre sa pinakatuyong buwan ng Baguio, karaniwang mga 42 mm.","Segun iti outlook, ad-adu a paset ti pagilian ti mamaga. Ti Disiembre ket maysa kadagiti kamamagaan a bulan ti Baguio, kadawyan nga agarup 42 mm."
+The month-by-month notes,"PAGASA’s December table is hard to read. BaguioCityGuide reads it as dry spell, and that is also the only stage the definitions allow between November’s dry condition and January’s dry spell.","Mahirap basahin ang talaan ng PAGASA para sa Disyembre. Binabasa ito ng BaguioCityGuide bilang dry spell, at ito rin ang tanging stage na pinapayagan ng mga kahulugan sa pagitan ng dry condition ng Nobyembre at dry spell ng Enero.","Narigat a basaen ti tabla ti PAGASA para iti Disiembre. Basaen daytoy ti BaguioCityGuide kas dry spell, ken daytoy met laeng ti stage nga ipalubos dagiti depinasion iti nagbaetan ti dry condition ti Nobiembre ken dry spell ti Enero."
+The month-by-month notes,"Nationwide, the outlook has 85 provinces in a dry stage by the end of January.","Sa buong bansa, 85 lalawigan ang nasa dry stage pagsapit ng katapusan ng Enero ayon sa outlook.","Iti intero a pagilian, 85 a probinsia ti adda iti dry stage inton ngudo ti Enero segun iti outlook."
+The month-by-month notes,"The outlook puts Benguet in drought. Nationwide, 50 provinces are in drought by the end of February.","Nasa drought ang Benguet ayon sa outlook. Sa buong bansa, 50 lalawigan ang nasa drought pagsapit ng katapusan ng Pebrero.","Adda iti drought ti Benguet segun iti outlook. Iti intero a pagilian, 50 a probinsia ti adda iti drought inton ngudo ti Pebrero."
+The month-by-month notes,"Drought in 79 provinces by the end of March, Benguet among them, on PAGASA’s outlook.","Drought sa 79 lalawigan pagsapit ng katapusan ng Marso, kasama ang Benguet, ayon sa outlook ng PAGASA.","Drought iti 79 a probinsia inton ngudo ti Marso, agraman ti Benguet, segun iti outlook ti PAGASA."
+Pacific view,No CPC value is quoted for this month.,Walang binanggit na halaga ang CPC para sa buwang ito.,Awan ti nadakamat a bilang ti CPC para iti daytoy a bulan.
+Pacific view,Latest weekly reading,Pinakabagong lingguhang sukat,Kabaruan a linawas a rukod
+Pacific view,". These are traditional anomalies, which run about 0.7 to 0.9°C above the relative index CPC now uses.",". Mga traditional anomaly ito, na mga 0.7 hanggang 0.9°C na mas mataas kaysa sa relative index na ginagamit na ngayon ng CPC.",". Dagitoy ket traditional anomaly, nga agarup 0.7 agingga 0.9°C a nangatngato ngem ti relative index nga us-usaren ita ti CPC."
+Pacific view,The warmth sits in the east.,Nasa silangan ang init.,Adda iti daya ti barana.
+Pacific view,"El Niño warms the central and eastern Pacific. Storms follow the warm water east, leaving the western Pacific, including Luzon, drier than usual.","Pinapainit ng El Niño ang gitna at silangang Pasipiko. Sinusundan ng mga bagyo ang mainit na tubig pasilangan, kaya mas tuyo kaysa karaniwan ang kanlurang Pasipiko, kasama ang Luzon.","Pabaraen ti El Niño ti tengnga ken daya a Pasipiko. Sumurot dagiti bagyo iti nabara a danum nga agturong iti daya, isu a nammagmaga ngem kadawyan ti laud a Pasipiko, agraman ti Luzon."
+Pacific view,Strength scale,Sukatan ng lakas,Pagrukodan ti pigsa
+Pacific view,"Relative Niño 3.4 anomaly: weak +0.5 to +0.9°C, moderate +1.0 to +1.4°C, strong +1.5 to +1.9°C, very strong +2.0°C and above. CPC calls an event historic at a 3-month RONI of +2.5°C or more.","Relative na anomalya ng Niño 3.4: mahina +0.5 hanggang +0.9°C, katamtaman +1.0 hanggang +1.4°C, malakas +1.5 hanggang +1.9°C, napakalakas +2.0°C pataas. Tinatawag ng CPC na makasaysayan ang El Niño kapag +2.5°C o higit pa ang 3-buwang RONI.","Relative nga anomalia ti Niño 3.4: nakapuy +0.5 agingga +0.9°C, kalkalainganna +1.0 agingga +1.4°C, napigsa +1.5 agingga +1.9°C, napigsa unay +2.0°C ken nangatngato. Awagan ti CPC a historiko ti El Niño no +2.5°C wenno ad-adu ti 3 a bulan a RONI."
+Pacific view,"Relative index, monthly ·","Relative index, buwanan ·","Relative index, binulan ·"
+Pacific view,"CPC, latest","CPC, pinakabago","CPC, kabaruan"
+Pacific view,No monthly value yet for this month.,Wala pang buwanang halaga para sa buwang ito.,Awan pay ti binulan a bilang para iti daytoy a bulan.
+Pacific view,"relative, monthly","relative, buwanan","relative, binulan"
+Pacific view,"3-month, official","3 buwan, opisyal","3 a bulan, opisial"
+Pacific view,No readings yet,Wala pang sukat,Awan pay ti rukod
+Pacific view,Loading NOAA CPC…,Naglo-load ang NOAA CPC…,Agkarkarga ti NOAA CPC…
+Pacific view,CPC’s probability table could not be read this time,Hindi nabasa ang talaan ng posibilidad ng CPC sa ngayon,Saan a nabasa ti tabla ti posibilidad ti CPC ita
+Pacific view,Saved,Naka-save,Naidulin
+Pacific view,Saved reading,Naka-save na sukat,Naidulin a rukod
+Pacific view,Region,Rehiyon,Rehion
+Pacific view,Coast of Peru and Ecuador,Baybayin ng Peru at Ecuador,Igid ti Peru ken Ecuador
+Pacific view,Eastern Pacific,Silangang Pasipiko,Daya a Pasipiko
+Pacific view,"Central Pacific, the main index","Gitnang Pasipiko, ang pangunahing index","Tengnga a Pasipiko, ti kangrunaan nga index"
+Pacific view,CPC strength odds,Tsansa ng lakas ayon sa CPC,Tsansa ti pigsa segun iti CPC
+Pacific view,"3-month relative index, the official ENSO measure","3-buwang relative index, ang opisyal na sukat ng ENSO","3 a bulan a relative index, ti opisial a pagrukodan ti ENSO"
+Water view,Agno reservoirs,Mga dam ng Agno,Dagiti dam ti Agno
+Water view,"Flood status, Ambuklao-Binga-San Roque Sub-basin:","Kalagayan ng baha, Ambuklao-Binga-San Roque Sub-basin:","Kasasaad ti layus, Ambuklao-Binga-San Roque Sub-basin:"
+Water view,· capacities and locations:,· kapasidad at lokasyon:,· kapasidad ken lokasion:
+Water view,Reading the water,Pagbasa sa tubig,Panangbasa iti danum
+Water view,Level,Antas,Kangato
+Water view,vs NHWL,kumpara sa NHWL,no idilig iti NHWL
+Water view,Last 24 h,Huling 24 oras,Naudi a 24 oras
+Stats,"Usual rain, Baguio","Karaniwang ulan, Baguio","Kadawyan a tudo, Baguio"
+Stats,Usual rainy days,Karaniwang araw na may ulan,Kadawyan nga aldaw nga agtudo
+Stats,"Dry days, Benguet","Tuyong araw, Benguet","Namaga nga aldaw, Benguet"
+Stats,"Temperature, Baguio","Temperatura, Baguio","Temperatura, Baguio"
+Stats,Cyclones in PAR,Bagyo sa PAR,Bagyo iti PAR
+Stats,Near average,Halos karaniwan,Asideg iti kadawyan
+Stats,Slim,Maliit,Bassit
+Stats,"Rain, last 30 days","Ulan, huling 30 araw","Tudo, naudi a 30 nga aldaw"
+Stats,Longest dry run now,Pinakamahabang tuyong sunod-sunod ngayon,Kaatiddogan a sumaruno a namaga ita
+Stats,"Rain, next 16 days","Ulan, susunod na 16 araw","Tudo, sumaruno a 16 nga aldaw"
+Stats,"mm, median town","mm, median na bayan","mm, median nga ili"
+Stats,"of 30, median town","sa 30, median na bayan","iti 30, median nga ili"
+Stats,days,araw,nga aldaw
+Stats,Dry run now,Tuyong sunod-sunod ngayon,Sumaruno a namaga ita
+Stats,High today,Pinakamainit ngayon,Kapudotan ita
+Stats,Independent city,Malayang lungsod,Independiente a siudad
+Stats,Municipality of Benguet,Bayan sa Benguet,Ili iti Benguet
+Stats,"PAGASA rates dry stages by province, not by town.","Itinatakda ng PAGASA ang dry stage bawat lalawigan, hindi bawat bayan.","Ikeddeng ti PAGASA ti dry stage iti tunggal probinsia, saan nga iti tunggal ili."
+Stats,Town,Bayan,Ili
+Stats,"Rain, 30 days","Ulan, 30 araw","Tudo, 30 nga aldaw"
+Stats,Dry,Tuyo,Namaga
+Stats,Total,Kabuuan,Dagup
+Stats,Date,Petsa,Petsa
+Stats,Max °C,Pinakamataas na °C,Kangatuan a °C
+Stats,Diff,Pagkakaiba,Nagdumaan
+Stats,Change,Pagbabago,Panagbaliw
+Charts,°C vs normal,°C kumpara sa normal,°C no idilig iti normal
+Charts,Data,Datos,Datos
+Charts,Weak,Mahina,Nakapuy
+Charts,Moderate,Katamtaman,Kalkalainganna
+Charts,Strong,Malakas,Napigsa
+Charts,Very strong,Napakalakas,Napigsa unay
+Charts,Historic,Makasaysayan,Historiko
+Charts,mm/day · past 30 + next 16 days,mm/araw · nakaraang 30 + susunod na 16 araw,mm/aldaw · napalabas a 30 + sumaruno a 16 nga aldaw
+Charts,Past 30 days:,Nakaraang 30 araw:,Napalabas a 30 nga aldaw:
+Charts,of the usual,ng karaniwan,ti kadawyan
+Charts,Provinces in a dry stage,Mga lalawigang nasa dry stage,Dagiti probinsia nga adda iti dry stage
+Charts,"nationwide · PAGASA, end of month","buong bansa · PAGASA, katapusan ng buwan","intero a pagilian · PAGASA, ngudo ti bulan"
+Charts,In drought:,Nasa drought:,Adda iti drought:
+Charts,"Niño 3.4 index: relative monthly values, RONI and weekly traditional readings","Niño 3.4 index: buwanang relative na halaga, RONI at lingguhang traditional na sukat","Niño 3.4 index: binulan a relative a bilang, RONI ken linawas a traditional a rukod"
+Charts,"Provinces in a dry stage by month, with drought on the baseline, and Benguet’s stage for each month","Mga lalawigang nasa dry stage bawat buwan, may drought sa ibaba, at ang stage ng Benguet bawat buwan","Dagiti probinsia nga adda iti dry stage iti tunggal bulan, adda drought iti baba, ken ti stage ti Benguet iti tunggal bulan"
+Charts,"°C, relative, as quoted by CPC","°C, relative, ayon sa CPC","°C, relative, segun iti CPC"
+Charts,NOAA CPC diagnostic discussions (relative indices),Mga diagnostic discussion ng NOAA CPC (relative index),Dagiti diagnostic discussion ti NOAA CPC (relative index)
+Charts,Chance of a historic event,Tsansa ng makasaysayang El Niño,Tsansa ti historiko nga El Niño
+Charts,Historic = stronger than any El Niño since 1950,Makasaysayan = mas malakas kaysa anumang El Niño mula 1950,Historiko = napigpigsa ngem aniaman nga El Niño manipud 1950
+Charts,Agno River profile,Profile ng Ilog Agno,Profile ti Karayan Agno
+Charts,"m, by km from source","m, ayon sa km mula sa pinagmumulan","m, segun iti km manipud iti ubbog"
+Charts,Dam level vs normal high water,Antas ng dam kumpara sa normal high water,Kangato ti dam no idilig iti normal high water
+Charts,Level vs normal high water,Antas kumpara sa normal high water,Kangato no idilig iti normal high water
+Charts,Rule curve for the date,Rule curve para sa petsa,Rule curve para iti petsa
+Charts,Dry days in Benguet,Tuyong araw sa Benguet,Namaga nga aldaw iti Benguet
+Charts,usual → outlook,karaniwan → outlook,kadawyan → outlook
+Charts,dry days → outlook,tuyong araw → outlook,namaga nga aldaw → outlook
+Charts,Usual,Karaniwan,Kadawyan
+Charts,High,Pinakamataas,Kangatuan
+Charts,(dry day),(tuyong araw),(namaga nga aldaw)
+Charts,· forecast,· pagtataya,· padto
+Charts,· chance of rain,· tsansa ng ulan,· tsansa ti tudo
+Charts,· observed,· naitala,· narukod
+Timeline and key events,Key events,Mahahalagang pangyayari,Napateg a pasamak
+Timeline and key events,La Niña ends,Natapos ang La Niña,Nalpas ti La Niña
+Timeline and key events,PAGASA issues an El Niño Watch,Naglabas ang PAGASA ng El Niño Watch,Nangipablaak ti PAGASA ti El Niño Watch
+Timeline and key events,PAGASA raises an El Niño Alert: 79% chance of El Niño in Jun–Aug,Itinaas ng PAGASA ang El Niño Alert: 79% tsansa ng El Niño sa Hun–Ago,Intayag ti PAGASA ti El Niño Alert: 79% a tsansa ti El Niño iti Hun–Ago
+Timeline and key events,"Niño 3.4 reaches the El Niño threshold, +0.5°C","Naabot ng Niño 3.4 ang hangganan ng El Niño, +0.5°C","Dimmanon ti Niño 3.4 iti threshold ti El Niño, +0.5°C"
+Timeline and key events,PAGASA Baguio at the DANUM summit: rain to drop in October and fall below normal in November,PAGASA Baguio sa DANUM summit: bababa ang ulan sa Oktubre at magiging mas mababa sa normal sa Nobyembre,PAGASA Baguio iti DANUM summit: bumaba ti tudo iti Oktubre ken agbalin a nababbaba ngem normal iti Nobiembre
+Timeline and key events,NOAA CPC lists an El Niño Advisory; weekly Niño 3.4 at +0.7°C,Naglista ang NOAA CPC ng El Niño Advisory; lingguhang Niño 3.4 sa +0.7°C,Nangilista ti NOAA CPC ti El Niño Advisory; linawas a Niño 3.4 iti +0.7°C
+Timeline and key events,CPC: weekly Niño 3.4 at +1.2°C; 81% chance of a very strong event in Oct–Dec,CPC: lingguhang Niño 3.4 sa +1.2°C; 81% tsansa ng napakalakas na El Niño sa Okt–Dis,CPC: linawas a Niño 3.4 iti +1.2°C; 81% a tsansa ti napigsa unay nga El Niño iti Okt–Dis
+Timeline and key events,PAGASA: El Niño present; 97% chance it lasts through the first half of 2027,PAGASA: may El Niño na; 97% tsansang tatagal ito hanggang sa unang kalahati ng 2027,PAGASA: adda El Niño; 97% a tsansa nga agbayag daytoy agingga iti umuna a kagudua ti 2027
+Timeline and key events,CPC: July Niño 3.4 at +1.4°C; more than 90% chance of a very strong event,CPC: Niño 3.4 ng Hulyo sa +1.4°C; higit 90% tsansa ng napakalakas na El Niño,CPC: Niño 3.4 ti Hulio iti +1.4°C; nasurok a 90% a tsansa ti napigsa unay nga El Niño
+Timeline and key events,CPC: August Niño 3.4 at +1.8°C; 75% chance of a historic event in Oct–Dec,CPC: Niño 3.4 ng Agosto sa +1.8°C; 75% tsansa ng makasaysayang El Niño sa Okt–Dis,CPC: Niño 3.4 ti Agosto iti +1.8°C; 75% a tsansa ti historiko nga El Niño iti Okt–Dis
+Timeline and key events,"PAGASA outlook: Benguet in dry condition by end-November, drought by end-February","Outlook ng PAGASA: dry condition sa Benguet pagsapit ng katapusan ng Nobyembre, drought pagsapit ng katapusan ng Pebrero","Outlook ti PAGASA: dry condition iti Benguet inton ngudo ti Nobiembre, drought inton ngudo ti Pebrero"
+Timeline and key events,PAGASA Advisory No. 5: a strong to very strong El Niño is present,PAGASA Advisory No. 5: may malakas hanggang napakalakas na El Niño,PAGASA Advisory No. 5: adda napigsa agingga iti napigsa unay nga El Niño
+Timeline and key events,CPC: September Niño 3.4 at +2.1°C; 83% chance of a historic event in Oct–Dec,CPC: Niño 3.4 ng Setyembre sa +2.1°C; 83% tsansa ng makasaysayang El Niño sa Okt–Dis,CPC: Niño 3.4 ti Septiembre iti +2.1°C; 83% a tsansa ti historiko nga El Niño iti Okt–Dis
+Map tooltips,Tree cover,Mga puno,Kaykayo
+Map tooltips,Shrubland,Palumpong,Ruruot ken babassit a kayo
+Map tooltips,Grassland,Damuhan,Karuotan
+Map tooltips,Cropland,Taniman,Talon
+Map tooltips,Built-up,Kabahayan,Kabalbalayan
+Map tooltips,Bare or sparse,Walang tanim o kakaunti,Awan mula wenno manmano
+Map tooltips,Wetland,Latian,Lubnak
+Map tooltips,Mangroves,Bakawan,Bakawan
+Map tooltips,Moss and lichen,Lumot,Lumot
+Map tooltips,Outside Benguet,Labas ng Benguet,Ruar ti Benguet
+Map tooltips,Active fire detection,Natukoy na aktibong sunog,Nadlaw nga aktibo nga uram
+Map tooltips,Confidence,Katiyakan,Kinasigurado
+Sources drawer,Close,Isara,Irikep
+Sources drawer,Sources and method,Mga sanggunian at pamamaraan,Dagiti gubuayan ken pamay-an
+Sources drawer,"Live readings come from NOAA’s Climate Prediction Center, PAGASA, NASA FIRMS and Open-Meteo, cached by this site. The month-by-month outlook is quoted from PAGASA’s latest climate outlook. This is an independent tool, not an official warning. For decisions, check PAGASA’s latest advisory.","Ang mga live na sukat ay mula sa Climate Prediction Center ng NOAA, PAGASA, NASA FIRMS at Open-Meteo, na iniimbak ng site na ito. Ang outlook bawat buwan ay hinango sa pinakabagong climate outlook ng PAGASA. Isa itong independiyenteng kasangkapan, hindi opisyal na babala. Para sa mga desisyon, tingnan ang pinakabagong advisory ng PAGASA.","Dagiti live a rukod ket naggapu iti Climate Prediction Center ti NOAA, PAGASA, NASA FIRMS ken Open-Meteo, nga idulin daytoy a site. Ti outlook iti tunggal bulan ket naadaw iti kabaruan a climate outlook ti PAGASA. Daytoy ket independiente a ramit, saan nga opisial a pakdaar. Para kadagiti desision, kitaen ti kabaruan nga advisory ti PAGASA."
+Sources drawer,Live data health,Kalagayan ng live na datos,Kasasaad ti live a datos
+Sources drawer,El Niño status and Pacific readings,Kalagayan ng El Niño at mga sukat sa Pasipiko,Kasasaad ti El Niño ken dagiti rukod iti Pasipiko
+Sources drawer,Benguet and Cordillera outlook,Outlook para sa Benguet at Cordillera,Outlook para iti Benguet ken Cordillera
+Sources drawer,Maps,Mga mapa,Dagiti mapa
+Sources drawer,Method,Pamamaraan,Pamay-an
+Sources drawer,Source,Pinagmulan,Gubuayan
+Sources drawer,Data as of,Datos noong,Datos idi
+Sources drawer,Checked,Sinuri,Nasukimat
+Sources drawer,just now,ngayon lang,ita laeng
+Sources drawer,Failed,Pumalya,Napaay
+Sources drawer,Loading,Naglo-load,Agkarkarga
+Sources drawer,ENSO status and indices,Kalagayan at index ng ENSO,Kasasaad ken index ti ENSO
+Sources drawer,Agno dam levels,Antas ng mga dam ng Agno,Kangato dagiti dam ti Agno
+Sources drawer,Rain and temperature by town,Ulan at temperatura bawat bayan,Tudo ken temperatura iti tunggal ili
+Sources drawer,Open-Meteo weather models,Mga modelo ng panahon ng Open-Meteo,Dagiti modelo ti tiempo ti Open-Meteo
+Sources drawer,Active fire detections,Mga natukoy na aktibong sunog,Dagiti nadlaw nga aktibo nga uram
+Sources drawer,"Roads, rivers and places","Mga kalsada, ilog at lugar","Dagiti kalsada, karayan ken lugar"
+Sources drawer,Terrain,Anyo ng lupa,Daga
+Sources drawer,three.js did not load,Hindi nag-load ang three.js,Saan a nag-load ti three.js
+Sources drawer,Live temperature and forecast,Live na temperatura at pagtataya,Live a temperatura ken padto
+Sources drawer,"Open-Meteo weather models (current, hourly, 7-day)","Mga modelo ng panahon ng Open-Meteo (ngayon, bawat oras, 7 araw)","Dagiti modelo ti tiempo ti Open-Meteo (ita, tunggal oras, 7 nga aldaw)"
+Sources drawer,"Visitors are counted once per browser, from when the counter started. Reloads and bots don’t add to it, and no personal data is kept.","Isang beses binibilang ang bawat browser, mula nang magsimula ang pagbilang. Hindi ito nadaragdagan ng pag-reload o ng mga bot, at walang personal na datos na itinatago.","Maminsan a mabilang ti tunggal browser, manipud idi nangrugi ti panagbilang. Saan a manayonan daytoy babaen ti panag-reload wenno dagiti bot, ken awan ti personal a datos a maidulin."
+Sources drawer,"Ground colour shifts from green to tan with PAGASA’s province-wide dry stage. It is a symbol for the stage, not a measurement of vegetation.","Nagbabago ang kulay ng lupa mula berde hanggang kayumanggi ayon sa dry stage ng PAGASA para sa buong lalawigan. Simbolo ito ng stage, hindi sukat ng mga halaman.","Agbaliw ti kolor ti daga manipud berde agingga kayumanggi segun iti dry stage ti PAGASA para iti intero a probinsia. Simbolo daytoy ti stage, saan a rukod dagiti mula."
+Sources drawer,Nothing here is a forecast of its own. Every value is quoted or derived from the sources above.,Walang sariling pagtataya ang site na ito. Bawat halaga ay sinipi o hinango mula sa mga sanggunian sa itaas.,Awan ti bukod a padto daytoy a site. Tunggal bilang ket naadaw wenno naggapu kadagiti gubuayan iti ngato.
+Drawer frame,Be ready,Maging handa,Agsagana
+Drawer frame,PAGASA expects a strong to very strong El Niño. “Super El Niño” is the media’s name for it.,Inaasahan ng PAGASA ang malakas hanggang napakalakas na El Niño. “Super El Niño” ang tawag dito ng media.,Namnamaen ti PAGASA ti napigsa agingga iti napigsa unay nga El Niño. “Super El Niño” ti awag ti media iti daytoy.
+Drawer frame,Numbers checked against official sites on {date}. Tap a number to call.,Sinuri ang mga numero sa mga opisyal na site noong {date}. Pindutin ang numero para tumawag.,Nasukimat dagiti numero kadagiti opisial a site idi {date}. Pinduten ti numero tapno umawag.
+Drawer frame,Emergency,Emergency,Emerhensia
+Drawer frame,"Police, fire and ambulance. In Baguio it reaches the Smart City Command Center.","Pulis, bumbero at ambulansya. Sa Baguio, nakakonekta ito sa Smart City Command Center.","Polis, bombero ken ambulansia. Iti Baguio, maikonekta daytoy iti Smart City Command Center."
+Drawer frame,Red Cross emergency hotline.,Hotline ng Red Cross para sa emergency.,Hotline ti Red Cross para iti emerhensia.
+Drawer frame,Sources:,Mga sanggunian:,Dagiti gubuayan:
+Drawer frame,Source:,Sanggunian:,Gubuayan:
+Drawer frame,"Search hotlines and tips: water, hospital, a town","Maghanap ng hotline at payo: tubig, ospital, bayan","Agbirok ti hotline ken balakad: danum, ospital, ili"
+Drawer frame,Search hotlines and tips,Maghanap ng hotline at payo,Agbirok ti hotline ken balakad
+Drawer frame,Clear the search,Burahin ang hinahanap,Punasen ti birok
+Drawer frame,"This site is not an official warning channel. In an emergency, call 911. For official El Niño advisories, see","Hindi opisyal na daluyan ng babala ang site na ito. Sa emergency, tumawag sa 911. Para sa opisyal na advisory tungkol sa El Niño, tingnan ang","Saan nga opisial a pagtaudan ti pakdaar daytoy a site. Iti emerhensia, umawag iti 911. Para kadagiti opisial nga advisory maipapan iti El Niño, kitaen ti"
+Drawer frame,Open {site} site,Buksan ang site ng {site},Luktan ti site ti {site}
+Drawer frame,Nothing matches “{q}”.,Walang tugma sa “{q}”.,Awan ti maitutop iti “{q}”.
+Drawer frame,"Try water, hospital, fire, power or a town name. In an emergency, call","Subukan ang tubig, ospital, sunog, kuryente o pangalan ng bayan. Sa emergency, tumawag sa","Padasen ti danum, ospital, uram, koryente wenno nagan ti ili. Iti emerhensia, umawag iti"
+Drawer frame,{h} hotlines and {t} tips match.,{h} hotline at {t} payo ang tugma.,{h} a hotline ken {t} a balakad ti maitutop.
+Drawer frame,No matches.,Walang tugma.,Awan ti maitutop.
+Drawer frame,Right now: {phase},Ngayon: {phase},Ita: {phase}
+"Hotline groups, names that are descriptions, notes, labels",Benguet province,Lalawigan ng Benguet,Probinsia ti Benguet
+"Hotline groups, names that are descriptions, notes, labels",District hospitals,Mga district hospital,Dagiti district hospital
+"Hotline groups, names that are descriptions, notes, labels",Power,Kuryente,Koryente
+"Hotline groups, names that are descriptions, notes, labels",Fire station and emergency medical services,Istasyon ng bumbero at emergency medical services,Estasion ti bombero ken emergency medical services
+"Hotline groups, names that are descriptions, notes, labels","Office and operations lines. For emergencies, dial 911.","Mga linya ng opisina at operasyon. Sa emergency, i-dial ang 911.","Dagiti linia ti opisina ken operasion. Iti emerhensia, i-dial ti 911."
+"Hotline groups, names that are descriptions, notes, labels","We couldn’t confirm a current hotline, so we don’t list one. Get it from BWD’s official site or Facebook page.","Hindi namin makumpirma ang kasalukuyang hotline, kaya hindi namin ito inilista. Kunin ito sa opisyal na site o Facebook page ng BWD.","Saanmi a makumpirma ti agdama a hotline, isu a saanmi nga inlista. Alaen daytoy iti opisial a site wenno Facebook page ti BWD."
+"Hotline groups, names that are descriptions, notes, labels",For farm concerns.,Para sa mga usaping pansakahan.,Para kadagiti parikut iti talon.
+"Hotline groups, names that are descriptions, notes, labels",Its call center runs 24/7.,Bukas ang call center nito 24/7.,Nakalukat ti call center daytoy 24/7.
+"Hotline groups, names that are descriptions, notes, labels",Trunk,Trunkline,Trunkline
+"Hotline groups, names that are descriptions, notes, labels",Hospital,Ospital,Ospital
+Tips for each stage,Store water while the rains last,Mag-ipon ng tubig habang may ulan pa,Agurnong ti danum bayat nga adda pay tudo
+Tips for each stage,Clean and cover tanks and drums now. Baguio’s planners warn of possible drought from December into summer 2027.,Linisin at takpan na ngayon ang mga tangke at drum. Nagbabala ang mga tagaplano ng Baguio na posibleng magka-drought mula Disyembre hanggang tag-init ng 2027.,Dalusan ken abbongan itan dagiti tangke ken drum. Pakdaaran dagiti planner ti Baguio a mabalin nga adda drought manipud Disiembre agingga iti kalgaw ti 2027.
+Tips for each stage,Fix leaks and follow the city’s advisories,Ayusin ang mga tagas at sundin ang mga abiso ng lungsod,Ayusen dagiti tedted ken surotem dagiti pakaammo ti siudad
+Tips for each stage,"Baguio’s water monitoring reached the orange phase on Oct 15, which means stronger conservation. The city now issues daily advisories.","Umabot sa orange phase ang pagbabantay sa tubig ng Baguio noong Okt 15, kaya mas mahigpit na pagtitipid ang kailangan. Araw-araw nang naglalabas ng abiso ang lungsod.","Dimmanon iti orange phase ti panagbantay iti danum ti Baguio idi Okt 15, isu a nainget a panagtipid ti kasapulan. Inaldaw a mangipablaak ti siudad ti pakaammo."
+Tips for each stage,Farmers: plan crops now,Mga magsasaka: planuhin na ang pananim,Mannalon: planuen itan ti imula
+Tips for each stage,"DA-Cordillera urges early action on irrigation, crop planning and insurance. Ask your Municipal Agriculture Office about drought-tolerant seed.","Hinihikayat ng DA-Cordillera ang maagang paghahanda sa patubig, pagplano ng pananim at insurance. Magtanong sa inyong Municipal Agriculture Office tungkol sa binhing matibay sa tagtuyot.","Iparegta ti DA-Cordillera ti nasapa a panagsagana iti irigasion, panagplano ti mula ken insurance. Agsaludsod iti Municipal Agriculture Office yo maipapan iti bukel a makaanus iti kinamaga."
+Tips for each stage,Use less water every day,Magbawas ng gamit sa tubig araw-araw,Kissayan ti panagusar ti danum iti inaldaw
+Tips for each stage,Use a tabo instead of a hose. Not every toilet use needs a flush. Reuse rinse water on plants.,Gumamit ng tabo sa halip na hose. Hindi kailangang mag-flush sa bawat paggamit ng inodoro. Gamitin ulit ang pinagbanlawan sa pagdidilig ng halaman.,Agusar ti tabo imbes a hose. Saan a kasapulan ti agflush iti tunggal panagusar ti kasilias. Usaren manen ti pinagbanlawan a danum iti mula.
+Tips for each stage,Keep stored water covered,Takpan ang iniipong tubig,Abbongan ti naurnong a danum
+Tips for each stage,DOH says covering containers keeps stored water from being contaminated. Open water also breeds mosquitoes.,"Ayon sa DOH, napipigilan ang kontaminasyon ng iniipong tubig kapag tinatakpan ang lalagyan. Pinamumugaran din ng lamok ang nakabukas na tubig.",Kuna ti DOH a ti panangabbong kadagiti pagidulinan ket mangsalaknib iti naurnong a danum manipud iti pannakarugit. Pagitlogan met dagiti lamok ti nakalukat a danum.
+Tips for each stage,Don’t burn trash or brush,Huwag magsunog ng basura o tuyong halaman,Dika agpuor ti basura wenno namaga a mula
+Tips for each stage,"Grass dries fast. Benguet had 38 forest fires from January to early April 2026, against 14 in all of 2025.","Mabilis matuyo ang damo. Nagkaroon ng 38 sunog sa kagubatan ang Benguet mula Enero hanggang unang bahagi ng Abril 2026, kumpara sa 14 sa buong 2025.","Napartak a mamaga ti ruot. Adda 38 nga uram iti kabakiran ti Benguet manipud Enero agingga iti rugrugi ti Abril 2026, no idilig iti 14 iti intero a 2025."
+Tips for each stage,Plan around rationing,Magplano para sa rasyon ng tubig,Agplano para iti rasion ti danum
+Tips for each stage,"December’s tourist peak lands in the expected dry spell. Fill containers when supply runs, and set drinking water aside.","Tatama sa inaasahang dry spell ang dagsa ng turista sa Disyembre. Punuin ang mga lalagyan kapag may suplay, at magtabi ng inuming tubig.","Maitunos iti mapagpagarup a dry spell ti kaaduan dagiti turista iti Disiembre. Punnuen dagiti pagidulinan no adda suplay, ken mangisina ti mainum a danum."
+Tips for each stage,Drink only safe water,Uminom lang ng ligtas na tubig,Uminum laeng ti natalged a danum
+Tips for each stage,"Boil water if you’re unsure of the source. Diarrhea, vomiting or weakness needs a health worker; untreated, it can turn fatal.","Pakuluan ang tubig kung hindi ka sigurado sa pinagmulan nito. Magpatingin sa health worker kapag may pagtatae, pagsusuka o panghihina; kapag hindi nagamot, maaari itong ikamatay.","Paburekem ti danum no saanka a sigurado iti naggapuanna. Kasapulan ti health worker no adda panagburis, panagsarua wenno kinakapsut; no saan a maagasan, mabalin a makapapatay."
+Tips for each stage,Farmers: watch for frost,Mga magsasaka: mag-ingat sa frost,Mannalon: agannad iti frost
+Tips for each stage,"Frost hits highland farms in Atok, Buguias, Kibungan and Mankayan in the cold months, roughly December to February. Sprinklers run before sunrise wash ice off leaves.","Tinatamaan ng frost ang mga sakahan sa kabundukan ng Atok, Buguias, Kibungan at Mankayan sa malalamig na buwan, mga Disyembre hanggang Pebrero. Natatanggal ang yelo sa dahon kapag pinaandar ang sprinkler bago sumikat ang araw.","Dumanon ti frost kadagiti talon iti bantay ti Atok, Buguias, Kibungan ken Mankayan kadagiti nalam-ek a bulan, agarup Disiembre agingga Pebrero. Maikkat ti yelo kadagiti bulong no paandaren dagiti sprinkler sakbay nga agsingising ti init."
+Tips for each stage,See smoke? Call 911 early,May nakikitang usok? Tumawag agad sa 911,Adda makitam nga asuk? Umawag a dagus iti 911
+Tips for each stage,"Forest fires peak in these months. In April 2026, Itogon suspended trekking at six mountain sites because of fires.","Pinakamarami ang sunog sa kagubatan sa mga buwang ito. Noong Abril 2026, ipinatigil ng Itogon ang trekking sa anim na bundok dahil sa sunog.","Kaaduan dagiti uram iti kabakiran kadagitoy a bulan. Idi Abril 2026, impasardeng ti Itogon ti trekking iti innem a bantay gapu kadagiti uram."
+Tips for each stage,Use every litre twice,Gamitin nang dalawang beses ang bawat litro,Usaren a mamindua ti tunggal litro
+Tips for each stage,Rinse water can flush toilets and water plants. Skip the garden hose and the bidet.,Magagamit ang pinagbanlawan sa pag-flush ng inodoro at pagdidilig ng halaman. Iwasan ang hose sa hardin at ang bidet.,Mabalin nga usaren ti pinagbanlawan a danum iti panagflush ti kasilias ken panagsibug kadagiti mula. Liklikan ti hose iti hardin ken ti bidet.
+Tips for each stage,Mind the heat in the lower towns,Mag-ingat sa init sa mabababang bayan,Agannad iti pudot kadagiti nababa nga ili
+Tips for each stage,"Drink 8 to 10 glasses a day. Move anyone with heat stroke somewhere cool, give water, then take them to a clinic.","Uminom ng 8 hanggang 10 baso araw-araw. Ilipat sa malamig na lugar ang sinumang na-heat stroke, painumin ng tubig, saka dalhin sa klinika.","Uminum ti 8 agingga 10 a baso iti inaldaw. Iyalis iti nalamiis a lugar ti siasinoman a na-heat stroke, painumen ti danum, sa itugot iti klinika."
+Tips for each stage,Keep saving until PAGASA calls the end,Magtipid hanggang ideklara ng PAGASA ang pagtatapos,Agtipid agingga iti ideklara ti PAGASA ti panagpatingga
+Tips for each stage,Dry conditions can outlast the outlook. Follow PAGASA’s monthly El Niño advisories.,Maaaring tumagal ang tuyong panahon nang lampas sa outlook. Sundan ang buwanang El Niño advisory ng PAGASA.,Mabalin nga agbayag ti namaga a panawen nga labes iti outlook. Surotem dagiti binulan nga El Niño advisory ti PAGASA.
+Tips for each stage,Clean containers before the rains,Linisin ang mga lalagyan bago bumalik ang ulan,Dalusan dagiti pagidulinan sakbay nga agsubli ti tudo
+Tips for each stage,"Empty, scrub and cover stored-water containers so they stay clean when the rains come back.","Alisan ng laman, kuskusin at takpan ang mga lalagyan ng tubig para manatiling malinis pagbalik ng ulan.","Ibukbok, gusgusen ken abbongan dagiti pagidulinan ti danum tapno agtalinaed a nadalus inton agsubli ti tudo."
+Tips for each stage,Farmers: ask about recovery support,Mga magsasaka: magtanong tungkol sa tulong sa pagbangon,Mannalon: agsaludsod maipapan iti tulong para iti panagbangon
+Tips for each stage,"DA-Cordillera runs seed, fertilizer and irrigation programs. Start with your Municipal Agriculture Office.","May programa ang DA-Cordillera para sa binhi, pataba at patubig. Magsimula sa inyong Municipal Agriculture Office.","Adda dagiti programa ti DA-Cordillera para iti bukel, abono ken irigasion. Mangrugi iti Municipal Agriculture Office yo."
+Tips by topic,Water at home,Tubig sa bahay,Danum iti balay
+Tips by topic,"Store water in clean, covered containers.",Mag-ipon ng tubig sa malinis at may takip na lalagyan.,Agurnong ti danum kadagiti nadalus ken naabbongan a pagidulinan.
+Tips by topic,Follow Baguio’s daily water advisories. The city has been in the orange phase since Oct 15.,Sundan ang araw-araw na abiso tungkol sa tubig ng Baguio. Nasa orange phase ang lungsod mula noong Okt 15.,Surotem dagiti inaldaw a pakaammo maipapan iti danum ti Baguio. Adda iti orange phase ti siudad manipud idi Okt 15.
+Tips by topic,"Use a tabo instead of a hose, and skip the bidet.","Gumamit ng tabo sa halip na hose, at iwasan ang bidet.","Agusar ti tabo imbes a hose, ken liklikan ti bidet."
+Tips by topic,Not every toilet use needs a flush.,Hindi kailangang mag-flush sa bawat paggamit ng inodoro.,Saan a kasapulan ti agflush iti tunggal panagusar ti kasilias.
+Tips by topic,Fix dripping taps and running toilets.,Ayusin ang tumutulong gripo at inodorong tuloy-tuloy ang agos.,Ayusen dagiti agtedted a gripo ken kasilias nga agtultuloy ti ayus ti danum.
+Tips by topic,Reuse rinse and laundry water to flush and water plants.,Gamitin ulit ang pinagbanlawan at pinaglabahan sa pag-flush at pagdidilig ng halaman.,Usaren manen ti pinagbanlawan ken pinaglabaan a danum iti panagflush ken panagsibug kadagiti mula.
+Tips by topic,"Visitors count too. Baguio’s daytime population nearly doubles, and December’s peak lands in the expected dry spell.","Kasama rin ang mga bisita. Halos dumodoble ang populasyon ng Baguio tuwing araw, at tatama sa inaasahang dry spell ang dagsa sa Disyembre.","Mairaman met dagiti sangaili. Dandani agdoble ti populasion ti Baguio iti aldaw, ken maitunos iti mapagpagarup a dry spell ti kaaduan dagiti tao iti Disiembre."
+Tips by topic,Health,Kalusugan,Salun-at
+Tips by topic,Drink 8 to 10 glasses of water a day.,Uminom ng 8 hanggang 10 basong tubig araw-araw.,Uminum ti 8 agingga 10 a baso a danum iti inaldaw.
+Tips by topic,Drink only water from clean sources. Boil it if you’re unsure.,Uminom lang ng tubig mula sa malinis na pinagmulan. Pakuluan ito kung hindi ka sigurado.,Uminum laeng ti danum a naggapu iti nadalus a gubuayan. Paburekem no saanka a sigurado.
+Tips by topic,"Diarrhea, vomiting or weakness: see a health worker. Untreated cases can need hospital care.","Pagtatae, pagsusuka o panghihina: magpatingin sa health worker. Maaaring kailanganing dalhin sa ospital kapag hindi nagamot.","Panagburis, panagsarua wenno kinakapsut: agpakita iti health worker. Mabalin a kasapulan ti ospital no saan a maagasan."
+Tips by topic,"Fever with chills, headache or joint pain: get checked at the nearest health facility.","Lagnat na may panginginig, sakit ng ulo o pananakit ng kasukasuan: magpatingin sa pinakamalapit na health facility.","Gurigor nga addaan panagpigerger, sakit ti ulo wenno sakit dagiti kasukasuan: agpakita iti kaasitgan a health facility."
+Tips by topic,"Heat stroke: move the person somewhere cool, let them rest and drink water, then take them to a clinic.","Heat stroke: ilipat ang tao sa malamig na lugar, pagpahingahin at painumin ng tubig, saka dalhin sa klinika.","Heat stroke: iyalis ti tao iti nalamiis a lugar, painanaen ken painumen ti danum, sa itugot iti klinika."
+Tips by topic,"Older people, small children and people with illnesses are most at risk.","Pinakananganganib ang matatanda, maliliit na bata at mga may sakit.","Dagiti natataengan, babassit nga ubbing ken dagiti adda sakitna ti kaaduan ti peggad."
+Tips by topic,"Outdoors, wear a hat or carry an umbrella, dress light and use sunscreen.","Sa labas, magsuot ng sombrero o magdala ng payong, magsuot ng magaan na damit at gumamit ng sunscreen.","Iti ruar, agkalugong wenno agawit ti payong, agkawes ti nalag-an ken agusar ti sunscreen."
+Tips by topic,Fire,Sunog,Uram
+Tips by topic,"Don’t burn trash, grass or brush, and no kaingin.","Huwag magsunog ng basura, damo o tuyong halaman, at bawal ang kaingin.","Dika agpuor ti basura, ruot wenno namaga a mula, ken maiparit ti kaingin."
+Tips by topic,Put cigarettes out fully and dispose of the butts properly.,Patayin nang husto ang sigarilyo at itapon nang maayos ang upos.,Iddepen a naan-anay ti sigarilio ken ibelleng a naimbag ti upos.
+Tips by topic,No bonfires or campfires in forests and grasslands.,Bawal ang siga o campfire sa kagubatan at damuhan.,Maiparit ti siga wenno campfire iti kabakiran ken karuotan.
+Tips by topic,Keep matches and lighters away from children.,Ilayo sa mga bata ang posporo at lighter.,Iyadayo kadagiti ubbing ti posporo ken lighter.
+Tips by topic,Never leave an outdoor fire unattended.,Huwag kailanman iwanang walang bantay ang apoy sa labas.,Dimo pulos baybay-an nga awan bantayna ti apuy iti ruar.
+Tips by topic,"Unplug appliances you aren’t using, and avoid octopus connections.","Tanggalin sa saksakan ang mga appliance na hindi ginagamit, at iwasan ang octopus connection.","Ikkaten iti saksakan dagiti appliance a saan nga us-usaren, ken liklikan ti octopus connection."
+Tips by topic,See smoke? Call 911 right away.,May nakikitang usok? Tumawag agad sa 911.,Adda makitam nga asuk? Umawag a dagus iti 911.
+Tips by topic,Farms,Sakahan,Talon
+Tips by topic,Ask your Municipal Agriculture Office about drought-tolerant seed and crop insurance.,Magtanong sa inyong Municipal Agriculture Office tungkol sa binhing matibay sa tagtuyot at sa crop insurance.,Agsaludsod iti Municipal Agriculture Office yo maipapan iti bukel a makaanus iti kinamaga ken iti crop insurance.
+Tips by topic,Mulch to hold moisture in the soil and keep weeds down.,Gumamit ng mulch para manatiling basa ang lupa at mapigilan ang damo.,Agusar ti mulch tapno agtalinaed a nabasa ti daga ken malapdan ti ruot.
+Tips by topic,Harvest rainwater. Small irrigation and water-impounding near farms helps.,Mag-ipon ng tubig-ulan. Nakatutulong ang maliit na patubig at imbakan ng tubig malapit sa sakahan.,Agurnong ti danum ti tudo. Makatulong ti babassit nga irigasion ken pagurnongan ti danum iti asideg ti talon.
+Tips by topic,Time planting so young crops miss the December to February frost.,Itiyempo ang pagtatanim para hindi abutan ng frost mula Disyembre hanggang Pebrero ang mga batang pananim.,Itiempo ti panagmula tapno saan a madanon ti frost manipud Disiembre agingga Pebrero dagiti ubing a mula.
+Tips by topic,"On frost nights, sprinklers run before sunrise wash ice off leaves. Plastic tunnels also help.","Sa mga gabing may frost, natatanggal ang yelo sa dahon kapag pinaandar ang sprinkler bago sumikat ang araw. Nakatutulong din ang plastic tunnel.","Kadagiti rabii nga adda frost, maikkat ti yelo kadagiti bulong no paandaren dagiti sprinkler sakbay nga agsingising ti init. Makatulong met dagiti plastic tunnel."
+Tips by topic,Rice: alternate wetting and drying cuts water use by about 30% with no yield penalty.,"Palay: nababawasan nang mga 30% ang gamit sa tubig sa alternate wetting and drying, nang hindi bumababa ang ani.","Pagay: makissayan iti agarup 30% ti panagusar ti danum babaen ti alternate wetting and drying, nga awan ti pannakakissay ti apit."
+Tips by topic,"DA-CAR lists mungbean, cowpea, cassava and sweet potato as El Niño alternative crops.","Inililista ng DA-CAR ang munggo, paayap, kamoteng-kahoy at kamote bilang alternatibong pananim sa El Niño.","Ilista ti DA-CAR ti balatong, utong, kamoteng-kahoy ken kamote kas alternatibo a mula para iti El Niño."
+Phrases found later in the code's less common states,"Latest weekly reading, traditional:","Pinakabagong lingguhang sukat, traditional:","Kabaruan a linawas a rukod, traditional:"
+Phrases found later in the code's less common states,"RONI, 3-month","RONI, 3 buwan","RONI, 3 a bulan"
+Phrases found later in the code's less common states,CPC weekly OISST,Lingguhang OISST ng CPC,Linawas nga OISST ti CPC
+Phrases found later in the code's less common states,Relative index as quoted by,Relative index ayon sa,Relative index segun iti
+Phrases found later in the code's less common states,land cover unavailable,hindi makuha ang takip ng lupa,saan a magun-od ti abbong ti daga
+Phrases found later in the code's less common states,map tiles did not load,hindi nag-load ang mga tile ng mapa,saan a nag-load dagiti tile ti mapa
+Phrases found later in the code's less common states,"OpenFreeMap tiles unavailable, trying the Overpass endpoint","Hindi makuha ang mga tile ng OpenFreeMap, sinusubukan ang Overpass","Saan a magun-od dagiti tile ti OpenFreeMap, padpadasen ti Overpass"
+Phrases found later in the code's less common states,no town data in the answer,walang datos ng bayan sa sagot,awan ti datos ti ili iti sungbat
+Phrases found later in the code's less common states,No hourly forecast in this answer,Walang pagtataya bawat oras sa sagot na ito,Awan ti padto iti tunggal oras iti daytoy a sungbat
+Phrases found later in the code's less common states,No daily forecast in this answer,Walang pang-araw-araw na pagtataya sa sagot na ito,Awan ti inaldaw a padto iti daytoy a sungbat

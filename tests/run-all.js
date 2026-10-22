@@ -12,6 +12,9 @@ const SUITE = [
   ['panel_test.js'], // the pull tab on phones
   ['tip_test.js'], // the map's hover label on touch
   ['views_ui.js'], // the visitor count chip
+  ['lang_test.js'], // English, Tagalog, Ilocano: the switch, the drawer, the phone header
+  ['header_test.js'], // the header at every width in each language, with the real fonts
+  ['header_test.js', 'vis'], // the same with the visitor chip showing
 ];
 (async () => {
   try { await fetch(BASE + '/'); } catch (e) { console.error(`Nothing at ${BASE}. Start the test server first: npm run serve`); process.exit(2); }
