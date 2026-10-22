@@ -456,8 +456,9 @@ function start3D(save) {
       last3d = { fills: '', wx: '' };
       if (S.fires) S.g3.setFires(S.fires.rows, S.fires_on);
       paint();
-      showView(true, save);
       if (S.sel) S.g3.select(S.sel);
+      await S.g3.whenDrawn(); // the flat map stays up, on top, until the 3D map has drawn its first frame
+      showView(true, save);
     } catch (e) {
       console.warn('[ph] 3D map unavailable, keeping the flat map:', e?.message || e);
       S.g3 = null; showView(false); status('');

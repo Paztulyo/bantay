@@ -435,8 +435,8 @@ export async function createPH3D({ box, geo, provinceAt, onPick, onHover, onStat
   }
 
   /* ---- sharper terrain for the chosen province ---- */
-  function padBox(bb) {
-    const w = bb[2] - bb[0], h = bb[3] - bb[1], m = Math.max(0.12, Math.max(w, h) * 0.18);
+  function padBox(bb, k = 0.18, min = 0.12) {
+    const w = bb[2] - bb[0], h = bb[3] - bb[1], m = Math.max(min, Math.max(w, h) * k);
     return [bb[0] - m, bb[1] - m, bb[2] + m, bb[3] + m];
   }
   let detailJob = 0;
@@ -450,7 +450,7 @@ export async function createPH3D({ box, geo, provinceAt, onPick, onHover, onStat
   async function loadDetail(name) {
     dropDetail();
     const f = byName[name]; if (!f) return;
-    const job = detailJob, p = padBox(f.bb);
+    const job = detailJob, p = padBox(f.bb, 0.55, 0.25);
     const bb = [Math.max(p[0], AREA[0]), Math.max(p[1], AREA[1]), Math.min(p[2], AREA[2]), Math.min(p[3], AREA[3])];
     const span = Math.max(bb[2] - bb[0], bb[3] - bb[1]), cap = MOBILE ? 300 : 560;
     const z = clamp(Math.floor(Math.log2(cap * 360 / (256 * span))), Z0 + 1, MOBILE ? 9 : 10);
@@ -553,7 +553,7 @@ export async function createPH3D({ box, geo, provinceAt, onPick, onHover, onStat
 
   /* ---- frame loop ---- */
   const FRAME = TEST ? 250 : MOBILE ? 1000 / 30 : 1000 / 40;
-  let lastWx = 0, lastDist = -1, labelsDirty = true;
+  let lastWx = 0, lastDist = -1, labelsDirty = true, drawn = false, onDrawn = [];
   const lastM = new Float64Array(16);
   function frame(now) {
     if (destroyed) return;
@@ -595,6 +595,7 @@ export async function createPH3D({ box, geo, provinceAt, onPick, onHover, onStat
       }
     }
     renderer.render(scene, camera);
+    if (!drawn) { drawn = true; onDrawn.forEach(f => f()); onDrawn = []; }
     const e = camera.matrixWorld.elements; let moved = labelsDirty;
     for (let i = 0; i < 16; i++) if (e[i] !== lastM[i]) { moved = true; lastM[i] = e[i]; }
     if (moved) { labelsDirty = false; placeLabels(dist); }
@@ -611,6 +612,7 @@ export async function createPH3D({ box, geo, provinceAt, onPick, onHover, onStat
 
   return {
     canvas,
+    whenDrawn() { return drawn ? Promise.resolve() : new Promise(r => onDrawn.push(r)); },
     // fills: province name -> CSS colour (or null for plain land); sel: the chosen province
     paint(f, s) { fills = f || {}; sel = s || null; repaint(); labelsDirty = true; },
     select(name) {

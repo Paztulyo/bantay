@@ -312,7 +312,7 @@ const CHARTS = {
   },
   nat: {
     ico: ['sun', 'dry'], title: 'Provinces in a dry stage', unit: 'nationwide · PAGASA, end of month',
-    srcText: () => 'PAGASA Advisory No. 5 (Sep, observed); PAGASA Climate Outlook, 23 Sep (Oct–Mar)',
+    srcText: () => 'PAGASA Advisory No. 5 (Sep, observed); PAGASA Climate Outlook, 23 Sep (Oct); PAGASA Climate Outlook, 21 Oct (Nov–Apr)',
     say: () => {
       const ks = Object.keys(D.nat).sort(), nowK = MONTHS[NOW].k, cur = D.nat[nowK] ? nowK : ks.filter(k => k <= nowK).at(-1) || ks[0];
       const peak = ks.reduce((a, k) => (D.nat[k][2] > D.nat[a][2] ? k : a), ks[0]);
@@ -456,7 +456,7 @@ const CHARTS = {
       const ks = Object.keys(D.drydays).sort(), d = ks.map(k => D.drydays[k][1] - D.drydays[k][0]);
       return `<b class="dry">${Math.min(...d)} to ${Math.max(...d)} more</b> dry days than usual, every month to ${MF[+ks.at(-1).slice(5) - 1]}`;
     },
-    ico: ['sun', 'dry'], title: 'Dry days in Benguet', unit: 'usual → outlook', srcText: () => 'Read from PAGASA’s Oct–Mar outlook maps by BaguioCityGuide (1 Oct 2026)',
+    ico: ['sun', 'dry'], title: 'Dry days in Benguet', unit: 'usual → outlook', srcText: () => `PAGASA’s forecast dry days table, ${fmtDate(D.outlook.issued, true)}`,
     rows: () => Object.entries(D.drydays).map(([k, v]) => { const M = MONTHS[monthIdx(k)]; return [MN[M.m] + ' ' + M.y, v[0], v[1], '+' + (v[1] - v[0])]; }), cols: ['Month', 'Usual', 'Outlook', 'Change'],
     draw(plot) {
       const { s, w, h } = svgIn(plot);
@@ -549,6 +549,14 @@ function updateEvents() {
 }
 
 /* ================= overlays ================= */
+// the first month PAGASA's outlook has Benguet in drought, and the outlook's extra dry days, for the Water view
+function firstDroughtKey() { return Object.keys(D.stage).sort().find(k => k >= D.outlook.from && k <= D.outlook.to && D.stage[k].s === 3) || null; }
+function dryDaysLine() {
+  const ks = Object.keys(D.drydays).filter(k => k >= D.outlook.from && k <= D.outlook.to).sort();
+  if (!ks.length) return '';
+  const d = ks.map(k => D.drydays[k][1] - D.drydays[k][0]);
+  return `On PAGASA’s outlook, Benguet gets ${Math.min(...d)} to ${Math.max(...d)} more dry days than usual each month from ${MF[+ks[0].slice(5) - 1]} to ${MF[+ks.at(-1).slice(5) - 1]}.`;
+}
 function nextStageText(i) { for (let j = i + 1; j < NM(); j++) { const st = D.stage[MONTHS[j].k]; if (st && MONTHS[j].phase === 'outlook') return `Next on the outlook: ${STAGES[st.s].n.toLowerCase()} by the end of ${MF[MONTHS[j].m]}.`; } return ''; }
 function updateBadge() {
   const M = MONTHS[state.month], st = D.stage[M.k], b = $('#mbadge');
@@ -568,7 +576,7 @@ function updateBadge() {
     const dl = damList(), live = dl[0]?.live;
     b.innerHTML = `<div class="mbadge-h"><b>${fmtDate(dl[0].iso, true)}</b><span class="phase now">${live ? 'Latest reading' : 'Saved reading'}</span></div>
       <div class="stagepill"><span class="sw" style="background:var(--water)"></span>${dl.every(d => d.dev > -3) ? 'Agno dams near normal high water' : 'Agno dams drawing down'}</div>
-      <small>${dl.map(d => `${d.id} ${fmt2(d.dev)} m`).join(' · ')} vs normal high water. PAGASA’s outlook puts Benguet in drought by the end of February.</small>`;
+      <small>${dl.map(d => `${d.id} ${fmt2(d.dev)} m`).join(' · ')} vs normal high water. PAGASA’s outlook puts Benguet in drought by the end of ${MF[+(firstDroughtKey() || D.outlook.to).slice(5) - 1]}.</small>`;
     return;
   }
   b.innerHTML = `<div class="mbadge-h"><b>${MN[M.m]} ${M.y}</b><span class="phase ${M.phase}">${PHASE_LABEL[M.phase]}</span></div>
@@ -700,9 +708,10 @@ function renderRail() {
     const note = D.note[M.k], dd = D.drydays[M.k], rec = (nm[M.k] || {}).n34, RAIN = D.normals.rain, RDAYS = D.normals.rdays;
     html += `<div class="sec"><div class="month-h"><b>${hico('calendar')}${MF[M.m]} ${M.y}</b><span class="phase ${M.phase}">${PHASE_LABEL[M.phase]}</span></div>
       <div class="stagebox"><div class="st">${st ? `<span class="sw ${M.phase === 'outlook' ? 'hatch' : ''}" style="background-color:${stageVar(st.s)}"></span>${STAGES[st.s].n}` : `<span class="sw none"></span>${M.phase === 'beyond' ? 'Beyond the outlook' : 'No dry stage listed'}`}</div>
-        <p>${st ? esc(STAGES[st.s].d) : M.phase === 'beyond' ? 'PAGASA’s current outlook covers October 2026 to March 2027.' : 'PAGASA assigns dry stages to whole provinces at the end of each month.'}</p></div>
+        <p>${st ? esc(STAGES[st.s].d) : M.phase === 'beyond' ? `PAGASA’s current outlook covers ${MF[+D.outlook.from.slice(5) - 1]} ${D.outlook.from.slice(0, 4)} to ${MF[+D.outlook.to.slice(5) - 1]} ${D.outlook.to.slice(0, 4)}.` : 'PAGASA assigns dry stages to whole provinces at the end of each month.'}</p></div>
       ${note ? `<p class="note">${esc(note[0])}</p>` : ''}
       ${st && st.flag ? `<p class="note warn">${esc(st.flag)}</p>` : ''}
+      <p class="note"><a href="/ph?p=Benguet">Every province, month by month: the Philippines map</a></p>
       <div class="stats">
         <div class="stat"><div class="k">Usual rain, Baguio</div><div class="v">${RAIN[M.m].toFixed(0)}<small> mm</small></div></div>
         <div class="stat"><div class="k">Usual rainy days</div><div class="v">${RDAYS[M.m]}</div></div>
@@ -711,7 +720,7 @@ function renderRail() {
         <div class="stat"><div class="k">Cyclones in PAR</div><div class="v">${D.tc[M.k] || '—'}</div></div>
         <div class="stat"><div class="k">Niño 3.4</div><div class="v">${rec ? fmt1(rec[0]) + '<small>°C</small>' : '—'}</div></div>
       </div>
-      <div class="src">Stage: ${st ? srcLink(st.src) : '—'} · Notes: ${note ? srcLink(note[1]) : '—'} · Normals: ${srcLink('norm')}${dd || D.temp[M.k] ? ' · Dry days, temperature: ' + srcLink('bcg') : ''}${D.tc[M.k] ? ' · Cyclones: ' + srcLink(M.k === '2026-09' ? 'pag_adv5' : 'pag_out') : ''}</div>
+      <div class="src">Stage: ${st ? srcLink(st.src) : '—'} · Notes: ${note ? srcLink(note[1]) : '—'} · Normals: ${srcLink('norm')}${dd ? ' · Dry days: ' + srcLink(D.outlook.src) : ''}${D.temp[M.k] ? ' · Temperature: ' + srcLink('bcg') : ''}${D.tc[M.k] ? ' · Cyclones: ' + srcLink(M.k === '2026-09' ? 'pag_adv5' : 'pag_out') : ''}</div>
       ${M.phase !== 'outlook' && M.i <= NOW ? `<button class="btn cta" id="playOutlook">Play the outlook, ${MN[+D.outlook.from.slice(5) - 1]} to ${MN[+D.outlook.to.slice(5) - 1]}</button>` : ''}
       ${state.sel ? placeCard() : ''}</div>`;
     html += nowSection();
@@ -738,7 +747,7 @@ function renderRail() {
       ${basin ? `<p class="src">Flood status, ${esc(basin.name)}: <b>${esc(basin.status)}</b></p>` : ''}
       <p class="src">${srcLink('pag_dam')} · capacities and locations: ${srcLink('wiki_dams')}</p></div>
       <div class="sec"><div class="sec-h"><h3>${hico('info')}Reading the water</h3></div>
-      <p class="note" style="margin-top:0">${DL.every(d => d.rdev == null || d.level >= d.rule) ? `As of ${fmtDate(DL[0].iso)}, all three reservoirs sit above their rule curves` : `As of ${fmtDate(DL[0].iso)}, ${DL.filter(d => d.rule != null && d.level < d.rule).map(d => d.id).join(' and ')} sit below the rule curve`}${DL.every(d => d.dev > -3) ? ', at or near normal high water' : ''}. The test is the dry months. Read from PAGASA’s outlook maps, Benguet gets 2 to 5 more dry days than usual each month from October to March.</p></div>` + guideWater();
+      <p class="note" style="margin-top:0">${DL.every(d => d.rdev == null || d.level >= d.rule) ? `As of ${fmtDate(DL[0].iso)}, all three reservoirs sit above their rule curves` : `As of ${fmtDate(DL[0].iso)}, ${DL.filter(d => d.rule != null && d.level < d.rule).map(d => d.id).join(' and ')} sit below the rule curve`}${DL.every(d => d.dev > -3) ? ', at or near normal high water' : ''}. The test is the dry months. ${dryDaysLine()}</p></div>` + guideWater();
   }
   secs.innerHTML = html;
   secs.querySelectorAll('[data-guide]').forEach(b => b.addEventListener('click', () => openGuide(b.dataset.guide, b)));

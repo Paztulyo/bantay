@@ -93,4 +93,6 @@ D = [
 ("Map of the Philippines in 3D. Drag to turn, pinch or scroll to zoom, tap a province.",
  "3D na mapa ng Pilipinas. I-drag para iikot, i-pinch o i-scroll para mag-zoom, pindutin ang probinsya.",
  "3D a mapa ti Filipinas. I-drag tapno agpusipos, i-pinch wenno i-scroll tapno ag-zoom, pinduten ti probinsia."),
+# the Benguet page's link to the national page
+("Every province, month by month: the Philippines map", "Bawat probinsya, bawat buwan: ang mapa ng Pilipinas", "Tunggal probinsia, tunggal bulan: ti mapa ti Filipinas"),
 ]
