@@ -6,9 +6,10 @@ sys.path.insert(0, HERE)
 from strings_a import A
 from strings_b import B
 from strings_c import C, CAL
+from strings_d import D
 from patterns import P, EXTRA
 OUT = os.path.join(os.path.dirname(HERE), 'js', 'lang') + os.sep
-rows = A + B + C + EXTRA
+rows = A + B + C + D + EXTRA
 seen, problems = {}, []
 for en, tl, ilo in rows:
     if en in seen and seen[en] != (tl, ilo): problems.append(f'conflict: {en!r}: {seen[en]} vs {(tl, ilo)}')

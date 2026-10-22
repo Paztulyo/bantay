@@ -15,6 +15,8 @@ const SUITE = [
   ['lang_test.js'], // English, Tagalog, Ilocano: the switch, the drawer, the phone header
   ['header_test.js'], // the header at every width in each language, with the real fonts
   ['header_test.js', 'vis'], // the same with the visitor chip showing
+  ['ph_test.js'], // the national page: stages, months, search, weather and fire layers, and the PDF parser
+  ['ph_test.js', 'w=390', 'h=844'],
 ];
 (async () => {
   try { await fetch(BASE + '/'); } catch (e) { console.error(`Nothing at ${BASE}. Start the test server first: npm run serve`); process.exit(2); }

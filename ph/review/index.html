@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Stage check · Bantay El Niño</title>
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/css/ph.css">
+<style>
+  body{padding:16px;max-width:900px;margin:0 auto}
+  h1{font:700 22px var(--f-display);color:var(--forest);margin:6px 0 4px}
+  .meta{color:var(--muted);font-size:13.5px;margin:0 0 14px}
+  .box{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:12px 0;background:var(--panel)}
+  .box.bad{border-color:var(--heat);background:color-mix(in srgb,var(--heat) 8%,var(--panel))}
+  .box.good{border-color:var(--teal)}
+  .box h2{font:600 15px var(--f-display);margin:0 0 6px;color:var(--forest)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:500}
+  .s{display:inline-flex;align-items:center;gap:6px}
+  .s i{width:12px;height:9px;border-radius:2px;display:inline-block}
+  .row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  code{font:12.5px var(--f-mono)}
+  ul{margin:4px 0;padding-left:18px}
+</style>
+</head>
+<body>
+<h1>Monthly stage check</h1>
+<p class="meta">Reads PAGASA's climate outlook PDF, checks every count, and shows what would change on <a href="/ph">/ph</a>. Nothing goes live from this page. To publish, download the file and commit it as <code>data/ph_stages.json</code>.</p>
+<div id="out"><p class="muted">Reading PAGASA's PDF…</p></div>
+<script type="module">
+import { getJSON, esc, TEST } from '/js/util.js';
+import { diffStages } from '/js/phparse.js';
+const NAME = { cond: 'Dry condition', spell: 'Dry spell', drought: 'Drought' }, VAR = { cond: '--stage1', spell: '--stage2', drought: '--stage3' };
+const st = k => k ? `<span class="s"><i style="background:var(${VAR[k]})"></i>${NAME[k]}</span>` : '<span class="muted">Not listed</span>';
+const mon = ym => new Date(ym + '-01T00:00:00Z').toLocaleString('en', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+const out = document.getElementById('out');
+const u = new URLSearchParams(location.search).get('u');
+try {
+  const [draft, pub] = await Promise.all([getJSON('/api/phstages' + (u ? '?u=' + encodeURIComponent(u) : ''), 60000), getJSON('/data/ph_stages.json').catch(() => null)]);
+  if (!draft.ok) throw new Error(draft.sources?.[0]?.error || 'could not read the PDF');
+  const changes = diffStages(pub, draft);
+  const same = pub && pub.issued === draft.issued && !changes.length;
+  const file = { issued: draft.issued, checked: new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10),
+    source: { title: `PAGASA Climate Outlook, ${mon(draft.months[0])} to ${mon(draft.months[draft.months.length - 1])} (issued ${draft.issued}), Outlook over different provinces`, url: draft.url },
+    months: draft.months, stages: draft.stages, subs: draft.subs };
+  let h = `<p class="meta">PDF: <a href="${esc(draft.url)}">${esc(draft.url)}</a> · ${draft.pages} pages · issued <b>${esc(draft.issued || 'unknown')}</b> · published file issued <b>${esc(pub?.issued || 'none')}</b></p>`;
+  if (draft.problems.length) h += `<div class="box bad"><h2>Do not publish: ${draft.problems.length} check${draft.problems.length > 1 ? 's' : ''} failed</h2><ul>${draft.problems.map(p => `<li>${esc(p)}</li>`).join('')}</ul><p class="note">PAGASA may have changed the table layout or spelled a name differently. Fix the parser (js/phparse.js) or enter this month by hand.</p></div>`;
+  else h += `<div class="box good"><h2>All checks passed</h2><p class="note">${draft.months.length} months. Every island group's names match its counts, and the counts match PAGASA's totals.</p></div>`;
+  if (same) h += `<div class="box"><h2>Nothing new</h2><p class="note">The published file already matches this PDF.</p></div>`;
+  else if (pub && pub.issued !== draft.issued) h += `<div class="box"><h2>New PAGASA issue</h2><p class="note">${changes.length} change${changes.length === 1 ? '' : 's'} from the published file.</p></div>`;
+  if (changes.length) {
+    const byM = {};
+    changes.forEach(c => (byM[c.month] = byM[c.month] || []).push(c));
+    h += Object.entries(byM).map(([m, list]) => `<div class="box"><h2>By end of ${mon(m)}: ${list.length} change${list.length > 1 ? 's' : ''}</h2>${list[0].name === '*' ? '<p class="note">A month the published file doesn’t have.</p>' : `<table><tr><th>Province</th><th>Was</th><th>Now</th></tr>${list.map(c => `<tr><td>${esc(c.name)}</td><td>${st(c.from)}</td><td>${st(c.to)}</td></tr>`).join('')}</table>`}</div>`).join('');
+  }
+  if (!draft.problems.length && !same) h += `<div class="row"><button class="btn" id="dl">Download ph_stages.json</button><button class="btn" id="cp">Copy JSON</button></div>`;
+  out.innerHTML = h;
+  const json = JSON.stringify(file);
+  document.getElementById('dl')?.addEventListener('click', () => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' })); a.download = 'ph_stages.json'; a.click(); });
+  document.getElementById('cp')?.addEventListener('click', e => navigator.clipboard.writeText(json).then(() => { e.target.textContent = 'Copied'; }));
+} catch (e) {
+  out.innerHTML = `<div class="box bad"><h2>Could not read the PDF</h2><p class="note">${esc(e.message)}</p></div>`;
+}
+</script>
+</body>
+</html>

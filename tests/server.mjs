@@ -12,7 +12,8 @@ http.createServer((req, res) => {
   else if (p.startsWith('/api/')) f = path.join(M, p.slice(5) + '.json'); // enso, dams, fires, osm, views
   else if (p === '/mock/om') f = path.join(M, 'om.json'); // Open-Meteo, by town
   else if (p === '/mock/om_now') f = path.join(M, 'om_now.json'); // Open-Meteo, now and the week ahead
-  else f = path.join(ROOT, p === '/' ? 'index.html' : p);
+  else if (p === '/ph' || p === '/ph/review') f = path.join(ROOT, p, 'index.html'); // cleanUrls, as on Vercel
+  else f = path.join(ROOT, p.endsWith('/') ? p + 'index.html' : p);
   if (!f.startsWith(ROOT)) { res.writeHead(403); res.end(); return; }
   fs.readFile(f, (e, b) => {
     if (e) { res.writeHead(404); res.end('not found ' + p); return; }
