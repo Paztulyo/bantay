@@ -2,7 +2,7 @@
 // { ok, fetched_at, sources:[{id, name, url, status, issued, error?}], ...data }
 // and is cached at Vercel's edge so upstream sites are hit at most once per window.
 
-export const UA = 'BantayElNino/1.0 (+https://bantay-el-nino.vercel.app; climate dashboard for Benguet)';
+export const UA = 'BantayElNino/1.0 (+https://www.bantayelnino.com; climate dashboard for Benguet)';
 
 export async function fetchText(url, { timeout = 15000, headers = {} } = {}) {
   const ctrl = new AbortController();

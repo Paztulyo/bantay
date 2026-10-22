@@ -3,7 +3,8 @@
 A live El Niño monitor for Benguet and Baguio: a 3D terrain map with weather, active fires and the dry-stage outlook,
 the PAGASA outlook timeline, charts, a hotlines and tips guide, and the sources behind every number. In English,
 Tagalog and Ilocano.
-Live at https://bantay-el-nino-eta.vercel.app (Vercel project `bantay-el-nino`).
+Live at https://www.bantayelnino.com (Vercel project `bantay-el-nino`). bantayelnino.com redirects there (308), and the old
+https://bantay-el-nino-eta.vercel.app still serves the site; the page's canonical link points search engines at www.
 
 ## How it's built
 
