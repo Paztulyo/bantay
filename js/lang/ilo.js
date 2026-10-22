@@ -176,6 +176,8 @@ export default {
     "to drought": "sakbay ti drought",
     "in dry condition": "adda iti dry condition",
     "in drought": "adda iti drought",
+    "to dry spell": "sakbay ti dry spell",
+    "in dry spell": "adda iti dry spell",
     "PAGASA, this month": "PAGASA, ita a bulan",
     "No dry stage yet": "Awan pay ti dry stage",
     "What to do": "Ti aramiden",

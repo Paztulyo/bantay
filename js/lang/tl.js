@@ -176,6 +176,8 @@ export default {
     "to drought": "bago ang drought",
     "in dry condition": "nasa dry condition na",
     "in drought": "nasa drought na",
+    "to dry spell": "bago ang dry spell",
+    "in dry spell": "nasa dry spell na",
     "PAGASA, this month": "PAGASA, ngayong buwan",
     "No dry stage yet": "Wala pang dry stage",
     "What to do": "Ano ang gagawin",

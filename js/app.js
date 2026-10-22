@@ -655,8 +655,10 @@ function countdownCard(play = true) {
     if (d < 63) return [String(Math.round(d / 7)), 'weeks'];
     const mo = Math.round(d / 30.44); return [String(mo), mo === 1 ? 'month' : 'months'];
   };
-  const big = [[1, 'to dry condition'], [3, 'to drought']].map(([s, what]) => {
+  const big = [[1, null], [3, 'to drought']].map(([s, what]) => {
     const M = steps.find(x => st(x) >= s); if (!M) return '';
+    if (s === 1 && st(M) === 3) return ''; // straight into drought: the second number says it
+    what = what || `to ${STAGES[st(M)].n.toLowerCase()}`; // the first dry stage the outlook names, which may skip dry condition
     const [num, unit] = away(M);
     return `<div class="cd-n s${s}"><b>${num}</b><span>${unit}</span><em>${num === 'Now' ? what.replace(/^to /, 'in ') : what}</em><small>${num === 'Now' ? 'PAGASA, this month' : `by the end of ${MN[M.m]}${M.y !== MONTHS[NOW].y ? ' ' + M.y : ''}`}</small></div>`;
   }).join('');

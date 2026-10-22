@@ -13,6 +13,8 @@ B = [
 ("to drought", "bago ang drought", "sakbay ti drought"),
 ("in dry condition", "nasa dry condition na", "adda iti dry condition"),  # under "Now", once PAGASA observes the stage
 ("in drought", "nasa drought na", "adda iti drought"),
+("to dry spell", "bago ang dry spell", "sakbay ti dry spell"),
+("in dry spell", "nasa dry spell na", "adda iti dry spell"),
 ("PAGASA, this month", "PAGASA, ngayong buwan", "PAGASA, ita a bulan"),
 ("No dry stage yet", "Wala pang dry stage", "Awan pay ti dry stage"),
 # ---- What to do (rail; the drawer's own text is in part C)
