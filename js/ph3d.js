@@ -200,7 +200,7 @@ function softTexture(kind) {
 }
 const RAINY = new Set(['drizzle', 'rain', 'storm']);
 const PAL = {
-  light: { rain: '#2f6688', rainA: 0.45, cloud: '#ffffff', cloudRain: '#d0d8dc', cloudStorm: '#a3aeb5', night: '#c9d3dc', fog: '#ffffff', flash: '#fffbe6', k: 1 },
+  light: { rain: '#2f6688', rainA: 0.5, cloud: '#fbfcfc', cloudRain: '#bcc6cc', cloudStorm: '#8d99a2', night: '#bcc6cf', fog: '#ffffff', flash: '#fffbe6', k: 1 },
   dark: { rain: '#b7d8ea', rainA: 0.4, cloud: '#d3ddd8', cloudRain: '#aab6ba', cloudStorm: '#8e9ca5', night: '#9fb0be', fog: '#e2ebe6', flash: '#ffffff', k: 0.7 },
 };
 
@@ -315,7 +315,7 @@ export async function createPH3D({ box, geo, provinceAt, onPick, onHover, onStat
     return { pos: tgt.clone().addScaledVector(dir, hi), tgt };
   }
   const HOME_BB = [116.9, 4.6, 126.65, 21.1];
-  const homeView = () => frameBox(HOME_BB, 0.92, 0, 0.94);
+  const homeView = () => frameBox(HOME_BB, camera.aspect < 0.8 ? 0.55 : 0.92, 0, 0.94); // less tilt on a tall phone screen, so the country fills it
   let tween = null, userMoved = false;
   const tweenTo = (v, ms = 900) => {
     if (REDUCED.matches || document.hidden) { camera.position.copy(v.pos); controls.target.copy(v.tgt); controls.update(); dirty = true; return; }
@@ -574,7 +574,7 @@ export async function createPH3D({ box, geo, provinceAt, onPick, onHover, onStat
       const s = clamp(1.4 + dist / 150, 1.6, 18); // more relief from far away, so mountains read at country scale
       if (Math.abs(s - relief) > relief * 0.015) { relief = s; world.scale.y = s; mats.forEach(m => { m.uniforms.uRelief.value = s; }); }
       camera.near = clamp(dist * 0.004, 0.5, 20); camera.far = Math.max(6000, dist * 6); camera.updateProjectionMatrix();
-      const grow = clamp(dist / 900, 1, 2.2);
+      const grow = clamp(dist / 520, 1, 4); // weather stays readable from far away
       [cloudMat, mistMat, sunMat].forEach(m => { m.uniforms.uGrow.value = grow; });
       rainMat.uniforms.uSize.value = 2.4 * Math.sqrt(grow);
     }
