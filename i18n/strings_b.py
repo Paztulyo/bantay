@@ -11,8 +11,7 @@ B = [
 ("month", "buwan", "a bulan"),
 ("to dry condition", "bago ang dry condition", "sakbay ti dry condition"),
 ("to drought", "bago ang drought", "sakbay ti drought"),
-# once PAGASA observes the stage the countdown says "Now" and "in ...", not "to ..."
-("in dry condition", "nasa dry condition na", "adda iti dry condition"),
+("in dry condition", "nasa dry condition na", "adda iti dry condition"),  # under "Now", once PAGASA observes the stage
 ("in drought", "nasa drought na", "adda iti drought"),
 ("PAGASA, this month", "PAGASA, ngayong buwan", "PAGASA, ita a bulan"),
 ("No dry stage yet", "Wala pang dry stage", "Awan pay ti dry stage"),

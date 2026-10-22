@@ -127,10 +127,10 @@ Benguet countdown,months,buwan,a bulan
 Benguet countdown,month,buwan,a bulan
 Benguet countdown,to dry condition,bago ang dry condition,sakbay ti dry condition
 Benguet countdown,to drought,bago ang drought,sakbay ti drought
-"Once PAGASA observes the stage the countdown says ""Now"" and ""in ..."", not ""to ...""",in dry condition,nasa dry condition na,adda iti dry condition
-"Once PAGASA observes the stage the countdown says ""Now"" and ""in ..."", not ""to ...""",in drought,nasa drought na,adda iti drought
-"Once PAGASA observes the stage the countdown says ""Now"" and ""in ..."", not ""to ...""","PAGASA, this month","PAGASA, ngayong buwan","PAGASA, ita a bulan"
-"Once PAGASA observes the stage the countdown says ""Now"" and ""in ..."", not ""to ...""",No dry stage yet,Wala pang dry stage,Awan pay ti dry stage
+Benguet countdown,in dry condition,nasa dry condition na,adda iti dry condition
+Benguet countdown,in drought,nasa drought na,adda iti drought
+Benguet countdown,"PAGASA, this month","PAGASA, ngayong buwan","PAGASA, ita a bulan"
+Benguet countdown,No dry stage yet,Wala pang dry stage,Awan pay ti dry stage
 What to do,What to do,Ano ang gagawin,Ti aramiden
 What to do,Emergency 911,Emergency 911,Emerhensia 911
 What to do,All hotlines,Lahat ng hotline,Amin a hotline
