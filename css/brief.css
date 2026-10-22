@@ -147,6 +147,15 @@
 @media (min-width:641px) and (max-width:767px){.ctx.has-vis #spanChip{display:none}}
 @media (max-width:640px){.ctx.has-vis .chip:not(.vis){display:none}}
 
+/* ---------- the logo: green land with the river running out of it, and the sun (img/logo.svg) ---------- */
+.mark{width:46px;height:24px;border-radius:0;background:none;box-shadow:none}
+.mark svg{width:46px;height:24px;display:block}
+/* on the dark theme the green lifts so the mountains stay visible against the near-black header */
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mark .land{fill:#2f8f6b}}
+:root[data-theme="dark"] .mark .land{fill:#2f8f6b}
+/* the smallest phones: a touch smaller, with the tagline set tighter, so the name and the language switch share a row */
+@media (max-width:380px){.mark,.mark svg{width:42px;height:22px}.brand-t span{letter-spacing:.5px}}
+
 /* ---------- language switch (js/i18n.js): English, Tagalog, Ilocano ---------- */
 .lang{display:flex;flex:none;gap:2px;padding:3px;margin-left:auto;border:1px solid var(--g-hair,var(--line));border-radius:10px;background:var(--g-inset,var(--paper))}
 .lang button{min-width:30px;padding:5px 6px;border-radius:7px;font-size:11px;font-weight:700;letter-spacing:.6px;color:var(--muted)}

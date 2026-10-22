@@ -37,6 +37,7 @@ Live at https://bantay-el-nino-eta.vercel.app (Vercel project `bantay-el-nino`).
 | `js/i18n.js`, `js/lang/` | The EN / TL / ILO switch and the translation layer; dictionaries made by `i18n/gen.py` |
 | `js/headfit.js` | Keeps the desktop header to one row: hides more context chips if the advisory line runs long |
 | `js/icons.js`, `js/util.js` | Section icons; shared helpers, the tooltip, Manila time |
+| `img/` | The logo (`logo.svg`, traced from the owner's artwork), the favicon and the home-screen icon. The header carries the logo inline; on the dark theme its green lifts to `#2f8f6b` |
 | `css/app.css`, `extra.css`, `glass.css`, `brief.css` | Base styles, then each layer on top, in load order |
 
 ## Working rules
