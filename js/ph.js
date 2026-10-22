@@ -1,6 +1,8 @@
 // The national page: PAGASA's dry stage for every province, month by month, with the week's weather and
 // satellite fire detections. Stages come from data/ph_stages.json (published by hand after a check, see
-// /ph/review); weather and fires come from the cached APIs, so the page itself never calls an outside site.
+// /ph/review); weather and fires come from the cached APIs, so the page itself never calls a data source directly.
+// The map is 3D by default (js/ph3d.js). The flat map below draws first, stays as the fallback when 3D can't run,
+// and is one tap away for anyone who prefers it.
 import { getJSON, esc, TEST, MN } from './util.js';
 import { t, tf, ld } from './i18n.js';
 
@@ -9,6 +11,7 @@ const NS = 'http://www.w3.org/2000/svg';
 const REDUCED = matchMedia('(prefers-reduced-motion: reduce)');
 const PHONE = matchMedia('(max-width: 760px)');
 const K = Math.cos(12 * Math.PI / 180); // longitude squeeze at the Philippines' middle latitude
+const VIEW_KEY = 'bantay.phview';
 
 const STAGE = {
   cond: { n: 'Dry condition', v: '--stage1', d: 'Two months in a row of below-normal rain (21–60% below average).' },
@@ -18,25 +21,31 @@ const STAGE = {
 const ORDER = ['drought', 'spell', 'cond'];
 const RAIN_BINS = [[0, 5], [5, 20], [20, 50], [50, 100], [100, Infinity]];
 const HEAT_BINS = [[-Infinity, 30], [30, 35], [35, 39], [39, 42], [42, Infinity]];
+const WXCAT = { clear: 'clear', partly: 'partly', cloudy: 'cloudy', fog: 'cloudy', drizzle: 'rain', rain: 'rain', storm: 'storm' };
+const WXNAME = { clear: 'Clear', partly: 'Partly cloudy', cloudy: 'Cloudy', rain: 'Rain', storm: 'Thunderstorm' };
+const DY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-const S = { geo: null, stages: null, wx: null, fires: null, month: null, layer: 'stage', fires_on: true, sel: null, view: null, home: null };
+const S = { geo: null, stages: null, wx: null, fires: null, month: null, layer: 'stage', wxDay: 'now', fires_on: true, sel: null, view: null, home: null, g3: null, is3d: false };
 const feat = {}; // name -> {f, path el, bbox, fires}
 
 /* ---------------- helpers ---------------- */
 const monLabel = ym => { const [y, m] = ym.split('-').map(Number); return `${MN[m - 1]} ${y}`; };
 const byEnd = ym => ld(tf('by end of {m}', { m: monLabel(ym) }));
 const r0 = v => (v == null || isNaN(v) ? '–' : Math.round(v));
-const dayName = (iso, i) => (i === 0 ? t('Today') : t(['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][new Date(iso + 'T00:00:00Z').getUTCDay()]));
-function sky(c) {
-  c = +c;
-  if (c === 0 || c === 1) return 'Clear';
-  if (c === 2) return 'Partly cloudy';
-  if (c === 3) return 'Overcast';
-  if (c === 45 || c === 48) return 'Fog';
-  if (c >= 51 && c <= 57) return 'Drizzle';
-  if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) return c === 65 || c === 82 ? 'Heavy rain' : 'Rain';
-  if (c >= 95) return 'Thunderstorm';
-  return 'Cloudy';
+const dayName = (iso, i) => (i === 0 ? t('Today') : t(DY[new Date(iso + 'T00:00:00Z').getUTCDay()]));
+const dayShort = iso => ld(`${DY[new Date(iso + 'T00:00:00Z').getUTCDay()]} ${+iso.slice(8)}`);
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+// Open-Meteo weather codes (WMO) as a kind of sky and, for rain, how heavy
+function skyK(code) {
+  const c = +code;
+  if (c <= 1) return { k: 'clear', n: 'Clear' };
+  if (c === 2) return { k: 'partly', n: 'Partly cloudy' };
+  if (c === 3) return { k: 'cloudy', n: 'Overcast' };
+  if (c === 45 || c === 48) return { k: 'fog', n: 'Fog' };
+  if (c >= 51 && c <= 57) return { k: 'drizzle', n: 'Drizzle', i: 0.25 };
+  if ((c >= 61 && c <= 67) || (c >= 80 && c <= 82)) { const heavy = c === 65 || c === 82, mid = c === 63 || c === 81; return { k: 'rain', n: heavy ? 'Heavy rain' : 'Rain', i: heavy ? 0.85 : mid ? 0.6 : 0.4 }; }
+  if (c >= 95) return { k: 'storm', n: 'Thunderstorm', i: 0.9 };
+  return { k: 'cloudy', n: 'Cloudy' };
 }
 const proj = ([lon, lat]) => [lon * K * 100, -lat * 100];
 function ringsOf(g) { return g.type === 'Polygon' ? [g.coordinates] : g.coordinates; }
@@ -73,8 +82,23 @@ const wxOf = name => S.wx?.places?.[name] || null;
 const rain7 = name => { const w = wxOf(name); return w ? w.days.reduce((s, d) => s + (d.mm || 0), 0) : null; };
 const heat7 = name => { const w = wxOf(name); return w ? Math.max(...w.days.map(d => d.feels ?? d.hi ?? -99)) : null; };
 const binOf = (v, bins) => (v == null ? -1 : bins.findIndex(([a, b]) => v >= a && v < b));
+// the weather the Weather view shows for a province: now, or one of the next days
+function wxAt(name) {
+  const w = wxOf(name); if (!w) return null;
+  if (S.wxDay === 'now') { const n = w.now || {}; if (n.code == null) return null; return { ...skyK(n.code), t: n.t, feels: n.feels, day: n.day, chance: 1 }; }
+  const d = w.days[S.wxDay]; if (!d || d.code == null) return null;
+  return { ...skyK(d.code), t: d.hi, feels: d.feels, day: 1, chance: d.pp == null ? 1 : d.pp / 100 };
+}
+const wxDays = () => { for (const n in feat) { const w = wxOf(n); if (w?.days?.length) return w.days; } return []; };
+// the colour token a province gets in the current view, or null for plain land
+function fillVar(n) {
+  if (S.layer === 'stage') { const s = stageOf(n); return s ? STAGE[s].v : null; }
+  if (S.layer === 'rain') { const b = binOf(rain7(n), RAIN_BINS); return b < 0 ? null : `--r${b}`; }
+  if (S.layer === 'heat') { const b = binOf(heat7(n), HEAT_BINS); return b < 0 ? null : `--h${b}`; }
+  const w = wxAt(n); return w && w.k !== 'clear' ? `--w-${WXCAT[w.k]}` : null; // clear sky leaves the land as it is
+}
 
-/* ---------------- map ---------------- */
+/* ---------------- flat map ---------------- */
 const svg = $('#map');
 let gProv, gFire, gSel;
 function drawMap() {
@@ -119,7 +143,7 @@ function setView(v, animate = true) {
     svg.style.setProperty('--px', scale.toFixed(4));
     gFire && gFire.querySelectorAll('circle').forEach(c => c.setAttribute('r', (2.5 * scale).toFixed(2)));
   };
-  if (!animate || REDUCED.matches || document.hidden) { apply(v); return; }
+  if (!animate || REDUCED.matches || document.hidden || S.is3d) { apply(v); return; }
   const t0 = performance.now(), dur = 520;
   const step = now => {
     const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
@@ -129,38 +153,47 @@ function setView(v, animate = true) {
   anim = requestAnimationFrame(step);
 }
 
+/* ---------------- painting both maps ---------------- */
+let last3d = { fills: '', wx: '' };
 function paint() {
+  const fills3d = {};
   for (const n in feat) {
-    const el = feat[n].el;
-    let fill = 'var(--land)', cls = '';
-    if (S.layer === 'stage') {
-      const s = stageOf(n);
-      if (s) fill = `var(${STAGE[s].v})`; else cls = 'none';
-    } else if (S.layer === 'rain') {
-      const b = binOf(rain7(n), RAIN_BINS);
-      fill = b < 0 ? 'var(--land)' : `var(--r${b})`;
-    } else {
-      const b = binOf(heat7(n), HEAT_BINS);
-      fill = b < 0 ? 'var(--land)' : `var(--h${b})`;
-    }
-    el.style.fill = fill;
-    el.classList.toggle('none', cls === 'none');
-    el.classList.toggle('sel', n === S.sel);
+    const v = fillVar(n), el = feat[n].el;
+    el.style.fill = v ? `var(${v})` : 'var(--land)';
+    el.classList.toggle('none', !v && S.layer === 'stage');
+    if (S.g3) fills3d[n] = v ? cssVar(v) : null;
   }
   gSel.textContent = '';
   if (S.sel && feat[S.sel]) { // the outline on top, so neighbours don't cover it
     const o = feat[S.sel].el.cloneNode(); o.removeAttribute('style'); o.setAttribute('class', 'sel-ring'); gSel.append(o);
   }
   gFire.style.display = S.fires_on ? '' : 'none';
-  legend();
-  document.querySelectorAll('#months [data-m]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.m === S.month)));
-  document.querySelectorAll('#months').forEach(el => el.classList.toggle('off', S.layer !== 'stage'));
+  if (S.g3) {
+    const fk = JSON.stringify(fills3d) + '|' + S.sel; // repaint the 3D texture only when something changed
+    if (fk !== last3d.fills) { last3d.fills = fk; S.g3.paint(fills3d, S.sel); }
+    const wk = S.layer === 'weather' && S.wx ? `${S.wxDay}|${S.wx.asof}|${S.sel}|${cssVar('--sea')}` : '';
+    if (wk !== last3d.wx) { last3d.wx = wk; S.g3.setWeather(wk ? weather3d() : null); }
+    S.g3.showFires(S.fires_on);
+    S.g3.setLabels(labelFor);
+  }
+  legend(); drawBar();
   document.querySelectorAll('#layers [data-layer]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.layer === S.layer)));
+}
+function weather3d() {
+  const out = {};
+  for (const n in feat) { const w = wxAt(n); if (w) out[n] = { k: w.k, i: w.i, chance: w.chance, day: w.day, hot: (w.feels ?? -99) >= 39 }; }
+  return out;
+}
+// 3D labels: the chosen province always; temperatures in the Weather view; names once zoomed in
+function labelFor(n, dist) {
+  if (S.layer === 'weather') { const w = wxAt(n); return w ? `${n} ${r0(w.t)}°` : n === S.sel ? n : null; }
+  if (n === S.sel) return n;
+  return dist < 650 ? n : null;
 }
 
 function legend() {
   const L = $('#legend');
-  let rows = '', title = '';
+  let rows = '', title = '', note = '';
   if (S.layer === 'stage') {
     title = byEnd(S.month);
     const c = { cond: 0, spell: 0, drought: 0, none: 0 };
@@ -170,23 +203,43 @@ function legend() {
   } else if (S.layer === 'rain') {
     title = t('Rain expected, next 7 days');
     rows = RAIN_BINS.map(([a, b], i) => `<li><i style="background:var(--r${i})"></i>${b === Infinity ? `${a}+ mm` : `${a}–${b} mm`}</li>`).join('');
-  } else {
+  } else if (S.layer === 'heat') {
     title = t('Hottest feels-like, next 7 days');
     rows = HEAT_BINS.map(([a, b], i) => `<li><i style="background:var(--h${i})"></i>${a === -Infinity ? `${t('under')} ${b}°C` : b === Infinity ? `${a}°C+` : `${a}–${b - 1}°C`}</li>`).join('');
+  } else {
+    const days = wxDays();
+    title = S.wxDay === 'now' || !days[S.wxDay] ? t('Weather now') : tf('Weather, {day}', { day: dayShort(days[S.wxDay].d) });
+    const c = { clear: 0, partly: 0, cloudy: 0, rain: 0, storm: 0 };
+    for (const n in feat) { const w = wxAt(n); if (w) c[WXCAT[w.k]]++; }
+    rows = Object.keys(c).map(k => `<li><i style="background:var(${k === 'clear' ? '--land' : '--w-' + k})"${k === 'clear' ? ' class="clear"' : ''}></i>${t(WXNAME[k])} <b>${c[k]}</b></li>`).join('');
+    note = `<li class="miss">${t('One forecast point per province.')}</li>`;
   }
   const fires = S.fires_on && S.fires ? `<li class="fl"><i class="dot"></i>${tf('{n} fire detections, last {d} days', { n: S.fires.rows.length.toLocaleString('en'), d: S.fires.days })}</li>` : '';
   const wxMissing = S.layer !== 'stage' && !S.wx ? `<li class="miss">${t('Weather is loading or unavailable.')}</li>` : '';
-  L.innerHTML = `<b class="lt">${esc(title)}</b><ul>${rows}${wxMissing}${fires}</ul>`;
+  L.innerHTML = `<b class="lt">${esc(title)}</b><ul>${rows}${wxMissing || note}${fires}</ul>`;
 }
 
-/* ---------------- months ---------------- */
-function drawMonths() {
+/* ---------------- the chips above the map: months, or days in the Weather view ---------------- */
+let barKey = '';
+function drawBar() {
   const box = $('#months');
-  const ms = S.stages.months;
-  box.innerHTML = `<span class="ml">${t('By end of')}</span>` + ms.map((m, i) => {
+  const days = wxDays();
+  const key = S.layer === 'weather' ? `w|${days.length}|${S.wxDay}` : `m|${S.month}|${S.layer}`;
+  if (key === barKey) return;
+  barKey = key;
+  if (S.layer === 'weather') {
+    box.setAttribute('aria-label', t('Day'));
+    box.classList.remove('off');
+    box.innerHTML = `<button type="button" role="tab" data-d="now" aria-selected="${S.wxDay === 'now'}">${t('Now')}</button>`
+      + days.slice(1).map((d, i) => `<button type="button" role="tab" data-d="${i + 1}" aria-selected="${S.wxDay === i + 1}">${esc(dayShort(d.d))}</button>`).join('');
+    return;
+  }
+  box.setAttribute('aria-label', t('Month'));
+  box.classList.toggle('off', S.layer !== 'stage');
+  box.innerHTML = `<span class="ml">${t('By end of')}</span>` + S.stages.months.map((m, i) => {
     const [y, mo] = m.split('-').map(Number);
     const yr = i === 0 || mo === 1 ? ` <small>${y}</small>` : '';
-    return `<button type="button" role="tab" data-m="${m}" aria-selected="false">${MN[mo - 1]}${yr}</button>`;
+    return `<button type="button" role="tab" data-m="${m}" aria-selected="${m === S.month}">${MN[mo - 1]}${yr}</button>`;
   }).join('');
 }
 function firstMonth() {
@@ -211,7 +264,7 @@ function weatherBlock(name) {
   if (!w) return `<p class="muted">${S.wxErr ? t('Weather is unavailable right now.') : t('Loading weather…')}</p>`;
   const n = w.now || {};
   const days = w.days.map((d, i) => `<li><b>${esc(dayName(d.d, i))}</b><span class="hi">${r0(d.hi)}°</span><span class="lo">${r0(d.lo)}°</span><span class="mm">${d.mm == null ? '–' : (Math.round(d.mm * 10) / 10)} mm</span></li>`).join('');
-  return `<div class="wx-now"><b>${r0(n.t)}°C</b><span>${tf('feels {t}°C', { t: r0(n.feels) })} · ${t(sky(n.code))}</span></div>
+  return `<div class="wx-now"><b>${r0(n.t)}°C</b><span>${tf('feels {t}°C', { t: r0(n.feels) })} · ${t(skyK(n.code).n)}</span></div>
     <ol class="wx-days">${days}</ol>
     <p class="note">${tf('Rain in the next 7 days: {mm} mm. Forecast for one point in the province.', { mm: r0(rain7(name)) })}</p>`;
 }
@@ -252,14 +305,17 @@ function card() {
 /* ---------------- selection, search, location ---------------- */
 function select(name, zoom = true) {
   if (name && !feat[name]) return;
-  S.sel = name;
+  S.sel = name || null;
   paint(); card();
-  if (zoom) setView(name ? fitBox(feat[name].bbox) : S.home);
-  $('#resetBtn').hidden = !name;
+  if (zoom) {
+    if (S.g3 && S.is3d) S.g3.select(S.sel);
+    else setView(S.sel ? fitBox(feat[S.sel].bbox) : S.home);
+  }
+  $('#resetBtn').hidden = !S.sel;
   const u = new URL(location.href);
-  if (name) u.searchParams.set('p', name); else u.searchParams.delete('p');
+  if (S.sel) u.searchParams.set('p', S.sel); else u.searchParams.delete('p');
   history.replaceState(null, '', u);
-  if (name && PHONE.matches) $('#card').scrollIntoView({ block: 'nearest', behavior: REDUCED.matches ? 'auto' : 'smooth' });
+  if (S.sel && PHONE.matches) $('#card').scrollIntoView({ block: 'nearest', behavior: REDUCED.matches ? 'auto' : 'smooth' });
 }
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 const EXTRA = { 'metro manila': ['ncr', 'manila', 'quezon city', 'makati', 'pasig', 'taguig'], 'benguet': ['baguio', 'la trinidad'], 'davao del sur': ['davao city'], 'cebu': ['cebu city', 'lapu lapu', 'mandaue'], 'davao de oro': ['compostela valley'], 'cotabato': ['north cotabato'], 'samar': ['western samar'], 'special geographic area': ['sga', 'barmm'] };
@@ -303,26 +359,32 @@ const tip = $('#tip');
 function tipText(n) {
   if (S.layer === 'stage') { const s = stageOf(n); return `<b>${esc(n)}</b><br>${s ? t(STAGE[s].n) : t('Not listed')} · ${esc(byEnd(S.month))}`; }
   if (S.layer === 'rain') { const v = rain7(n); return `<b>${esc(n)}</b><br>${v == null ? '–' : r0(v) + ' mm'} · ${t('next 7 days')}`; }
-  const v = heat7(n); return `<b>${esc(n)}</b><br>${t('Feels like')} ${v == null ? '–' : r0(v) + '°C'} · ${t('next 7 days')}`;
+  if (S.layer === 'heat') { const v = heat7(n); return `<b>${esc(n)}</b><br>${t('Feels like')} ${v == null ? '–' : r0(v) + '°C'} · ${t('next 7 days')}`; }
+  const w = wxAt(n); return `<b>${esc(n)}</b><br>${w ? `${t(w.n)} · ${r0(w.t)}°C` : '–'}`;
+}
+function showTip(n, x, y) {
+  if (!n) { tip.style.opacity = '0'; return; }
+  tip.innerHTML = tipText(n);
+  const r = tip.getBoundingClientRect();
+  tip.style.left = Math.min(innerWidth - r.width - 8, x + 14) + 'px';
+  tip.style.top = Math.max(8, y - r.height - 10) + 'px';
+  tip.style.opacity = '1';
 }
 function wireMap() {
   svg.addEventListener('pointermove', e => {
     if (e.pointerType !== 'mouse') return;
     const p = e.target.closest?.('.prov');
-    if (!p) { tip.style.opacity = '0'; return; }
-    tip.innerHTML = tipText(p.dataset.name);
-    const r = tip.getBoundingClientRect();
-    tip.style.left = Math.min(innerWidth - r.width - 8, e.clientX + 14) + 'px';
-    tip.style.top = Math.max(8, e.clientY - r.height - 10) + 'px';
-    tip.style.opacity = '1';
+    showTip(p ? p.dataset.name : null, e.clientX, e.clientY);
   });
-  svg.addEventListener('pointerleave', () => { tip.style.opacity = '0'; });
+  svg.addEventListener('pointerleave', () => showTip(null));
   svg.addEventListener('click', e => {
     const p = e.target.closest?.('.prov');
     if (p) select(p.dataset.name === S.sel ? null : p.dataset.name); else if (S.sel) select(null);
   });
   $('#resetBtn').addEventListener('click', () => select(null));
   $('#months').addEventListener('click', e => {
+    const d = e.target.closest('[data-d]');
+    if (d) { S.wxDay = d.dataset.d === 'now' ? 'now' : +d.dataset.d; paint(); return; }
     const b = e.target.closest('[data-m]'); if (!b) return;
     S.month = b.dataset.m; S.layer = 'stage';
     paint(); card();
@@ -334,6 +396,7 @@ function wireMap() {
     const g = e.target.closest('[data-go]'); if (g) { select(g.dataset.go); return; }
     if (e.target.closest('#clearSel')) select(null);
   });
+  $('#viewBtn').addEventListener('click', () => { if (S.is3d) showView(false, true); else start3D(true); });
   let rz = 0;
   addEventListener('resize', () => { cancelAnimationFrame(rz); rz = requestAnimationFrame(() => setView(S.sel ? fitBox(feat[S.sel].bbox) : S.home, false)); });
 }
@@ -354,6 +417,56 @@ function drawFires() {
   }
   gFire.append(frag);
   setView(S.view, false);
+  S.g3?.setFires(S.fires.rows, S.fires_on);
+}
+
+/* ---------------- 3D or flat ---------------- */
+const status = msg => { const el = $('#mapStatus'); el.textContent = msg || ''; el.hidden = !msg; };
+function savedView() {
+  const q = new URLSearchParams(location.search).get('view');
+  if (q === 'flat' || q === '3d') return q;
+  try { return localStorage.getItem(VIEW_KEY) || '3d'; } catch { return '3d'; }
+}
+function showView(three, save) {
+  S.is3d = !!(three && S.g3);
+  svg.toggleAttribute('hidden', S.is3d); // an <svg> has no .hidden property
+  S.g3?.show(S.is3d);
+  const b = $('#viewBtn');
+  b.textContent = S.is3d ? t('Flat map') : t('3D map');
+  b.setAttribute('aria-pressed', String(S.is3d));
+  if (save) { try { localStorage.setItem(VIEW_KEY, S.is3d ? '3d' : 'flat'); } catch { /* storage blocked */ } }
+  if (!S.is3d) setView(S.sel ? fitBox(feat[S.sel].bbox) : S.home, false);
+  showTip(null);
+}
+let loading3d = null;
+function start3D(save) {
+  if (S.g3) { showView(true, save); S.g3.select(S.sel); return Promise.resolve(); }
+  if (loading3d) return loading3d;
+  status(t('Loading 3D map…'));
+  loading3d = (async () => {
+    try {
+      const m = await import('./ph3d.js');
+      if (!m.webglOK()) throw new Error('WebGL is not available');
+      S.g3 = await m.createPH3D({
+        box: $('#mapBox'), geo: S.geo, provinceAt,
+        onPick: n => { if (n && n !== S.sel) select(n); },
+        onHover: (n, x, y) => showTip(n, x, y),
+        onStatus: msg => status(msg ? t(msg) : ''),
+      });
+      last3d = { fills: '', wx: '' };
+      if (S.fires) S.g3.setFires(S.fires.rows, S.fires_on);
+      paint();
+      showView(true, save);
+      if (S.sel) S.g3.select(S.sel);
+    } catch (e) {
+      console.warn('[ph] 3D map unavailable, keeping the flat map:', e?.message || e);
+      S.g3 = null; showView(false); status('');
+      $('#viewBtn').hidden = true;
+    }
+    status('');
+    loading3d = null;
+  })();
+  return loading3d;
 }
 
 /* ---------------- sources ---------------- */
@@ -366,6 +479,7 @@ function sources() {
     <li><a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>: ${S.wx ? tf('weather as of {t}, Manila time', { t: wxT }) : S.wxErr ? t('unavailable') : t('loading')}</li>
     <li><a href="https://firms.modaps.eosdis.nasa.gov/" target="_blank" rel="noopener">NASA FIRMS</a> (VIIRS): ${S.fires ? tf('fire detections, last {d} days', { d: S.fires.days }) : S.firesErr ? t('unavailable') : t('loading')}</li>
     <li>${t('Province boundaries')}: PSA PSGC 2023, ${t('via')} <a href="https://github.com/faeldon/philippines-json-maps" target="_blank" rel="noopener">philippines-json-maps</a> (MIT)</li>
+    <li>${t('Terrain')}: <a href="https://registry.opendata.aws/terrain-tiles/" target="_blank" rel="noopener">AWS Terrain Tiles</a></li>
   </ul>`;
 }
 
@@ -378,15 +492,19 @@ async function start() {
     return;
   }
   S.month = firstMonth();
-  drawMap(); drawMonths(); wireMap(); wireFind();
+  drawMap(); wireMap(); wireFind();
   const want = new URLSearchParams(location.search).get('p');
   paint(); card(); sources();
   if (want && feat[want]) select(want);
+  $('#viewBtn').hidden = false;
+  showView(false);
+  if (savedView() === '3d') start3D(false);
   getJSON('/api/phweather', 30000).then(j => { if (!j.ok) throw new Error('weather'); S.wx = j; })
     .catch(() => { S.wxErr = true; }).finally(() => { paint(); card(); sources(); });
   getJSON('/api/phfires', 30000).then(j => { if (!j.ok) throw new Error('fires'); S.fires = j; drawFires(); })
     .catch(() => { S.firesErr = true; }).finally(() => { paint(); card(); sources(); });
-  addEventListener('bantay:lang', () => { drawMonths(); paint(); card(); sources(); });
+  addEventListener('bantay:lang', () => { barKey = ''; paint(); card(); sources(); showView(S.is3d); });
+  if (TEST) window.__ph = { S, feat };
 }
 if (TEST) document.documentElement.classList.add('test');
 start();

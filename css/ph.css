@@ -8,6 +8,7 @@
   --sea:#e1eae7; --land:#dfe6dc; --edge:#ffffff; --fire:#2a0d06; --fire-ring:#fff6ea;
   --r0:#e7f0ee; --r1:#c4dde4; --r2:#8fc0d0; --r3:#4f97b2; --r4:#1f6684;
   --h0:#f3ead7; --h1:#efcf9d; --h2:#e3a064; --h3:#cc6a3c; --h4:#9c3521;
+  --w-partly:#d3dee3; --w-cloudy:#b4c1c9; --w-rain:#7aaec7; --w-storm:#5c68a3;
   --f-display:"Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-body:"DM Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --f-mono:"DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -23,6 +24,7 @@
     --sea:#0e221e; --land:#1f3a33; --edge:#0c1c18; --fire:#fff1d6; --fire-ring:#2a0d06;
     --r0:#1c3a3d; --r1:#22566a; --r2:#2f7b96; --r3:#4fa6c4; --r4:#8fd2e8;
     --h0:#3a3424; --h1:#6b5326; --h2:#a26a2e; --h3:#d07e45; --h4:#f0a476;
+    --w-partly:#2b4147; --w-cloudy:#3a4c56; --w-rain:#2a6985; --w-storm:#5865a6;
     --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
     color-scheme:dark;
   }
@@ -35,6 +37,7 @@
   --sea:#0e221e; --land:#1f3a33; --edge:#0c1c18; --fire:#fff1d6; --fire-ring:#2a0d06;
   --r0:#1c3a3d; --r1:#22566a; --r2:#2f7b96; --r3:#4fa6c4; --r4:#8fd2e8;
   --h0:#3a3424; --h1:#6b5326; --h2:#a26a2e; --h3:#d07e45; --h4:#f0a476;
+  --w-partly:#2b4147; --w-cloudy:#3a4c56; --w-rain:#2a6985; --w-storm:#5865a6;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
   color-scheme:dark;
 }
@@ -97,16 +100,24 @@ button{font:inherit;color:inherit}
 .sel-ring{fill:none;stroke:var(--forest);stroke-width:calc(var(--px,1) * 2.6);stroke-linejoin:round;pointer-events:none}
 .fires circle{fill:var(--fire);fill-opacity:.85;stroke:var(--fire-ring);stroke-width:calc(var(--px,1) * 1);pointer-events:none}
 @media (prefers-reduced-motion: reduce){.prov{transition:none}}
-.legend{position:absolute;left:12px;bottom:12px;background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12.5px;box-shadow:var(--shadow);max-width:calc(100% - 24px)}
+.legend{position:absolute;z-index:4;left:12px;bottom:12px;background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:12.5px;box-shadow:var(--shadow);max-width:calc(100% - 24px)}
 .legend .lt{display:block;font-weight:700;margin-bottom:4px;color:var(--forest)}
 .legend ul{list-style:none;margin:0;padding:0;display:grid;gap:3px}
 .legend li{display:flex;align-items:center;gap:7px}
 .legend li b{margin-left:auto;padding-left:10px;font:500 12px var(--f-mono)}
 .legend i{width:14px;height:10px;border-radius:3px;flex:none}
 .legend i.none{background:var(--land);outline:1px dashed var(--line-strong)}
+.legend i.clear{outline:1px solid var(--line-strong)}
 .legend i.dot{width:8px;height:8px;margin:0 3px;border-radius:50%;background:var(--fire);box-shadow:0 0 0 1px var(--fire-ring)}
 .legend .miss{color:var(--muted)}
 .reset{position:absolute;right:12px;top:12px;box-shadow:var(--shadow)}
+.viewbtn{position:absolute;left:12px;top:12px;box-shadow:var(--shadow);z-index:3}
+.reset{z-index:3}
+.map-status{position:absolute;left:50%;top:12px;transform:translateX(-50%);z-index:3;background:color-mix(in srgb,var(--panel) 92%,transparent);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;color:var(--muted);box-shadow:var(--shadow);white-space:nowrap}
+.gl3d{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+.labels3d{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:2}
+.l3{position:absolute;left:0;top:0;white-space:nowrap;font:600 11.5px/1 var(--f-body);color:var(--forest);background:color-mix(in srgb,var(--panel) 86%,transparent);border:1px solid color-mix(in srgb,var(--line-strong) 70%,transparent);padding:3px 6px;border-radius:6px;will-change:transform}
+.l3.sel{background:var(--forest);color:var(--paper);border-color:var(--forest);font-size:12.5px;padding:4px 8px}
 .map-msg{position:absolute;inset:auto 12px 50% 12px;text-align:center;color:var(--muted)}
 .tip{position:fixed;z-index:20;pointer-events:none;opacity:0;background:var(--forest);color:var(--paper);padding:6px 9px;border-radius:8px;font-size:12.5px;line-height:1.35;transition:opacity .12s;max-width:240px}
 

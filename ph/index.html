@@ -41,15 +41,18 @@ if(l!=='en'){var h=document.documentElement;h.lang=l;h.classList.add('i18n-wait'
       <div class="layers">
         <div class="seg" role="group" aria-label="Map shows" id="layers">
           <button type="button" data-layer="stage" aria-pressed="true">Dry stage</button>
+          <button type="button" data-layer="weather" aria-pressed="false">Weather</button>
           <button type="button" data-layer="rain" aria-pressed="false">Rain, 7 days</button>
-          <button type="button" data-layer="heat" aria-pressed="false">Feels like</button>
+          <button type="button" data-layer="heat" aria-pressed="false">Heat</button>
         </div>
         <label class="tog"><input type="checkbox" id="fireTog" checked> <span>Fires</span></label>
       </div>
     </div>
     <div class="map" id="mapBox">
       <svg id="map" role="img" aria-label="Map of the Philippines by province. Tap a province for its outlook."></svg>
+      <button type="button" class="btn sm viewbtn" id="viewBtn" aria-pressed="false" hidden>Flat map</button>
       <button type="button" class="btn sm reset" id="resetBtn" hidden>Whole country</button>
+      <div class="map-status" id="mapStatus" role="status" hidden></div>
       <div class="map-msg" id="mapMsg" hidden></div>
     </div>
     <div class="legend" id="legend"></div>
