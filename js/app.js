@@ -650,7 +650,7 @@ function countdownCard(play = true) {
   const big = [[1, 'to dry condition'], [3, 'to drought']].map(([s, what]) => {
     const M = steps.find(x => st(x) >= s); if (!M) return '';
     const [num, unit] = away(M);
-    return `<div class="cd-n s${s}"><b>${num}</b><span>${unit}</span><em>${what}</em><small>${num === 'Now' ? 'PAGASA, this month' : `by the end of ${MN[M.m]}${M.y !== MONTHS[NOW].y ? ' ' + M.y : ''}`}</small></div>`;
+    return `<div class="cd-n s${s}"><b>${num}</b><span>${unit}</span><em>${num === 'Now' ? what.replace(/^to /, 'in ') : what}</em><small>${num === 'Now' ? 'PAGASA, this month' : `by the end of ${MN[M.m]}${M.y !== MONTHS[NOW].y ? ' ' + M.y : ''}`}</small></div>`;
   }).join('');
   // months grouped into runs of the same stage: Oct · Nov · Dec–Jan · Feb–Mar
   const runs = [];

@@ -156,6 +156,9 @@
 .lang + .top-right{margin-left:0}
 /* the Live line wraps on phones, more so in Tagalog and Ilocano: its second line starts on the left, not centred */
 .livebtn{text-align:left}
+/* card headers: room between the title and the label on the right, which wraps flush right in the longer languages */
+.sec-h{column-gap:12px}
+.sec-h .eyebrow{text-align:right}
 /* Tagalog and Ilocano labels run wider: the context chips give way sooner (the English widths are in css/extra.css) */
 @media (min-width:1101px) and (max-width:1660px){html:not([lang="en"]) #spanChip{display:none}}
 @media (min-width:1101px) and (max-width:1511px){html:not([lang="en"]) .ctx .chip.opt{display:none}}
