@@ -208,6 +208,13 @@
   .lang button{min-width:34px;padding:4px 7px;line-height:18px}
 }
 
+/* phones: in-app browsers (Facebook, Messenger) lay their own bar over the top of the page, and 100vh runs under it,
+   so the drawers size to the visible height (dvh) and keep clear of the top, and Close is a full-size tap target */
+@media (max-width:640px){
+  .drawer-c{max-height:min(82vh,calc(100dvh - 88px))}
+  #guide .guide-c{max-height:min(92vh,calc(100dvh - 72px))}
+  .btn.x-close{min-height:44px;padding-inline:14px}
+}
 @media (max-width:640px){
   #guide .guide-c{--gp-t:16px;--gp-l:max(16px,env(safe-area-inset-left,0px));--gp-r:max(16px,env(safe-area-inset-right,0px))}
   .gsearch input{font-size:16px} /* 16px keeps iPhones from zooming in on focus */
