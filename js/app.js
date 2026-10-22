@@ -713,7 +713,6 @@ function renderRail() {
         <p>${st ? esc(STAGES[st.s].d) : M.phase === 'beyond' ? `PAGASA’s current outlook covers ${MF[+D.outlook.from.slice(5) - 1]} ${D.outlook.from.slice(0, 4)} to ${MF[+D.outlook.to.slice(5) - 1]} ${D.outlook.to.slice(0, 4)}.` : 'PAGASA assigns dry stages to whole provinces at the end of each month.'}</p></div>
       ${note ? `<p class="note">${esc(note[0])}</p>` : ''}
       ${st && st.flag ? `<p class="note warn">${esc(st.flag)}</p>` : ''}
-      <p class="note"><a href="/ph?p=Benguet">Every province, month by month: the Philippines map</a></p>
       <div class="stats">
         <div class="stat"><div class="k">Usual rain, Baguio</div><div class="v">${RAIN[M.m].toFixed(0)}<small> mm</small></div></div>
         <div class="stat"><div class="k">Usual rainy days</div><div class="v">${RDAYS[M.m]}</div></div>

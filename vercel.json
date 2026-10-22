@@ -16,16 +16,6 @@
     },
     "api/landcover.js": {
       "maxDuration": 60
-    },
-    "api/phstages.js": {
-      "maxDuration": 60
-    },
-    "api/phweather.js": {
-      "maxDuration": 30,
-      "includeFiles": "data/ph_provinces.json"
-    },
-    "api/phfires.js": {
-      "maxDuration": 30
     }
   },
   "headers": [
