@@ -20,6 +20,9 @@ html:not(.view-simple) #simple{display:none}
 
 /* ---------- the panel ---------- */
 .simple{display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.5;color:var(--ink)}
+.s-part{display:contents} /* holders js/simple.js redraws one at a time; the cards inside lay out as before */
+#sAreaH:focus{outline:none}
+#sAreaH:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
 .s-card{background:var(--g-fill,var(--panel));-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border:1px solid var(--g-edge,var(--line));
   box-shadow:var(--g-shadow);border-radius:var(--g-r,14px);padding:18px 18px 16px}
 .s-h{margin:0;font-family:var(--f-display);font-size:19px;font-weight:700;letter-spacing:-.3px;line-height:1.25;color:var(--forest);text-wrap:balance}

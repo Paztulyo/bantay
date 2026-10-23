@@ -135,7 +135,8 @@ const ANDROID = 'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KH
   await page.click('.top .lang [data-lang="en"]'); await until(page, () => document.documentElement.lang === 'en');
   // hiding it: stays hidden after a reload, for 30 days
   await page.click('#sInstallX'); await page.waitForTimeout(200);
-  ok(!(await strip(page)), 'the × hides it');
+  const after = await page.evaluate(() => document.activeElement && (document.activeElement.id || document.activeElement.tagName));
+  ok(!(await strip(page)) && after === 'sAreaH', `the × hides it, and focus moves to the heading, not the town picker, which a phone would open (${after})`);
   await page.reload({ waitUntil: 'domcontentloaded' }); await until(page, () => document.querySelector('#simple .s-area'));
   const until30 = await page.evaluate(() => (+localStorage.getItem('bantay.installHidden') - Date.now()) / 864e5);
   ok(!(await strip(page)) && until30 > 29 && until30 <= 30, `hidden after a reload, for ${until30.toFixed(1)} days`);

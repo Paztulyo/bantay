@@ -90,6 +90,9 @@ function source() {
 }
 
 /* ---------------- drawing ---------------- */
+// The panel is built once, then each part is redrawn only when its words change. The town picker is never redrawn:
+// iPhone Safari reopens a <select> that a script swaps out and focuses, so redrawing the panel on every pick kept the
+// town list open over the page.
 function installHTML() {
   const st = installState();
   if (st === 'installed' || st === 'none' || +store.get(HIDE_KEY) > Date.now()) return '';
@@ -101,28 +104,20 @@ function installHTML() {
       ${say ? `<p class="s-inst-n" role="status">${say}</p>` : ''}
     </div>`;
 }
-function areaHTML(o) {
-  const { B, MONTHS, NOW, STAGES, state } = api, now = MONTHS[NOW], st = stageOf(now);
-  const towns = Object.keys(B.munis), list = ['Baguio City', ...towns.filter(n => n !== 'Baguio City').sort()];
+function areaHTML(o) { // under the town picker
+  const { MONTHS, NOW, STAGES, state } = api, now = MONTHS[NOW], st = stageOf(now);
   const label = st ? STAGES[st.s].n : o.beyond ? 'Beyond the current outlook' : 'No dry stage yet';
-  return `<section class="s-card s-area" aria-labelledby="sAreaH">
-      <label class="s-label" for="sTown">Your area</label>
-      <div class="s-select"><select id="sTown">
-        <option value=""${state.sel ? '' : ' selected'}>All of Benguet</option>
-        ${list.map(n => `<option value="${esc(n)}"${state.sel === n ? ' selected' : ''}>${esc(n)}</option>`).join('')}
-      </select>${ICON.chev}</div>
-      <h2 class="s-h" id="sAreaH">What this means for ${esc(state.sel || 'Benguet')}</h2>
+  return `<h2 class="s-h" id="sAreaH" tabindex="-1">What this means for ${esc(state.sel || 'Benguet')}</h2>
       <div class="s-now"><span class="sw s-sw${st ? '' : ' none'}${st && now.phase === 'outlook' ? ' hatch' : ''}"${st ? ` style="background-color:var(--stage${st.s})"` : ''}></span><b>${esc(label)}</b><span>Now · ${esc(monthYear(now))}</span></div>
       <p class="s-sum">${summary(o).map(t => `<span>${esc(t)}</span>`).join(' ')}</p>
-      <p class="s-src"><span>Source:</span> ${source()}</p>
-    </section>`;
+      <p class="s-src"><span>Source:</span> ${source()}</p>`;
 }
-function outlookHTML(o) {
-  const { D, NOW, STAGES, state } = api;
+function outlookHTML(o) { // which month is shown is marked by mark(), so a tap on a month doesn't redraw the card
+  const { D, NOW, STAGES } = api;
   if (o.beyond) return '';
   const rows = o.runs.map(r => {
-    const on = state.month >= r.from.i && state.month <= r.to.i, lab = `${MN[r.from.m]}${r.to !== r.from ? '–' + MN[r.to.m] : ''}`;
-    return `<li><button type="button" id="sRun${r.from.i}" data-m="${r.from.i}" aria-pressed="${on}">
+    const lab = `${MN[r.from.m]}${r.to !== r.from ? '–' + MN[r.to.m] : ''}`;
+    return `<li><button type="button" id="sRun${r.from.i}" data-m="${r.from.i}" data-to="${r.to.i}" aria-pressed="false">
         <span class="sw s-sw${r.s ? '' : ' none'}${r.s && r.from.phase === 'outlook' ? ' hatch' : ''}"${r.s ? ` style="background-color:var(--stage${r.s})"` : ''}></span>
         <span class="s-m">${esc(lab)}</span><span class="s-st">${esc(r.s ? STAGES[r.s].n : r.from.i === NOW ? 'No dry stage yet' : 'No dry stage listed')}</span>${r.from.i === NOW ? '<span class="s-nowtag">Now</span>' : ''}</button></li>`;
   }).join('');
@@ -157,32 +152,69 @@ function helpHTML() {
       </div>
       <div class="s-langrow" data-i18n-skip><span id="sLangL">Language · Wika · Pagsasao</span>
         <div class="lang" role="group" aria-labelledby="sLangL">
-          <button type="button" data-lang="en" lang="en" aria-label="English" aria-pressed="${html.lang === 'en'}">EN</button>
-          <button type="button" data-lang="tl" lang="tl" aria-label="Tagalog" aria-pressed="${html.lang === 'tl'}">TL</button>
-          <button type="button" data-lang="ilo" lang="ilo" aria-label="Ilokano" aria-pressed="${html.lang === 'ilo'}">ILO</button>
+          <button type="button" data-lang="en" lang="en" aria-label="English">EN</button>
+          <button type="button" data-lang="tl" lang="tl" aria-label="Tagalog">TL</button>
+          <button type="button" data-lang="ilo" lang="ilo" aria-label="Ilokano">ILO</button>
         </div></div>
       ${pag ? `<p class="s-fine">This site is not an official warning channel. In an emergency, call 911. For official El Niño advisories, see <a href="${esc(pag.u)}" target="_blank" rel="noopener">PAGASA</a>.</p>` : ''}
     </section>`;
 }
-function render() {
-  if (!api || !panel || !isSimple()) return;
-  const focus = document.activeElement && panel.contains(document.activeElement) ? document.activeElement.id : '';
-  const o = outlook();
-  panel.innerHTML = installHTML() + areaHTML(o) + outlookHTML(o) + doHTML() + helpHTML();
+let built = false;
+function build() {
+  const towns = Object.keys(api.B.munis), list = ['Baguio City', ...towns.filter(n => n !== 'Baguio City').sort()];
+  panel.innerHTML = `<div class="s-part" id="sInstW"></div>
+    <section class="s-card s-area" aria-labelledby="sAreaH">
+      <label class="s-label" for="sTown">Your area</label>
+      <div class="s-select"><select id="sTown"><option value="">All of Benguet</option>${list.map(n => `<option value="${esc(n)}">${esc(n)}</option>`).join('')}</select>${ICON.chev}</div>
+      <div id="sAreaB"></div>
+    </section>
+    <div class="s-part" id="sOutW"></div><div class="s-part" id="sDoW"></div><div class="s-part" id="sHelpW"></div>`;
   panel.querySelector('#sTown').addEventListener('change', e => api.selectTown(e.target.value || null, true));
-  panel.querySelectorAll('.s-runs [data-m]').forEach(b => b.addEventListener('click', () => api.setMonth(+b.dataset.m)));
-  panel.querySelector('#sMore')?.addEventListener('click', e => openGuide('tips', e.currentTarget));
-  panel.querySelector('#sHot').addEventListener('click', e => openGuide('hotlines', e.currentTarget));
-  panel.querySelector('#sSrc').addEventListener('click', () => api.openSources());
-  panel.querySelector('#sInstallBtn')?.addEventListener('click', async () => {
+  panel.addEventListener('click', onClick);
+  built = true;
+}
+async function onClick(e) {
+  const b = e.target.closest('button');
+  if (!b || !panel.contains(b)) return;
+  if (b.dataset.m != null) { api.setMonth(+b.dataset.m); return; }
+  if (b.id === 'sMore') openGuide('tips', b);
+  else if (b.id === 'sHot') openGuide('hotlines', b);
+  else if (b.id === 'sSrc') api.openSources();
+  else if (b.id === 'sInstallBtn') {
     const st = installState();
     note = st === 'ios' || st === 'inapp' ? st : '';
     if (st === 'prompt') { const r = await install(); if (r === 'unavailable') note = 'menu'; }
     else if (!note) note = 'menu';
     render();
-  });
-  panel.querySelector('#sInstallX')?.addEventListener('click', () => { store.set(HIDE_KEY, Date.now() + HIDE_DAYS * 864e5); render(); panel.querySelector('#sTown')?.focus(); });
-  if (focus) panel.querySelector('#' + focus)?.focus();
+  } else if (b.id === 'sInstallX') {
+    store.set(HIDE_KEY, Date.now() + HIDE_DAYS * 864e5); render();
+    panel.querySelector('#sAreaH')?.focus(); // the heading, not the town picker: focusing that opens its list on a phone
+  }
+}
+// redraw one part only when its words changed, and keep focus on the same button
+function put(el, h) {
+  if (!el || el._h === h) return;
+  const f = document.activeElement, id = f && f.id && el.contains(f) ? f.id : '';
+  el._h = h; el.innerHTML = h;
+  if (id) el.querySelector('#' + CSS.escape(id))?.focus({ preventScroll: true });
+}
+const press = (b, on) => { if (b.getAttribute('aria-pressed') !== String(on)) b.setAttribute('aria-pressed', String(on)); };
+function mark() { // the month on the map, and the language
+  const m = api.state.month;
+  panel.querySelectorAll('.s-runs [data-m]').forEach(b => press(b, m >= +b.dataset.m && m <= +b.dataset.to));
+  panel.querySelectorAll('.s-langrow [data-lang]').forEach(b => press(b, b.dataset.lang === html.lang));
+}
+function render() {
+  if (!api || !panel || !isSimple()) return;
+  if (!built) build();
+  const o = outlook(), sel = panel.querySelector('#sTown'), v = api.state.sel || '';
+  if (sel.value !== v) sel.value = v;
+  put(panel.querySelector('#sInstW'), installHTML());
+  put(panel.querySelector('#sAreaB'), areaHTML(o));
+  put(panel.querySelector('#sOutW'), outlookHTML(o));
+  put(panel.querySelector('#sDoW'), doHTML());
+  put(panel.querySelector('#sHelpW'), helpHTML());
+  mark();
 }
 
 /* ---------------- wiring ---------------- */

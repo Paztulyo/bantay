@@ -80,20 +80,31 @@ const mobile = W < 768, tag = `${W}${dark ? '_dark' : ''}${rm ? '_rm' : ''}`;
   if (mobile) ok(look.minTarget >= 40 && look.btns.every(b => b.h >= 40), `phone: every Simple control is a thumb wide (${look.minTarget}px, switch ${look.btns.map(b => Math.round(b.h)).join('/')}px)`);
   await shot('simple');
 
-  // ---- the town picker
+  // ---- the town picker. iPhone Safari reopens a <select> that a script replaces and focuses, so the picker must stay
+  // the same element through a pick, and nothing may focus it
+  await page.evaluate(() => {
+    window.__pick = document.querySelector('#sTown'); window.__pickFocus = 0;
+    const f = HTMLSelectElement.prototype.focus;
+    HTMLSelectElement.prototype.focus = function (...a) { window.__pickFocus++; return f.apply(this, a); };
+  });
   await page.selectOption('#sTown', 'La Trinidad');
   ok(await until(() => window.bantayApp.state.sel === 'La Trinidad' && document.querySelector('#sAreaH')?.textContent === 'What this means for La Trinidad'), 'picking La Trinidad selects it on the map and in the summary');
   await page.waitForTimeout(400);
+  const kept = await page.evaluate(() => ({ same: document.querySelector('#sTown') === window.__pick, focus: window.__pickFocus, value: window.__pick.value }));
+  ok(kept.same && kept.focus === 0 && kept.value === 'La Trinidad', `the picker stays the same element and no script focuses it, so a phone's town list closes (same ${kept.same}, focused ${kept.focus}x)`);
   s = await st();
   ok(s.lblSel === 'La Trinidad' && s.wxTown === 'La Trinidad', `the map label and the weather card follow (${s.lblSel}, ${s.wxTown})`);
   ok(/PAGASA rates dry stages by province, not by town\./.test(s.sum), 'the summary says why it reads the same for every town');
   ok(s.store.town === 'La Trinidad', 'the town is remembered');
 
   // ---- a month from the outlook, shown on the map
+  await page.evaluate(() => { window.__runs = [...document.querySelectorAll('.s-runs button')]; });
   await page.click('.s-runs button >> nth=2');
   await page.waitForTimeout(300);
   s = await st();
   ok(s.month === s.now + 2 && /^Dec 2026/.test(s.badge || '') && s.runs[2].endsWith('*'), `tapping Dec–Apr shows December on the map (${s.badge})`);
+  ok(await page.evaluate(() => [...document.querySelectorAll('.s-runs button')].every((b, i) => b === window.__runs[i]) && document.activeElement === window.__runs[2]),
+    'the month rows only change which one is marked: the tapped row keeps focus, nothing is redrawn');
 
   // ---- to Detailed: the town, month, language and camera stay
   // a camera the user moved: any flight still running ends first (software rendering draws few frames), then the view
