@@ -2,10 +2,12 @@
 // and a hotline drawer with tap-to-call numbers checked against official sites.
 // The rail cards are written in English and translated on the page like everything else (js/i18n.js); the drawer
 // writes itself in the chosen language, so search can match and highlight words in that language, and redraws when
-// the language changes.
+// the language changes. The third tab, Ask, is js/ask.js: questions answered from the site's data, shown once
+// /api/ask says it's ready.
 import { $, esc, getJSON, MN, fmtDate } from './util.js';
 import { hico } from './icons.js';
 import { t, tf, ld, getLang } from './i18n.js';
+import { mountAsk, askFocus } from './ask.js';
 
 let G = null; // data/guide.json
 let opener = null;
@@ -38,6 +40,7 @@ const ICON = {
   phone: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6.6 3.8l2.6-.3 1.6 4-1.9 1.4a11 11 0 005.4 5.4l1.4-1.9 4 1.6-.3 2.6a2 2 0 01-2 1.8A15.6 15.6 0 014.8 5.8a2 2 0 011.8-2z"/></svg>',
   search: '<svg class="gs-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg>',
   x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  ask: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M5 4.5h14a2 2 0 012 2v8.5a2 2 0 01-2 2h-7.5L7 20.5V17H5a2 2 0 01-2-2V6.5a2 2 0 012-2z"/></svg>',
 };
 export const phoneIcon = ICON.phone;
 
@@ -46,7 +49,8 @@ const srcLinks = ids => [].concat(ids || []).filter(id => G.src[id])
 const cta = () => `<div class="gcta">
     <a class="btn sos" href="tel:911">${ICON.phone}Emergency 911</a>
     <button class="btn" data-guide="hotlines">All hotlines</button>
-    <button class="btn" data-guide="tips">More tips</button></div>`;
+    <button class="btn" data-guide="tips">More tips</button>
+    <button class="btn ask-cta ask-only" data-guide="ask">${ICON.ask}Ask a question</button></div>`;
 
 // Rail card for the Outlook view: three things to do for the month on screen.
 export function guideRail(M, NOW, MONTHS, D) {
@@ -125,15 +129,19 @@ function hl(text, Q) {
 }
 const noMatch = q => `<div class="gnone"><b>${esc(t('Nothing matches “{q}”.')).replace('{q}', esc(q))}</b><span>${esc(t('Try water, hospital, fire, power or a town name. In an emergency, call'))} <a href="tel:911">911</a>.</span></div>`;
 
+// one hotline entry; the Ask tab passes the area too, since its short list has no group headings
+function itemHTML(it, area = '', Q = null) {
+  return `<li>
+      <div class="hname"><b>${hl(t(it.n), Q)}</b>${area ? `<span class="harea">${esc(t(area))}</span>` : ''}${it.note ? `<span>${hl(t(it.note), Q)}</span>` : ''}</div>
+      <div class="hnums">${(it.nums || []).map(numLink).join('')}${it.link && G.src[it.link] ? `<a class="btn" href="${esc(G.src[it.link].u)}" target="_blank" rel="noopener">${esc(tf('Open {site} site', { site: G.src[it.link].s }))}</a>` : ''}</div>
+      ${it.src ? `<div class="src">${esc(t('Source:'))} ${srcLinks(it.src)}</div>` : ''}</li>`;
+}
 function hotlinesHTML(Q) {
   let n = 0;
   const html = G.hotlines.map(g => {
     const items = g.items.filter(it => !Q || hits(Q, [g.g, it.n, it.note, t(g.g), t(it.n), t(it.note), it.link && G.src[it.link] ? G.src[it.link].s : '', ...it.nums.map(x => `${x.l || ''} ${t(x.l) || ''} ${x.v}`)].join(' ')));
     n += items.length;
-    return items.length ? `<div class="hgrp"><h3><span>${hl(t(g.g), Q)}</span></h3><ul class="hl">${items.map(it => `<li>
-      <div class="hname"><b>${hl(t(it.n), Q)}</b>${it.note ? `<span>${hl(t(it.note), Q)}</span>` : ''}</div>
-      <div class="hnums">${it.nums.map(numLink).join('')}${it.link && G.src[it.link] ? `<a class="btn" href="${esc(G.src[it.link].u)}" target="_blank" rel="noopener">${esc(tf('Open {site} site', { site: G.src[it.link].s }))}</a>` : ''}</div>
-      ${it.src ? `<div class="src">${esc(t('Source:'))} ${srcLinks(it.src)}</div>` : ''}</li>`).join('')}</ul></div>` : '';
+    return items.length ? `<div class="hgrp"><h3><span>${hl(t(g.g), Q)}</span></h3><ul class="hl">${items.map(it => itemHTML(it, '', Q)).join('')}</ul></div>` : '';
   }).join('');
   return { html, n };
 }
@@ -155,9 +163,8 @@ function renderLists() {
   $('#gpanT').innerHTML = T.n || !Q ? T.html : noMatch(query);
   $('#gtabH').innerHTML = esc(t('Hotlines')) + (Q ? ` <span class="gcount">${H.n}</span>` : '');
   $('#gtabT').innerHTML = esc(t('What to do')) + (Q ? ` <span class="gcount">${T.n}</span>` : '');
-  const onTips = $('#gtabT').getAttribute('aria-selected') === 'true';
-  if (Q && onTips && !T.n && H.n) selectTab('hotlines');
-  else if (Q && !onTips && !H.n && T.n) selectTab('tips');
+  if (Q && curTab === 'tips' && !T.n && H.n) selectTab('hotlines');
+  else if (Q && curTab === 'hotlines' && !H.n && T.n) selectTab('tips');
   $('#gqX').hidden = !query;
   // searching from far down the list: bring the first result up to just under the pinned search bar
   const pan = $('#guide .drawer-c'), bar = $('#guide .gbar'), panel = $('#gpanH').hidden ? $('#gpanT') : $('#gpanH');
@@ -171,7 +178,10 @@ function renderLists() {
 }
 function setQuery(v) { const qi = $('#gq'); if (qi) qi.value = v; query = v; renderLists(); }
 
-let built = false, inited = false, nowPhase = 'prepare', lastInit = {};
+let built = false, inited = false, nowPhase = 'prepare', lastInit = {}, curTab = 'hotlines';
+const TABS = { hotlines: 'H', tips: 'T', ask: 'A' };
+const askOn = () => document.documentElement.classList.contains('ask-ready');
+const shownTabs = () => Object.keys(TABS).filter(w => w !== 'ask' || askOn());
 export const guideInited = () => inited;
 // Without the outlook (the page failed to start) the tips fall back to "before the dry months".
 export function initGuide({ nowKey = '', stageMap = {}, outlook = { to: '9999-12' } } = {}) {
@@ -191,21 +201,26 @@ export function initGuide({ nowKey = '', stageMap = {}, outlook = { to: '9999-12
       <div class="gtabs" role="tablist" aria-label="${esc(t('Be ready'))}">
         <button role="tab" id="gtabH" aria-controls="gpanH" aria-selected="true">${esc(t('Hotlines'))}</button>
         <button role="tab" id="gtabT" aria-controls="gpanT" aria-selected="false" tabindex="-1">${esc(t('What to do'))}</button>
+        <button role="tab" id="gtabA" class="ask-only" aria-controls="gpanA" aria-selected="false" tabindex="-1">${esc(t('Ask'))}</button>
       </div>
     </div>
     <p class="sr-only" id="gqRes" aria-live="polite"></p>
     <div role="tabpanel" id="gpanH" aria-labelledby="gtabH"></div>
     <div role="tabpanel" id="gpanT" aria-labelledby="gtabT" hidden></div>
+    <div role="tabpanel" id="gpanA" aria-labelledby="gtabA" hidden></div>
     <p class="src gfoot">${esc(t('This site is not an official warning channel. In an emergency, call 911. For official El Niño advisories, see'))} <a href="${esc(G.src.pag_adv5.u)}" target="_blank" rel="noopener">PAGASA</a>.</p>
   </div>`;
-  const tabs = [$('#gtabH'), $('#gtabT')];
-  tabs.forEach((tab, i) => {
-    tab.addEventListener('click', () => selectTab(i ? 'tips' : 'hotlines'));
-    tab.addEventListener('keydown', e => {
+  for (const [w, id] of Object.entries(TABS)) {
+    const tab = $('#gtab' + id);
+    tab.addEventListener('click', () => { selectTab(w); if (w === 'ask' && matchMedia('(pointer: fine)').matches) askFocus(); });
+    tab.addEventListener('keydown', e => { // arrows move along the tabs that show
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-      e.preventDefault(); const j = 1 - i; selectTab(j ? 'tips' : 'hotlines'); tabs[j].focus();
+      e.preventDefault();
+      const list = shownTabs(), i = list.indexOf(w), next = list[(i + (e.key === 'ArrowRight' ? 1 : list.length - 1)) % list.length];
+      selectTab(next); $('#gtab' + TABS[next]).focus();
     });
-  });
+  }
+  mountAsk($('#gpanA'), { G, itemHTML: (it, area) => itemHTML(it, area) });
   $('#guideClose').addEventListener('click', closeGuide);
   query = ''; renderLists();
   const qi = $('#gq');
@@ -226,10 +241,14 @@ export function initGuide({ nowKey = '', stageMap = {}, outlook = { to: '9999-12
   }
 }
 function selectTab(which) {
-  const h = which !== 'tips';
-  $('#gtabH').setAttribute('aria-selected', h); $('#gtabT').setAttribute('aria-selected', !h);
-  $('#gtabH').tabIndex = h ? 0 : -1; $('#gtabT').tabIndex = h ? -1 : 0;
-  $('#gpanH').hidden = !h; $('#gpanT').hidden = h;
+  if (!TABS[which] || (which === 'ask' && !askOn())) which = 'hotlines';
+  for (const [w, id] of Object.entries(TABS)) {
+    const on = w === which, tab = $('#gtab' + id), pan = $('#gpan' + id);
+    if (!tab || !pan) continue;
+    tab.setAttribute('aria-selected', on); tab.tabIndex = on ? 0 : -1; pan.hidden = !on;
+  }
+  $('#guide .gbar')?.classList.toggle('on-ask', which === 'ask'); // Ask has its own box: the search steps aside
+  curTab = which;
 }
 export function openGuide(which = 'hotlines', from = null) {
   const dr = $('#guide'); if (!dr || !G) return;
@@ -239,7 +258,8 @@ export function openGuide(which = 'hotlines', from = null) {
   dr.hidden = false;
   dr.querySelector('.drawer-c').scrollTop = 0;
   dr.querySelector('.gbar')?.classList.remove('stuck');
-  $('#guideClose').focus();
+  if (curTab === 'ask' && matchMedia('(pointer: fine)').matches) askFocus(); // on phones a tap opens the keyboard when wanted
+  else $('#guideClose').focus();
 }
 export function closeGuide() {
   const dr = $('#guide'); if (!dr || dr.hidden) return;
@@ -252,11 +272,11 @@ export function closeGuide() {
 addEventListener('bantay:lang', () => {
   const dr = $('#guide');
   if (!inited || !dr || !dr.querySelector('.drawer-c')) return;
-  const q = query, tips = $('#gtabT')?.getAttribute('aria-selected') === 'true', top = dr.querySelector('.drawer-c').scrollTop;
+  const q = query, tab = curTab, top = dr.querySelector('.drawer-c').scrollTop;
   const focus = document.activeElement && dr.contains(document.activeElement) ? document.activeElement.id : '';
   initGuide(lastInit);
   if (q) setQuery(q);
-  selectTab(tips ? 'tips' : 'hotlines');
+  selectTab(tab);
   dr.querySelector('.drawer-c').scrollTop = top;
   if (focus && !dr.hidden) $('#' + focus)?.focus();
 });

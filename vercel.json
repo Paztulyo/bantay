@@ -16,6 +16,10 @@
     },
     "api/landcover.js": {
       "maxDuration": 60
+    },
+    "api/ask.js": {
+      "maxDuration": 30,
+      "includeFiles": "data/*.json"
     }
   },
   "headers": [

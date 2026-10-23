@@ -2,14 +2,14 @@
 // Needs a free MAP_KEY in the FIRMS_MAP_KEY environment variable.
 import { UA, send, attempt, nowISO } from './_lib.js';
 
-const AREA = '120.35,16.05,121.05,17.02'; // west,south,east,north (Benguet + Baguio, padded)
-const SOURCES = ['VIIRS_SNPP_NRT', 'VIIRS_NOAA20_NRT', 'VIIRS_NOAA21_NRT', 'MODIS_NRT'];
+export const AREA = '120.35,16.05,121.05,17.02'; // west,south,east,north (Benguet + Baguio, padded)
+export const SOURCES = ['VIIRS_SNPP_NRT', 'VIIRS_NOAA20_NRT', 'VIIRS_NOAA21_NRT', 'MODIS_NRT'];
 const MAX_DAYS = 5; // the FIRMS area API accepts a day range of 1..5
 
 // like fetchText, but keeps FIRMS's own error message ("Invalid MAP_KEY.", "Invalid day range...")
-async function firms(url) {
+export async function firms(url, ms = 20000) {
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), 20000);
+  const t = setTimeout(() => ctrl.abort(), ms);
   try {
     const r = await fetch(url, { headers: { 'User-Agent': UA }, signal: ctrl.signal });
     const txt = await r.text();
@@ -18,7 +18,7 @@ async function firms(url) {
   } finally { clearTimeout(t); }
 }
 
-function parseCSV(txt, src) {
+export function parseCSV(txt, src) {
   const lines = txt.trim().split(/\r?\n/);
   if (lines.length < 1 || !/latitude/i.test(lines[0])) {
     if (/invalid|error|key/i.test(txt.slice(0, 200))) throw new Error(txt.slice(0, 160));

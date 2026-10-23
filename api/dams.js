@@ -2,6 +2,7 @@
 import { fetchText, send, stripTags, monIdx, attempt, nowISO } from './_lib.js';
 
 const URL = 'https://www.pagasa.dost.gov.ph/flood';
+export { URL as DAMS_URL }; // api/ask.js reads the same table
 const WANT = { Ambuklao: 752.0, Binga: 575.0, 'San Roque': 280.0 }; // normal high water level, m
 const num = s => { const v = parseFloat(String(s).replace(/[,\s+]/g, '').replace('−', '-')); return Number.isFinite(v) ? v : null; };
 const isDate = s => /^[A-Z][a-z]{2}-\d{1,2}$/.test(s.trim());
@@ -20,7 +21,7 @@ function isoFromShort(short, time) { // "Oct-21", "08:00 AM" -> ISO in +08:00
   return `${y}-${String(mi + 1).padStart(2, '0')}-${m[2].padStart(2, '0')}T${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}:00+08:00`;
 }
 
-function parse(html) {
+export function parse(html) {
   const cells = [];
   const re = /<td([^>]*)>([\s\S]*?)<\/td>/gi;
   let m;
