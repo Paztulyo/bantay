@@ -45,7 +45,7 @@ html:not(.view-simple) #simple{display:none}
 .s-period span{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--amber)}
 .s-period b{font-size:18px;font-weight:700;color:var(--ink)}
 .s-runs{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
-.s-runs button{width:100%;min-height:48px;display:grid;grid-template-columns:18px 76px minmax(0,1fr) auto;align-items:center;gap:12px;padding:8px 12px;
+.s-runs button{width:100%;min-height:48px;display:grid;grid-template-columns:18px 64px minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 12px;
   border-radius:12px;text-align:left;color:var(--ink);background:var(--g-inset,var(--paper));border:1.5px solid var(--g-hair,var(--line))}
 .s-runs button:hover{border-color:var(--teal)}
 .s-runs button[aria-pressed="true"]{border-color:var(--forest);box-shadow:inset 0 0 0 1px var(--forest)}
@@ -97,13 +97,14 @@ html:not(.view-simple) #simple{display:none}
 @media (min-width:641px) and (max-width:1100px){
   .simple{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
   .s-install{grid-column:1/-1}
+  .s-btn{padding:0 8px;font-size:14px;gap:6px}
 }
 /* phones: roomier cards, every target a thumb wide */
 @media (max-width:640px){
   .simple{font-size:16px;gap:8px}
   .s-card{padding:18px 16px}
   .s-h{font-size:20px}
-  .s-runs button{grid-template-columns:18px 70px minmax(0,1fr) auto}
+  .s-runs button{grid-template-columns:18px 62px minmax(0,1fr) auto}
 }
 
 /* ---------- the switch in the header, by width ---------- */

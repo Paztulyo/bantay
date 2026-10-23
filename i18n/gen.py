@@ -63,7 +63,35 @@ for fn in ('strings_a.py', 'strings_b.py', 'strings_c.py', 'patterns.py'):
         if isinstance(node, ast.Tuple) and len(node.elts) == 3 and isinstance(node.elts[0], ast.Constant):
             before = [m for ln, m in marks if ln < node.lineno]
             where.setdefault(node.elts[0].value, before[-1] if before else '')
+def readable(rx):
+    # a pattern's English as a reviewer reads it: each captured piece becomes $1, $2.., optional parts go in [ ]
+    body = re.match(r'^/(.*)/[a-z]*$', rx, re.S).group(1)
+    out, n, i, groups = [], 0, 0, []
+    def quant(j):  # skip a quantifier after a group or a character
+        if j < len(body) and body[j] == '{': return body.index('}', j) + 1
+        return j + 1 if j < len(body) and body[j] in '?*+' else j
+    while i < len(body):
+        c = body[i]
+        if c == '\\': out.append(body[i + 1] if body[i + 1] not in 'dws' else '…'); i = quant(i + 2); continue
+        if c == '(' and body.startswith('(?:', i): groups.append(len(out)); out.append('['); i += 3; continue
+        if c == '(':
+            n += 1; out.append(f'${n}'); depth, i = 1, i + 1
+            while depth:
+                if body[i] == '\\': i += 2; continue
+                if body[i] == '(': depth += 1; n += not body.startswith('(?', i)
+                elif body[i] == ')': depth -= 1
+                i += 1
+            i = quant(i); continue
+        if c == ')': groups.pop(); out.append(']'); i = quant(i + 1); continue
+        if c == '[': i = quant(body.index(']', i + 1) + 1); out.append('…'); continue
+        if c == '|': out.append(' / '); i += 1; continue
+        if c in '^$': i += 1; continue
+        out.append(c); i += 1
+        if i < len(body) and body[i] == '?': i += 1  # "days?" reads as "days"
+    return ''.join(out)
 with open(os.path.join(HERE, 'review.csv'), 'w', newline='') as f:
     w = csv.writer(f); w.writerow(['Where it shows', 'English', 'Tagalog', 'Ilocano'])
     for en, (tl, ilo) in seen.items(): w.writerow([where.get(en, ''), en, tl, ilo])
+    w.writerow(['Lines with numbers, dates or names: the site fills in $1, $2.. A line starting with fn: is built in code, read its quoted words', '', '', ''])
+    for rx, tl, ilo in P: w.writerow([where.get(rx, ''), readable(rx), tl, ilo])
 print('\n'.join(problems) or 'no problems')

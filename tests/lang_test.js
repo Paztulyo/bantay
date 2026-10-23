@@ -86,7 +86,7 @@ const { BASE, OUT, LAUNCH } = require('./env');
   ok(s.lang === 'ilo' && s.pressed === 'ilo' && s.modes[2] === 'Danum', 'a ?lang=ilo link opens in Ilocano');
   await page.context().close();
 
-  // phone: the switch sits beside the name, the header doesn't grow, nothing spills sideways
+  // phone: the switch sits beside the name, the header grows only by the view switch, nothing spills sideways
   for (const lang of ['en', 'tl', 'ilo']) {
     page = await open({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 }, '&lang=' + lang);
     const m = await page.evaluate(() => {
@@ -95,7 +95,8 @@ const { BASE, OUT, LAUNCH } = require('./env');
     });
     logs.push(`phone ${lang}: ` + JSON.stringify(m));
     ok(Math.abs(m.lang[1] - m.brand[1]) < 12 && m.lang[2] <= 390 - 12 && !m.hs, `phone (${lang}): the switch shares the first row with the name, nothing spills sideways`);
-    ok(m.top[3] - m.top[1] <= 206, `phone (${lang}): the header stays as tall as before, 204px in this test browser (${m.top[3] - m.top[1]}px)`);
+    // 204px before the Simple/Detailed switch; its row adds 64px in Detailed (header_test.js checks both views)
+    ok(m.top[3] - m.top[1] <= 270, `phone (${lang}): the header grows only by the Simple/Detailed row, 270px at most in this test browser (${m.top[3] - m.top[1]}px)`);
     await page.screenshot({ path: OUT + `lang_${lang}_390.png` });
     await page.context().close();
   }

@@ -787,7 +787,7 @@ function nowSection() {
 function placeCard() {
   const m = B.munis[state.sel]; if (!m) return '';
   const M = MONTHS[state.month], st = D.stage[M.k], v = wxFor(state.sel);
-  return `<div class="place"><div class="res-h"><h4>${esc(state.sel)}</h4><button class="btn" id="placeX" style="padding:3px 8px">Clear</button></div>
+  return `<div class="place"><div class="res-h"><h4>${esc(state.sel)}</h4><button class="btn" id="placeX" style="padding:3px 8px">Close</button></div>
     <p>${m.area.toLocaleString()} km² · ${state.sel === 'Baguio City' ? 'Independent city' : 'Municipality of Benguet'}</p>
     <div class="elev"><span>Low ${m.elev[0].toLocaleString()} m</span><span>Median ${m.elev[1].toLocaleString()} m</span><span>High ${m.elev[2].toLocaleString()} m</span></div>
     ${v ? `<div class="stats" style="margin-top:8px"><div class="stat"><div class="k">Rain, last 30 days</div><div class="v">${v.rain30.toFixed(0)}<small> mm</small></div></div><div class="stat"><div class="k">Dry days, last 30</div><div class="v">${v.dry30}</div></div><div class="stat"><div class="k">Dry run now</div><div class="v">${v.streak}<small> days</small></div></div><div class="stat"><div class="k">High today</div><div class="v">${v.tmaxToday != null ? v.tmaxToday.toFixed(0) + '<small>°C</small>' : '—'}</div></div></div>` : ''}

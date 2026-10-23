@@ -476,3 +476,92 @@ Phrases found later in the code's less common states,"OpenFreeMap tiles unavaila
 Phrases found later in the code's less common states,no town data in the answer,walang datos ng bayan sa sagot,awan ti datos ti ili iti sungbat
 Phrases found later in the code's less common states,No hourly forecast in this answer,Walang pagtataya bawat oras sa sagot na ito,Awan ti padto iti tunggal oras iti daytoy a sungbat
 Phrases found later in the code's less common states,No daily forecast in this answer,Walang pang-araw-araw na pagtataya sa sagot na ito,Awan ti inaldaw a padto iti daytoy a sungbat
+"Lines with numbers, dates or names: the site fills in $1, $2.. A line starting with fn: is built in code, read its quoted words",,,
+Header,Live · $1/$2 sources[ · $3 loading][ · $4 down][ · checked $5],fn:(m) => `Live · ${m[1]}/${m[2]} sanggunian` + (m[3] ? ` · ${m[3]} naglo-load` : '') + (m[4] ? ` · ${m[4]} hindi gumagana` : '') + (m[5] ? ` · sinuri ${m[5]}` : ''),fn:(m) => `Live · ${m[1]}/${m[2]} a gubuayan` + (m[3] ? ` · ${m[3]} ag-lo-load` : '') + (m[4] ? ` · ${m[4]} saan nga agandar` : '') + (m[5] ? ` · nasukimat ${m[5]}` : '')
+Header,PAGASA$1: $2,PAGASA$1: $2,PAGASA$1: $2
+Header,"Show the month and weather ($1, $2, $3)","Ipakita ang buwan at panahon ($1, $2, $3)","Ipakita ti bulan ken tiempo ($1, $2, $3)"
+Header,Show the month and weather ($1),Ipakita ang buwan at panahon ($1),Ipakita ti bulan ken tiempo ($1)
+Header,$1: no reading,$1: walang sukat,$1: awan ti rukod
+Header,$1: $2 degrees,$1: $2 digri,$1: $2 a digri
+Legend and month badge,"Active fire, past $1 days ($2)","Aktibong sunog, nakaraang $1 araw ($2)","Aktibo nga uram, napalabas a $1 nga aldaw ($2)"
+Legend and month badge,Next on the outlook: $1 by the end of $2.,Susunod sa outlook: $1 pagsapit ng katapusan ng $2.,Sumaruno iti outlook: $1 inton ngudo ti $2.
+Legend and month badge,"PAGASA outlook, issued $1. Stripes mark forecast months.","Outlook ng PAGASA, inilabas noong $1. Ang mga guhit ay mga buwan ng pagtataya.","Outlook ti PAGASA, impablaak idi $1. Dagiti gurit ket bulan ti padto."
+Legend and month badge,"relative, weekly, $1","relative, lingguhan, $1","relative, linawas, $1"
+Legend and month badge,"relative, $1 (latest)","relative, $1 (pinakabago)","relative, $1 (kabaruan)"
+Legend and month badge,"$1’s value comes with CPC’s next update, due $2. CPC gives an $3% chance of a historic event in $4.","Darating ang halaga para sa $1 sa susunod na update ng CPC, sa $2. Ayon sa CPC, $3% ang tsansa ng makasaysayang El Niño sa $4.","Umay ti bilang para iti $1 iti sumaruno nga update ti CPC, inton $2. Kuna ti CPC, $3% ti tsansa ti historiko nga El Niño iti $4."
+Legend and month badge,CPC: $1% chance of a historic event in $2.,CPC: $1% tsansa ng makasaysayang El Niño sa $2.,CPC: $1% a tsansa ti historiko nga El Niño iti $2.
+Legend and month badge,$1 vs normal high water. PAGASA’s outlook puts Benguet in drought by the end of $2.,"$1 kumpara sa normal high water. Sa outlook ng PAGASA, nasa drought ang Benguet pagsapit ng katapusan ng $2.","$1 no idilig iti normal high water. Iti outlook ti PAGASA, adda iti drought ti Benguet inton ngudo ti $2."
+Weather card,Feels $1° · $2% humidity,Pakiramdam $1° · $2% halumigmig,Marikna $1° · $2% kinabasa
+Weather card,"Temperature for the next 24 hours, from $1 to $2 degrees","Temperatura sa susunod na 24 oras, mula $1 hanggang $2 digri","Temperatura iti sumaruno a 24 nga oras, manipud $1 agingga $2 a digri"
+Weather card,Low $1° · $2% chance of rain,Pinakamababa $1° · $2% tsansa ng ulan,Kababaan $1° · $2% a tsansa ti tudo
+Weather card,"$1: $2, high $3°, low $4°, $5% chance of rain","$1: $2, pinakamataas $3°, pinakamababa $4°, $5% tsansa ng ulan","$1: $2, kangatuan $3°, kababaan $4°, $5% a tsansa ti tudo"
+Weather card,$1 · forecast,$1 · pagtataya,$1 · padto
+Side column,"As of $1, [$2 / $3 sit below the rule curve]$4. The test is the dry months. On PAGASA’s outlook, Benguet gets $5 to $6 more dry days than usual each month from $7 to $8.","fn:(m, p) => `Noong ${p(m[1])}, ` + (m[2] ? 'nasa itaas ng kanilang rule curve ang tatlong dam' : `nasa ibaba ng rule curve ang ${m[3].replace(/ and /g, ' at ')}`) + (m[4] ? ', nasa o malapit sa normal high water' : '') + `. Ang tunay na pagsubok ay ang mga tuyong buwan. Ayon sa outlook ng PAGASA, magkakaroon ang Benguet ng ${m[5]} hanggang ${m[6]} pang tuyong araw kaysa karaniwan bawat buwan mula ${p(m[7])} hanggang ${p(m[8])}.`","fn:(m, p) => `Idi ${p(m[1])}, ` + (m[2] ? 'adda iti ngatuen ti rule curve-da ti tallo a dam' : `adda iti baba ti rule curve ti ${m[3].replace(/ and /g, ' ken ')}`) + (m[4] ? ', adda iti wenno asideg iti normal high water' : '') + `. Ti pudno a pannubok ket dagiti namaga a bulan. Segun iti outlook ti PAGASA, maaddaan ti Benguet iti ${m[5]} agingga ${m[6]} a nayon a namaga nga aldaw ngem kadawyan iti tunggal bulan manipud ${p(m[7])} agingga ${p(m[8])}.`"
+Side column,As of $1,Noong $1,Idi $1
+Side column,Now · $1,Ngayon · $1,Ita · $1
+Side column,For $1,Para sa $1,Para iti $1
+Side column,$1 in the past $2 days,$1 sa nakaraang $2 araw,$1 iti napalabas a $2 nga aldaw
+Side column,Every $1 m,Bawat $1 m,Tunggal $1 m
+Side column,"Niño 3.4, $1","Niño 3.4, $1","Niño 3.4, $1"
+Side column,for $1,para sa $1,para iti $1
+Side column,"Play the outlook, $1 to $2","I-play ang outlook, $1 hanggang $2","I-play ti outlook, $1 agingga $2"
+Side column,by the end of $1,pagsapit ng katapusan ng $1,inton ngudo ti $1
+Side column,by the end of $1 $2,pagsapit ng katapusan ng $1 $2,inton ngudo ti $1 $2
+Side column,PAGASA’s current outlook covers $1 to $2.,Sakop ng kasalukuyang outlook ng PAGASA ang $1 hanggang $2.,Sakupen ti agdama nga outlook ti PAGASA ti $1 agingga $2.
+Side column,Week of $1 (traditional),Linggo ng $1 (traditional),Lawas ti $1 (traditional)
+Side column,Week of $1: Niño 3.4,Linggo ng $1: Niño 3.4,Lawas ti $1: Niño 3.4
+Side column,"In $1, Niño 1+2 off South America read $2 while Niño 4 in the west-central Pacific read $3.","Noong $1, $2 ang sukat ng Niño 1+2 sa baybayin ng South America habang $3 ang Niño 4 sa kanluran-gitnang Pasipiko.","Idi $1, $2 ti rukod ti Niño 1+2 iti igid ti South America bayat a $3 ti Niño 4 iti laud-tengnga a Pasipiko."
+Side column,"CPC synopsis, $1.","Buod ng CPC, $1.","Pakabuklan ti CPC, $1."
+Side column,"Relative index, weekly, $1 ·","Relative index, lingguhan, $1 ·","Relative index, linawas, $1 ·"
+Side column,"Relative index, monthly, $1 ·","Relative index, buwanan, $1 ·","Relative index, binulan, $1 ·"
+Side column,"Showing $1, the latest monthly values. $2’s come with CPC’s next update on $3.","Ipinapakita ang $1, ang pinakabagong buwanang halaga. Darating ang para sa $2 sa susunod na update ng CPC sa $3.","Maipakpakita ti $1, ti kabaruan a binulan a bilang. Umay ti para iti $2 iti sumaruno nga update ti CPC inton $3."
+Side column,"PAGASA rates dry stages by province, so Benguet’s $1 applies here too.","Itinatakda ng PAGASA ang dry stage bawat lalawigan, kaya sakop din dito ang $1 ng Benguet.","Ikeddeng ti PAGASA ti dry stage iti tunggal probinsia, isu a masakupan met ditoy ti $1 ti Benguet."
+Side column,· next $1,· susunod $1,· sumaruno $1
+Side column,$1 to $2,$1 hanggang $2,$1 agingga $2
+Charts,"in $1, the $2 range","fn:(m, p) => `noong ${p(m[1])}, nasa antas na ${({ weak: 'mahina', moderate: 'katamtaman', strong: 'malakas', 'very strong': 'napakalakas', historic: 'makasaysayan' })[m[2]]}`","fn:(m, p) => `idi ${p(m[1])}, adda iti kategoria a ${({ weak: 'nakapuy', moderate: 'kalkalainganna', strong: 'napigsa', 'very strong': 'napigsa unay', historic: 'historiko' })[m[2]]}`"
+Charts,Next CPC update $1,Susunod na update ng CPC: $1,Sumaruno nga update ti CPC: $1
+Charts,"$1% historic odds, $2","$1% tsansa ng makasaysayang El Niño, $2","$1% a tsansa ti historiko nga El Niño, $2"
+Charts,"weekly, traditional $1","lingguhan, traditional $1","linawas, traditional $1"
+Charts,$1 $2,$1 $2,$1 $2
+Charts,"NOAA CPC: RONI to $1, monthly values quoted in CPC discussions, weekly OISST (traditional, grey)","NOAA CPC: RONI hanggang $1, buwanang halaga mula sa mga talakayan ng CPC, lingguhang OISST (traditional, kulay abo)","NOAA CPC: RONI agingga $1, binulan a bilang manipud kadagiti diskusion ti CPC, linawas nga OISST (traditional, dapo)"
+Charts,usual $1 average $2 mm/day,karaniwan sa $1: $2 mm/araw,kadawyan iti $1: $2 mm/aldaw
+Charts,"Open-Meteo weather models at the town centre, not rain-gauge readings · $1","Mga modelo ng panahon ng Open-Meteo sa gitna ng bayan, hindi sukat ng rain gauge · $1","Dagiti modelo ti tiempo ti Open-Meteo iti tengnga ti ili, saan a rukod ti rain gauge · $1"
+Charts,"provinces $1,","fn:(m, p) => m[1] === 'now' ? 'lalawigan ngayon,' : `lalawigan sa ${p(m[2])},`","fn:(m, p) => m[1] === 'now' ? 'a probinsia ita,' : `a probinsia iti ${p(m[2])},`"
+Charts,by $1,pagsapit ng $1,inton $1
+Charts,"PAGASA Advisory No. $1 ($2, observed); PAGASA Climate Outlook, $3 ($4)","PAGASA Advisory No. $1 ($2, naitala); PAGASA Climate Outlook, $3 ($4)","PAGASA Advisory No. $1 ($2, narukod); PAGASA Climate Outlook, $3 ($4)"
+Charts,"Daily rain at $1: $2 mm in the last 30 days, $3 mm forecast for the next 16","Araw-araw na ulan sa $1: $2 mm sa huling 30 araw, $3 mm ang pagtataya para sa susunod na 16","Inaldaw a tudo iti $1: $2 mm iti naudi a 30 nga aldaw, $3 mm a padto para iti sumaruno a 16"
+Charts,Warmest in $1: $2 at,Pinakamainit noong $1: $2 sa,Kabarabaraan idi $1: $2 iti
+Charts,chance of a historic event in $1,tsansa ng makasaysayang El Niño sa $1,tsansa ti historiko nga El Niño iti $1
+Charts,"NOAA CPC, $1 ($2 estimate: $3)","fn:(m, p) => `NOAA CPC, ${p(m[1])} (taya para sa ${p(m[2])}: ${p(m[3]).replace(/ on /g, ' noong ')})`","fn:(m, p) => `NOAA CPC, ${p(m[1])} (padto para iti ${p(m[2])}: ${p(m[3]).replace(/ on /g, ' idi ')})`"
+Charts,"River profile from the elevation grid; dam levels from PAGASA, $1","Profile ng ilog mula sa elevation grid; antas ng mga dam mula sa PAGASA, $1","Profile ti karayan manipud iti elevation grid; kangato dagiti dam manipud PAGASA, $1"
+Charts,$1 to $2 more,$1 hanggang $2 pang,$1 agingga $2 a nayon
+Charts,"dry days than usual, every month to $1","tuyong araw kaysa karaniwan, bawat buwan hanggang $1","a namaga nga aldaw ngem kadawyan, tunggal bulan agingga $1"
+Charts,"PAGASA’s forecast dry days table, $1","Talaan ng PAGASA ng tinatayang tuyong araw, $1","Listaan ti PAGASA kadagiti mapadpadto a namaga nga aldaw, $1"
+Charts,Read from PAGASA’s $1 outlook maps by BaguioCityGuide ($2),Binasa ng BaguioCityGuide mula sa mga mapa ng outlook ng PAGASA para sa $1 ($2),Binasa ti BaguioCityGuide manipud kadagiti mapa ti outlook ti PAGASA para iti $1 ($2)
+Charts,$1 sits,Ang $1 ay,Ti $1 ket
+Charts,below normal high water,mas mababa sa normal high water,nababbaba ngem normal high water
+Charts,"Rain, $1","Ulan, $1","Tudo, $1"
+Timeline and key events,$1: no dry stage listed,$1: walang nakalistang dry stage,$1: awan ti nailista a dry stage
+Timeline and key events,$1: $2,$1: $2,$1: $2
+Timeline and key events,$1: beyond the outlook,$1: lampas sa outlook,$1: labes iti outlook
+Timeline and key events,$1: $2,$1: $2,$1: $2
+Timeline and key events,Agno dams vs normal high water: $1,Mga dam ng Agno kumpara sa normal high water: $1,Dagiti dam ti Agno no idilig iti normal high water: $1
+Timeline and key events,$1 active fire detections in and around Benguet in the past $2 days,$1 aktibong sunog na natukoy sa loob at paligid ng Benguet sa nakaraang $2 araw,$1 nga aktibo nga uram a nadlaw iti uneg ken aglawlaw ti Benguet iti napalabas a $2 nga aldaw
+Timeline and key events,No active fires detected in the past $1 days,Walang natukoy na aktibong sunog sa nakaraang $1 araw,Awan ti nadlaw nga aktibo nga uram iti napalabas a $1 nga aldaw
+Timeline and key events,$1 dated,$1 na may petsa,$1 nga addaan petsa
+The town card in Detailed,$1 km² · $2,$1 km² · $2,$1 km² · $2
+The town card in Detailed,Low $1 m,Pinakamababa $1 m,Kababaan $1 m
+The town card in Detailed,Median $1 m,Gitna $1 m,Tengnga $1 m
+The town card in Detailed,High $1 m,Pinakamataas $1 m,Kangatuan $1 m
+Simple view,What this means for $1,Ano ang ibig sabihin nito para sa $1,Ania ti kaipapanan daytoy para iti $1
+Simple view,PAGASA reports Benguet in $1 this month.,"Ayon sa PAGASA, nasa $1 ang Benguet ngayong buwan.","Segun iti PAGASA, adda iti $1 ti Benguet iti daytoy a bulan."
+Simple view,PAGASA’s outlook has Benguet in $1 by the end of this month.,"Sa outlook ng PAGASA, nasa $1 ang Benguet pagsapit ng katapusan ng buwang ito.","Iti outlook ti PAGASA, adda iti $1 ti Benguet inton ngudo daytoy a bulan."
+Simple view,PAGASA’s outlook lists no dry stage for Benguet through $1.,Walang dry stage ang Benguet sa outlook ng PAGASA hanggang $1.,Awan ti dry stage ti Benguet iti outlook ti PAGASA agingga iti $1.
+Simple view,"PAGASA projects a dry period from $1 to at least $2, where its outlook ends.","Inaasahan ng PAGASA ang tuyong panahon mula $1 hanggang $2 o higit pa, dahil doon nagtatapos ang outlook nito.","Mapadpadto ti PAGASA ti namaga a panawen manipud $1 agingga iti $2 wenno ad-adu pay, ta agpatingga iti dayta ti outlook-na."
+Simple view,PAGASA projects a dry period from $1 to $2.,Inaasahan ng PAGASA ang tuyong panahon mula $1 hanggang $2.,Mapadpadto ti PAGASA ti namaga a panawen manipud $1 agingga iti $2.
+Simple view,"PAGASA projects the dry period to last until at least $1, where its outlook ends.","Inaasahan ng PAGASA na tatagal ang tuyong panahon hanggang $1 o higit pa, dahil doon nagtatapos ang outlook nito.","Mapadpadto ti PAGASA nga agpaut ti namaga a panawen agingga iti $1 wenno ad-adu pay, ta agpatingga iti dayta ti outlook-na."
+Simple view,PAGASA projects the dry period to last until $1.,Inaasahan ng PAGASA na tatagal ang tuyong panahon hanggang $1.,Mapadpadto ti PAGASA nga agpaut ti namaga a panawen agingga iti $1.
+Simple view,Expect $1 to $2 more dry days than usual each month.,Asahan ang $1 hanggang $2 pang tuyong araw kaysa karaniwan bawat buwan.,Namnamaen ti $1 agingga $2 a nayon a namaga nga aldaw ngem kadawyan iti tunggal bulan.
+Simple view,Expect $1 more dry days than usual each month.,Asahan ang $1 pang tuyong araw kaysa karaniwan bawat buwan.,Namnamaen ti $1 a nayon a namaga nga aldaw ngem kadawyan iti tunggal bulan.
+Simple view,issued $1,inilabas noong $1,impablaak idi $1
+"A trailing "" · something"" after a name or number",· $1,· $1,· $1

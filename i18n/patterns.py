@@ -109,6 +109,11 @@ P = [
  "$1 aktibong sunog na natukoy sa loob at paligid ng Benguet sa nakaraang $2 araw", "$1 nga aktibo nga uram a nadlaw iti uneg ken aglawlaw ti Benguet iti napalabas a $2 nga aldaw"),
 (r"/^No active fires detected in the past (\d+) days$/", "Walang natukoy na aktibong sunog sa nakaraang $1 araw", "Awan ti nadlaw nga aktibo nga uram iti napalabas a $1 nga aldaw"),
 (r"/^(\d+) dated$/", "$1 na may petsa", "$1 nga addaan petsa"),
+# the town card in Detailed: area and heights
+(r"/^([\d,.]+) km² · (Municipality of Benguet|Independent city)$/", "$1 km² · $2", "$1 km² · $2"),
+(r"/^Low ([\d,.]+) m$/", "Pinakamababa $1 m", "Kababaan $1 m"),
+(r"/^Median ([\d,.]+) m$/", "Gitna $1 m", "Tengnga $1 m"),
+(r"/^High ([\d,.]+) m$/", "Pinakamataas $1 m", "Kangatuan $1 m"),
 # Simple view (js/simple.js): what the outlook means for your area, and the months ahead
 (r"/^What this means for (.+)$/", "Ano ang ibig sabihin nito para sa $1", "Ania ti kaipapanan daytoy para iti $1"),
 (r"/^PAGASA reports Benguet in (dry condition|dry spell|drought) this month\.$/",
