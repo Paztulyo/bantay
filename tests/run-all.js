@@ -14,7 +14,10 @@ const SUITE = [
   ['views_ui.js'], // the visitor count chip
   ['lang_test.js'], // English, Tagalog, Ilocano: the switch, the drawer, the phone header
   ['header_test.js'], // the header at every width in each language, with the real fonts
-  ['header_test.js', 'vis'], // the same with the visitor chip showing
+  ['header_test.js', 'vis', 'views=detailed'], // the same with the visitor chip showing (Simple shows no chips)
+  ['simple_test.js'], // Simple and Detailed: what Simple shows, switching keeps the town, month, camera and language
+  ['simple_test.js', 'w=390', 'h=844', 'dark', 'rm'],
+  ['pwa_test.js'], // installing: the manifest, the service worker, offline, the Install button
 ];
 (async () => {
   try { await fetch(BASE + '/'); } catch (e) { console.error(`Nothing at ${BASE}. Start the test server first: npm run serve`); process.exit(2); }

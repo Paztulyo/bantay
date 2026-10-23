@@ -2,7 +2,8 @@
 
 A live El Niño monitor for Benguet and Baguio: a 3D terrain map with weather, active fires and the dry-stage outlook,
 the PAGASA outlook timeline, charts, a hotlines and tips guide, and the sources behind every number. In English,
-Tagalog and Ilocano.
+Tagalog and Ilocano. Two views: Simple (the map plus five things, the default) and Detailed (the full dashboard).
+Installable as an app (PWA).
 Live at https://www.bantayelnino.com (Vercel project `bantay-el-nino`). bantayelnino.com redirects there (308), and the old
 https://bantay-el-nino-eta.vercel.app still serves the site; the page's canonical link points search engines at www.
 
@@ -26,6 +27,16 @@ https://bantay-el-nino-eta.vercel.app still serves the site; the page's canonica
   drawer renders itself through `t()`. Kept in English on purpose: agency, town, dam and source names, PAGASA's
   dry-stage and alert names, bulletin terms (Niño 3.4, RONI), and the Sources method notes and quotes.
   The choice: `?lang=` first, then the saved choice, then the phone's language.
+- Views: `js/simple.js` and `css/simple.css`. Simple hides the chips, the Outlook/Pacific/Water views, the rail's
+  sections, the timeline and the charts, and shows `#simple` beside the map: the town, what PAGASA's outlook means now
+  (source and date), the months ahead as a projected dry period (never a countdown), three things to do from
+  `guide.json`, and help. It reads app.js's data through `window.bantayApp` and the `bantay:ready`, `bantay:month` and
+  `bantay:select` events; app.js skips drawing the rail and charts while Simple shows. The choice: `?view=` first, then
+  the saved choice, then Simple (test runs with `?test=1` start in Detailed). The town is remembered too.
+- App install: `manifest.webmanifest`, icons in `img/` (`tests/make_icons.js` draws them from the logo), `sw.js`, and
+  `js/pwa.js` (registers the worker, holds Chrome's install prompt for Simple's Install button, iPhone steps, hidden once
+  installed). The worker keeps the page, code and dated editorial files for offline use, network first, and never
+  stores `/api` or other live readings. Test runs skip the worker unless the URL has `sw=1`.
 
 | File | What it does |
 |---|---|
@@ -37,6 +48,8 @@ https://bantay-el-nino-eta.vercel.app still serves the site; the page's canonica
 | `js/guide.js` | Be ready drawer: tips by dry stage, tap-to-call hotlines, search |
 | `js/smoke.js` | Drawers burn away when they close |
 | `js/views.js` | Visitor count chip, hidden until the count store answers |
+| `js/simple.js`, `css/simple.css` | The Simple/Detailed switch and Simple's panel |
+| `js/pwa.js`, `sw.js`, `manifest.webmanifest` | Install as an app: the prompt and Install button, the offline worker, the manifest |
 | `js/i18n.js`, `js/lang/` | The EN / TL / ILO switch and the translation layer; dictionaries made by `i18n/gen.py` |
 | `js/headfit.js` | Keeps the desktop header to one row: hides more context chips if the advisory line runs long |
 | `js/icons.js`, `js/util.js` | Section icons; shared helpers, the tooltip, Manila time |
@@ -76,7 +89,8 @@ npm test          # in a second terminal; or: node run-all.js burn_test tip_test
 - `burn_test.js` the close effect; `ready_test.js` Be ready search and drawers; `fday_test.js` forecast days;
   `tuck_test.js` card folding on desktop; `panel_test.js` the phone pull tab; `tip_test.js` the map label on touch;
   `views_ui.js` the visitor chip; `lang_test.js` the language switch; `header_test.js` the header at every width in each
-  language, with the site's real fonts (the `@fontsource` dev packages). Most take `w=`, `h=`, `dark`, and `rm`
+  language and both views, with the site's real fonts (the `@fontsource` dev packages); `simple_test.js` the Simple and
+  Detailed views; `pwa_test.js` the manifest, the service worker, offline and the Install button. Most take `w=`, `h=`, `dark`, and `rm`
   (reduced motion).
 - `burn_frames.js` captures the close effect in slow motion (`dark`, `phone`, `src`, `map`); `sheet.py TAG` makes a
   contact sheet from the frames (needs Pillow).
