@@ -1,0 +1,161 @@
+/* ---------- Simple and Detailed (js/simple.js) ----------
+   The switch sits in the header in both views. Simple hides the dashboard around the map (the context chips, the
+   Outlook, Pacific and Water views, the rail's sections, the timeline and the charts) and shows #simple in the rail.
+   Every rule here is scoped to the switch, to #simple or to html.view-simple; the map and its cards are left alone. */
+
+/* the switch: large type, strong contrast, the chosen side filled (set from the page's class, so it is right before
+   any script runs) */
+.viewsw{display:flex;flex:none;gap:3px;padding:3px;border-radius:12px;border:1.5px solid var(--forest);background:var(--panel)}
+.viewsw button{min-height:36px;padding:0 14px;border-radius:9px;font:700 15px/1 var(--f-body);letter-spacing:-.1px;color:var(--forest);background:transparent}
+.viewsw button:hover{background:color-mix(in srgb,var(--forest) 10%,transparent)}
+html:not(.view-simple) .viewsw [data-view="detailed"],html.view-simple .viewsw [data-view="simple"]{background:var(--forest);color:var(--paper)}
+.viewsw button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* Simple: the map and #simple, nothing else */
+html.view-simple .ctx,html.view-simple .modes,html.view-simple .tl,html.view-simple .bottom,html.view-simple #secs{display:none!important}
+html:not(.view-simple) #simple{display:none}
+@media (min-width:1101px){
+  html.view-simple .main{grid-template-columns:minmax(0,1fr) 380px;padding-bottom:10px}
+}
+
+/* ---------- the panel ---------- */
+.simple{display:flex;flex-direction:column;gap:10px;font-size:15px;line-height:1.5;color:var(--ink)}
+.s-card{background:var(--g-fill,var(--panel));-webkit-backdrop-filter:var(--g-blur);backdrop-filter:var(--g-blur);border:1px solid var(--g-edge,var(--line));
+  box-shadow:var(--g-shadow);border-radius:var(--g-r,14px);padding:18px 18px 16px}
+.s-h{margin:0;font-family:var(--f-display);font-size:19px;font-weight:700;letter-spacing:-.3px;line-height:1.25;color:var(--forest);text-wrap:balance}
+.s-src{margin:10px 0 0;font-size:13px;line-height:1.45;color:var(--muted)}
+.s-src a,.s-fine a{color:var(--teal)}
+.s-fine{margin:8px 0 0;font-size:13px;line-height:1.45;color:var(--muted)}
+.simple .sw.s-sw{width:18px;height:18px;border-radius:5px}
+
+/* 1-2: the town, and what PAGASA's outlook means for it */
+.s-label{display:block;margin:0 0 6px;font-size:13px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)}
+.s-select{position:relative;margin-bottom:16px}
+.s-select select{width:100%;min-height:50px;padding:0 44px 0 14px;border-radius:12px;font:600 17px var(--f-body);color:var(--ink);cursor:pointer;
+  -webkit-appearance:none;appearance:none;background:var(--g-inset,var(--paper));border:1.5px solid var(--line-strong)}
+.s-select select:focus-visible{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px color-mix(in srgb,var(--teal) 25%,transparent)}
+.s-select svg{position:absolute;right:14px;top:50%;width:20px;height:20px;margin-top:-10px;color:var(--muted);pointer-events:none}
+.s-now{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin:10px 0 0}
+.s-now b{font-size:17px;font-weight:700;color:var(--ink)}
+.s-now span:last-child{font-size:13px;color:var(--muted)}
+.s-sum{margin:8px 0 0;font-size:16px;line-height:1.55}
+
+/* 3: the outlook, month by month */
+.s-period{display:flex;flex-direction:column;gap:2px;margin:12px 0 0;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--stage2) 14%,transparent)}
+.s-period span{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--amber)}
+.s-period b{font-size:18px;font-weight:700;color:var(--ink)}
+.s-runs{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px}
+.s-runs button{width:100%;min-height:48px;display:grid;grid-template-columns:18px 76px minmax(0,1fr) auto;align-items:center;gap:12px;padding:8px 12px;
+  border-radius:12px;text-align:left;color:var(--ink);background:var(--g-inset,var(--paper));border:1.5px solid var(--g-hair,var(--line))}
+.s-runs button:hover{border-color:var(--teal)}
+.s-runs button[aria-pressed="true"]{border-color:var(--forest);box-shadow:inset 0 0 0 1px var(--forest)}
+.s-m{font-family:var(--f-mono);font-size:14px;color:var(--muted)}
+.s-st{font-size:16px;font-weight:700}
+.s-nowtag{font-size:11px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;padding:3px 7px;border-radius:6px;background:var(--gold);color:var(--gold-ink)}
+.s-hint{margin:8px 0 0;font-size:13px;color:var(--muted)}
+
+/* 4: up to three things to do now */
+.s-phase{margin:4px 0 0;font-size:14px;font-weight:600;color:var(--teal)}
+.s-acts{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:14px}
+.s-acts li{display:grid;grid-template-columns:30px minmax(0,1fr);gap:12px;align-items:start}
+.s-n{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:15px;color:var(--paper);background:var(--teal)}
+.s-acts b{display:block;font-size:16px;line-height:1.35;color:var(--ink)}
+.s-acts p{margin:3px 0 0;font-size:15px;line-height:1.5;color:var(--ink)}
+.s-more{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-top:10px;padding:0 4px;font-size:16px;font-weight:700;color:var(--teal)}
+.s-more svg{width:18px;height:18px}
+.s-more:hover span{text-decoration:underline}
+
+/* 5: help: 911, the hotlines, the sources, the language */
+.s-sos{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;min-height:60px;border-radius:12px;background:var(--heat);color:var(--paper);text-decoration:none}
+.s-sos svg{width:24px;height:24px;flex:none}
+.s-sos b{display:block;font-size:19px;font-weight:700;line-height:1.2}
+.s-sos small{display:block;margin-top:2px;font-size:13px;line-height:1.35;opacity:.95}
+.s-sos:hover{filter:brightness(1.07)}
+.s-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.s-btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 12px;border-radius:12px;font-size:15px;font-weight:700;color:var(--forest);
+  background:var(--g-inset,var(--paper));border:1.5px solid var(--line-strong)}
+.s-btn:hover{border-color:var(--teal)}
+.s-btn svg{width:18px;height:18px;flex:none}
+.s-langrow{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px 12px;margin-top:14px;font-size:13px;color:var(--muted)}
+.simple .s-langrow .lang{margin:0}
+.simple .s-langrow .lang button{min-width:48px;min-height:40px;font-size:14px}
+
+/* install, at the top: one line with the app's icon, the browser's prompt behind the button, steps where there is none */
+.s-install{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:8px 12px;padding:12px 10px 12px 14px;border-radius:var(--g-r,14px);
+  background:color-mix(in srgb,var(--teal) 9%,var(--panel));border:1px solid color-mix(in srgb,var(--teal) 30%,transparent)}
+.s-install img{width:40px;height:40px;border-radius:10px;box-shadow:0 0 0 1px var(--g-hair,var(--line))}
+.s-inst-t{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-width:0}
+.s-inst-b{font-size:16px;font-weight:700;color:var(--forest);text-align:left;padding:2px 0;text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:3px}
+.s-inst-t span{font-size:13px;color:var(--muted)}
+.s-inst-x{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--muted)}
+.s-inst-x:hover{background:color-mix(in srgb,var(--ink) 8%,transparent);color:var(--ink)}
+.s-inst-x svg{width:18px;height:18px}
+.s-inst-n{grid-column:1/-1;display:flex;align-items:flex-start;gap:8px;margin:2px 0 0;padding:10px 12px;border-radius:10px;font-size:15px;line-height:1.45;color:var(--ink);background:var(--panel)}
+.s-inst-n svg{width:20px;height:20px;flex:none;color:var(--teal);margin-top:1px}
+
+/* tablets: the cards in two columns under the map */
+@media (min-width:641px) and (max-width:1100px){
+  .simple{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+  .s-install{grid-column:1/-1}
+}
+/* phones: roomier cards, every target a thumb wide */
+@media (max-width:640px){
+  .simple{font-size:16px;gap:8px}
+  .s-card{padding:18px 16px}
+  .s-h{font-size:20px}
+  .s-runs button{grid-template-columns:18px 70px minmax(0,1fr) auto}
+}
+
+/* ---------- the switch in the header, by width ---------- */
+/* desktop: after the name, a touch lower than on phones so the header keeps its height. On the narrowest desktops in
+   Detailed the views drop their icons and the switch tightens, so the advisory line stays whole (js/headfit.js then
+   lets the tagline and the name go if it still needs room). Tablets: in the first row, where the optional chips were.
+   Phones: a row of its own under the name and the language switch. Widths measured by tests/header_test.js. */
+@media (min-width:1101px){.viewsw button{min-height:34px;padding:0 12px}}
+@media (min-width:1101px) and (max-width:1380px){
+  html[lang="en"]:not(.view-simple) .modes button svg{display:none}
+  html[lang="en"]:not(.view-simple) .viewsw button{padding:0 9px}
+}
+@media (min-width:1101px) and (max-width:1415px){
+  html:not([lang="en"]):not(.view-simple) .modes button svg{display:none}
+  html:not([lang="en"]):not(.view-simple) .viewsw button{padding:0 9px}
+}
+@media (min-width:1101px) and (max-width:1180px){
+  html:not(.view-simple) .viewsw button{font-size:14px}
+  html:not(.view-simple) .lang button{min-width:28px;padding-inline:5px}
+}
+/* Detailed on desktop: the switch takes room the context chips had, so they give way sooner, then the tagline, then the
+   name beside the logo. Widths fit today's advisory line with the real fonts (tests/header_test.js); js/headfit.js hides
+   more if a line runs longer. English first, then the wider Tagalog and Ilocano, then with the visitor count showing. */
+@media (min-width:1101px) and (max-width:1770px){html[lang="en"]:not(.view-simple) #spanChip{display:none}}
+@media (min-width:1101px) and (max-width:1625px){html[lang="en"]:not(.view-simple) .ctx .chip.opt{display:none}}
+@media (min-width:1101px) and (max-width:1520px){html[lang="en"]:not(.view-simple) .ctx{display:none}}
+@media (min-width:1101px) and (max-width:1304px){html[lang="en"]:not(.view-simple) .brand-t span{display:none}}
+@media (min-width:1101px) and (max-width:1255px){html[lang="en"]:not(.view-simple) .brand-t{display:none}}
+@media (min-width:1101px) and (max-width:1860px){html:not([lang="en"]):not(.view-simple) #spanChip{display:none}}
+@media (min-width:1101px) and (max-width:1710px){html:not([lang="en"]):not(.view-simple) .ctx .chip.opt{display:none}}
+@media (min-width:1101px) and (max-width:1605px){html:not([lang="en"]):not(.view-simple) .ctx{display:none}}
+@media (min-width:1101px) and (max-width:1465px){html:not([lang="en"]):not(.view-simple) .brand-t span{display:none}}
+@media (min-width:1101px) and (max-width:1340px){html:not([lang="en"]):not(.view-simple) .brand-t{display:none}}
+@media (min-width:1101px) and (max-width:1890px){html[lang="en"]:not(.view-simple) .ctx.has-vis #spanChip{display:none}}
+@media (min-width:1101px) and (max-width:1745px){html[lang="en"]:not(.view-simple) .ctx.has-vis .chip.opt{display:none}}
+@media (min-width:1101px) and (max-width:1640px){html[lang="en"]:not(.view-simple) .ctx.has-vis .chip:not(.vis){display:none}}
+@media (min-width:1101px) and (max-width:1507px){html[lang="en"]:not(.view-simple) .ctx.has-vis{display:none}}
+@media (min-width:1101px) and (max-width:1975px){html:not([lang="en"]):not(.view-simple) .ctx.has-vis #spanChip{display:none}}
+@media (min-width:1101px) and (max-width:1828px){html:not([lang="en"]):not(.view-simple) .ctx.has-vis .chip.opt{display:none}}
+@media (min-width:1101px) and (max-width:1722px){html:not([lang="en"]):not(.view-simple) .ctx.has-vis .chip:not(.vis){display:none}}
+@media (min-width:1101px) and (max-width:1592px){html:not([lang="en"]):not(.view-simple) .ctx.has-vis{display:none}}
+@media (min-width:1101px) and (max-width:1174px){html[lang]:not(.view-simple) .viewsw button{padding:0 8px}}
+@media (min-width:641px) and (max-width:1100px){
+  .top{row-gap:8px}
+  .viewsw{order:1}
+  .viewsw button{min-height:32px}
+  html:not(.view-simple) .ctx .chip.opt,html:not(.view-simple) #spanChip{display:none}
+}
+@media (min-width:641px) and (max-width:800px){html:not(.view-simple) .ctx{display:none}}
+@media (max-width:640px){
+  .viewsw{order:2;flex:1 1 100%}
+  .viewsw button{flex:1;min-height:42px;font-size:16px}
+  .modes,.top-right{order:3}
+}
+@media (prefers-reduced-motion:reduce){.viewsw button,.s-runs button{transition:none}}

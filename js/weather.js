@@ -298,6 +298,8 @@ document.addEventListener('visibilitychange', () => { if (document.hidden && pla
 document.addEventListener('bantay:map', e => attachMap(e.detail?.map));
 let rz = 0; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { if (collapsed == null) render(); }, 200); });
 document.addEventListener('visibilitychange', () => { if (!document.hidden && Date.now() - checkedAt > EVERY) load(); });
+const failed = () => status === 'error' || status === 'stale';
+addEventListener('online', () => { if (failed()) { load(); setTimeout(() => { if (failed()) load(); }, 3000); } }); // back online: try again now
 setInterval(() => { if (!document.hidden && Date.now() - checkedAt > EVERY) load(); }, 60e3);
 
 if (TEST) window.__wx = { get fx() { return fx; }, get now() { return NOW; }, get day() { return fday; }, get playing() { return playing; }, load, setDay };

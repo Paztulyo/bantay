@@ -1,5 +1,6 @@
 // Finds text still in English on the Tagalog or Ilocano page. It walks the site through its states (every month in
-// each view, the weather card, chart labels, both drawers, a few searches) in English and in the language, and lists
+// each view, the weather card, chart labels, Simple view's panel, both drawers, a few searches) in English and in the
+// language, and lists
 // the strings that read the same in both, leaving out names kept in English on purpose (KEEP below).
 // Needs the test server (cd tests && npm run serve). Usage: node i18n/untranslated.js tl   (or ilo; add "phone")
 import path from 'path';
@@ -11,7 +12,7 @@ const { BASE, LAUNCH } = require(path.join(here, '..', 'tests', 'env'));
 const LANG = process.argv[2] || 'tl', PHONE = process.argv.includes('phone');
 
 // kept in English by design: agencies, towns, dams, sources, PAGASA's stage and alert names, bulletin terms
-const KEEP = /^(Bantay El Niño|El Niño 2026–27|Benguet · CAR|PAGASA|NOAA CPC|CPC|Outlook|Live|3D|OK|ER|Globe|Smart|Wangal|NHWL|RONI.*|Niño [\d.+]+.*|.*(OpenStreetMap|OpenMapTiles|OpenFreeMap|ESA WorldCover|AWS Terrain|Natural Earth|PSA PSGC|Wikipedia|Inquirer|Philstar|Manila Times|Daily Tribune|GMA News|PIA|SunStar|PTV|ANN|GuruPress|BaguioCityGuide|DOH|DENR|BFP|DA-CAR|DA via|Itogon LGU|Task Force).*|Dry condition|Dry spell|Drought|Benguet: (Dry condition|Dry spell|Drought)|Non-Flood Watch|Rule curve.*|Normal high water|contributors ·|Timeline|.*Advisory No\. \d.*|.*Diagnostic Discussion.*|.*Climate Outlook.*|.*Dam Information.*)$/;
+const KEEP = /^(Bantay El Niño|Simple|El Niño 2026–27|Benguet · CAR|PAGASA|NOAA CPC|CPC|Outlook|Live|3D|OK|ER|Globe|Smart|Wangal|NHWL|RONI.*|Niño [\d.+]+.*|.*(OpenStreetMap|OpenMapTiles|OpenFreeMap|ESA WorldCover|AWS Terrain|Natural Earth|PSA PSGC|Wikipedia|Inquirer|Philstar|Manila Times|Daily Tribune|GMA News|PIA|SunStar|PTV|ANN|GuruPress|BaguioCityGuide|DOH|DENR|BFP|DA-CAR|DA via|Itogon LGU|Task Force).*|Dry condition|Dry spell|Drought|Benguet: (Dry condition|Dry spell|Drought)|Non-Flood Watch|Rule curve.*|Normal high water|contributors ·|Timeline|.*Advisory No\. \d.*|.*Diagnostic Discussion.*|.*Climate Outlook.*|.*Dam Information.*)$/;
 const COMMON = new Set('the of and to in for from with by on is are a an not no at as or than this that it its be has have was were will can new now next past last more less every each all only about over under near into out up down vs per their your you we our how what which when'.split(' '));
 
 async function walk(browser, lang) {
@@ -61,6 +62,11 @@ async function walk(browser, lang) {
     for (const fx of [0.2, 0.5, 0.8]) { await page.mouse.move(b.x + b.width * fx, b.y + b.height * 0.6); await page.waitForTimeout(200); await grab(); }
   }
   if (!PHONE) { await click('#ovTab'); await grab(); await click('#ovTab'); await click('#legTab'); await grab(); await click('#legTab'); }
+  // Simple view: its panel, with a town picked and each month of the outlook shown on the map
+  await click('.viewsw [data-view="simple"]'); await page.waitForTimeout(600); await grab();
+  try { await page.selectOption('#sTown', 'La Trinidad'); await page.waitForTimeout(500); await grab(); } catch (e) { /* no picker: nothing to read */ }
+  for (let i = 1; i <= 4; i++) if (await click(`.s-runs li:nth-child(${i}) button`)) await grab();
+  await click('.viewsw [data-view="detailed"]');
   await click('#guideBtn'); await page.waitForTimeout(500); await grab();
   await click('.gtabs button:nth-child(2)'); await grab(); await click('.gtabs button:nth-child(1)');
   for (const q of ['water', 'hosp', 'zzzz']) { await page.fill('#gq', q); await page.waitForTimeout(500); await grab(); }

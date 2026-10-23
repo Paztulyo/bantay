@@ -189,7 +189,7 @@ The month on screen,Before the dry months,Bago ang mga tuyong buwan,Sakbay dagit
 The month on screen,PAGASA’s outlook has Benguet in a dry spell by the end of November and in drought from December.,"Sa outlook ng PAGASA, nasa dry spell ang Benguet pagsapit ng katapusan ng Nobyembre at nasa drought simula Disyembre.","Iti outlook ti PAGASA, adda iti dry spell ti Benguet inton ngudo ti Nobiembre ken adda iti drought manipud Disiembre."
 The month on screen,After the outlook,Pagkatapos ng outlook,Kalpasan ti outlook
 The month on screen,Beyond the outlook,Lampas sa outlook,Labes iti outlook
-The month on screen,PAGASA’s outlook ends in March. It says El Niño could last through the first half of 2027.,Nagtatapos sa Marso ang outlook ng PAGASA. Sinasabi nitong maaaring tumagal ang El Niño hanggang sa unang kalahati ng 2027.,Agpatingga iti Marso ti outlook ti PAGASA. Kunana a mabalin nga agbayag ti El Niño agingga iti umuna a kagudua ti 2027.
+The month on screen,PAGASA’s outlook ends in April. It says El Niño could last through the first half of 2027.,Nagtatapos sa Abril ang outlook ng PAGASA. Sinasabi nitong maaaring tumagal ang El Niño hanggang sa unang kalahati ng 2027.,Agpatingga iti Abril ti outlook ti PAGASA. Kunana a mabalin nga agbayag ti El Niño agingga iti umuna a kagudua ti 2027.
 The month on screen,PAGASA’s outlook keeps every province and area in drought through the end of April. El Niño’s effects may last through the first half of 2027.,"Ayon sa outlook ng PAGASA, mananatili sa drought ang lahat ng lalawigan at lugar hanggang sa katapusan ng Abril. Maaaring tumagal ang epekto ng El Niño hanggang sa unang kalahati ng 2027.","Segun iti outlook ti PAGASA, agtalinaed iti drought ti amin a probinsia ken lugar agingga iti ngudo ti Abril. Mabalin nga agbayag ti epekto ti El Niño agingga iti umuna a kagudua ti 2027."
 The month on screen,Beyond PAGASA’s current six-month outlook. El Niño is expected to last into the first half of 2027.,Lampas sa kasalukuyang anim na buwang outlook ng PAGASA. Inaasahang tatagal ang El Niño hanggang sa unang kalahati ng 2027.,Labes iti agdama nga innem a bulan nga outlook ti PAGASA. Mapagpagarup nga agbayag ti El Niño agingga iti umuna a kagudua ti 2027.
 The month on screen,Beyond the current outlook. A new PAGASA outlook will extend the months covered.,Lampas sa kasalukuyang outlook. Madaragdagan ang mga buwang sakop kapag may bagong outlook ang PAGASA.,Labes iti agdama nga outlook. Manayonan dagiti bulan a masakupan no adda baro nga outlook ti PAGASA.
@@ -444,6 +444,28 @@ Tips by topic,Time planting so young crops miss the December to February frost.,
 Tips by topic,"On frost nights, sprinklers run before sunrise wash ice off leaves. Plastic tunnels also help.","Sa mga gabing may frost, natatanggal ang yelo sa dahon kapag pinaandar ang sprinkler bago sumikat ang araw. Nakatutulong din ang plastic tunnel.","Kadagiti rabii nga adda frost, maikkat ti yelo kadagiti bulong no paandaren dagiti sprinkler sakbay nga agsingising ti init. Makatulong met dagiti plastic tunnel."
 Tips by topic,Rice: alternate wetting and drying cuts water use by about 30% with no yield penalty.,"Palay: nababawasan nang mga 30% ang gamit sa tubig sa alternate wetting and drying, nang hindi bumababa ang ani.","Pagay: makissayan iti agarup 30% ti panagusar ti danum babaen ti alternate wetting and drying, nga awan ti pannakakissay ti apit."
 Tips by topic,"DA-CAR lists mungbean, cowpea, cassava and sweet potato as El Niño alternative crops.","Inililista ng DA-CAR ang munggo, paayap, kamoteng-kahoy at kamote bilang alternatibong pananim sa El Niño.","Ilista ti DA-CAR ti balatong, utong, kamoteng-kayo ken kamote kas alternatibo a mula para iti El Niño."
+Simple and Detailed views,Simple,Simple,Simple
+Simple and Detailed views,Detailed,Detalyado,Detalyado
+Simple and Detailed views,Simple or detailed view,Simple o detalyadong tanaw,Simple wenno detalyado a buya
+Simple and Detailed views,The map and what matters most,Ang mapa at ang pinakamahalaga,Ti mapa ken ti kapatgan
+Simple and Detailed views,"Every chart, layer and reading","Lahat ng tsart, layer at sukat","Amin a tsart, layer ken rukod"
+Simple and Detailed views,Your area,Ang lugar mo,Ti lugarmo
+Simple and Detailed views,All of Benguet,Buong Benguet,Intero a Benguet
+Simple and Detailed views,Benguet is not in a dry stage this month.,Wala sa dry stage ang Benguet ngayong buwan.,Awan iti dry stage ti Benguet iti daytoy a bulan.
+Simple and Detailed views,Outlook for the coming months,Outlook para sa mga susunod na buwan,Outlook para kadagiti sumaruno a bulan
+Simple and Detailed views,Projected dry period,Inaasahang tuyong panahon,Mapadpadto a namaga a panawen
+Simple and Detailed views,Tap a month to see it on the map.,Pindutin ang isang buwan para makita ito sa mapa.,Pinduten ti maysa a bulan tapno makita iti mapa.
+Simple and Detailed views,An outlook is a forecast. It can change when PAGASA updates it.,Pagtataya ang outlook. Maaari itong magbago kapag in-update ito ng PAGASA.,Padto ti outlook. Mabalin nga agbaliw no i-update ti PAGASA.
+Simple and Detailed views,What you can do right now,Ang magagawa mo ngayon,Ti maaramidmo ita
+Simple and Detailed views,See more,Tingnan pa,Kitaen pay
+Simple and Detailed views,Get help,Humingi ng tulong,Agkiddaw ti tulong
+Simple and Detailed views,Install Bantay El Niño,I-install ang Bantay El Niño,I-install ti Bantay El Niño
+Simple and Detailed views,"Open it from your home screen, like an app.","Buksan ito mula sa home screen mo, parang app.","Luktam daytoy manipud iti home screen-mo, kas iti app."
+Simple and Detailed views,"Tap Share, then Add to Home Screen, then Open as Web App.","Pindutin ang Share, saka ang Add to Home Screen, saka ang Open as Web App.","Pinduten ti Share, sa ti Add to Home Screen, sa ti Open as Web App."
+Simple and Detailed views,"To install, open this page in Chrome or Safari first.","Para ma-install, buksan muna ang page na ito sa Chrome o Safari.","Tapno mai-install, luktam pay daytoy a page iti Chrome wenno Safari."
+Simple and Detailed views,Use your browser’s menu: Install app.,Gamitin ang menu ng browser mo: Install app.,Usarem ti menu ti browser-mo: Install app.
+Simple and Detailed views,Hide,Itago,Ilemmeng
+Simple and Detailed views,Offline · live readings paused,Offline · nakahinto ang mga live na sukat,Offline · nasardeng dagiti live a rukod
 Phrases found later in the code's less common states,"Latest weekly reading, traditional:","Pinakabagong lingguhang sukat, traditional:","Kabaruan a linawas a rukod, traditional:"
 Phrases found later in the code's less common states,"RONI, 3-month","RONI, 3 buwan","RONI, 3 a bulan"
 Phrases found later in the code's less common states,CPC weekly OISST,Lingguhang OISST ng CPC,Linawas nga OISST ti CPC

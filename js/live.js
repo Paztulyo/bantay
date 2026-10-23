@@ -122,4 +122,13 @@ export function startLive(points) {
   };
   setInterval(tick, 60e3);
   document.addEventListener('visibilitychange', tick);
+  // back online (an installed app opened without a connection, say): fetch what failed now instead of waiting out the
+  // usual interval, so the page doesn't sit on missing readings
+  const retry = () => {
+    const failed = k => ['error', 'stale'].includes(LIVE.health[k]?.status);
+    for (const k of ['enso', 'dams', 'fires']) if (failed(k)) loadAPI(k);
+    if (failed('wx')) loadWeather();
+    if (failed('osm')) loadOSM();
+  };
+  addEventListener('online', () => { retry(); setTimeout(retry, 3000); }); // again shortly, for requests still failing as it came back
 }

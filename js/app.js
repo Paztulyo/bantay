@@ -21,6 +21,9 @@ const REGIONS = [
   { id: 'n12', n: 'Niño 1+2', lon: [270, 280], lat: [0, -10] },
 ];
 const stageColor = s => (s ? css('--stage' + s) : null);
+// Simple view (js/simple.js) shows its own panel instead of the rail, timeline and charts, so those skip drawing until
+// the page is back in Detailed, which redraws them at their real size
+const simpleView = () => document.documentElement.classList.contains('view-simple');
 const stageVar = s => 'var(--stage' + s + ')';
 const srcLink = id => (SRC[id] ? `<a href="${SRC[id].u}" target="_blank" rel="noopener">${esc(SRC[id].s)}</a>` : '');
 
@@ -481,6 +484,7 @@ const CHARTS = {
 const MODE_CHARTS = { outlook: ['nino34', 'rain46', 'nat'], pacific: ['nino34', 'regions', 'hist'], water: ['profile', 'dams', 'drydays'] };
 const val = v => (typeof v === 'function' ? v.call(null) : v);
 function renderCharts() {
+  if (simpleView()) return;
   MODE_CHARTS[state.mode].forEach((id, k) => {
     const host = $('#c' + (k + 1)), C = CHARTS[id], tbl = !!state.table[id];
     const live = C.live ? `${liveTag(C.live())}` : '';
@@ -629,8 +633,9 @@ function updateStatus() {
   const cls = !started ? 'load' : bad ? 'warn' : pending ? 'load' : 'ok';
   const checked = recs.map(r => r.checked).filter(Boolean).sort().at(-1);
   const p = LIVE.enso?.pagasa;
-  const label = !started ? 'Connecting to live sources…' : `Live · ${good}/${keys.length} sources${pending ? ` · ${pending} loading` : bad ? ` · ${bad} down` : ''}${checked ? ' · checked ' + fmtTime(checked) : ''}`;
-  $('#status').innerHTML = `<b>PAGASA${p?.updated ? ', ' + fmtDate(p.updated) : ''}: ${esc(pagasaShort())}</b><br><button class="livebtn" id="liveBtn" aria-haspopup="dialog"><span class="ldot ${cls}"></span>${label}</button>`;
+  const offline = navigator.onLine === false; // an installed app opened without a connection: say so, not "Live"
+  const label = offline ? 'Offline · live readings paused' : !started ? 'Connecting to live sources…' : `Live · ${good}/${keys.length} sources${pending ? ` · ${pending} loading` : bad ? ` · ${bad} down` : ''}${checked ? ' · checked ' + fmtTime(checked) : ''}`;
+  $('#status').innerHTML = `<b>PAGASA${p?.updated ? ', ' + fmtDate(p.updated) : ''}: ${esc(pagasaShort())}</b><br><button class="livebtn" id="liveBtn" aria-haspopup="dialog"><span class="ldot ${offline ? 'warn' : cls}"></span>${label}</button>`;
   $('#liveBtn').addEventListener('click', openDrawer);
   if (!$('#drawer').hidden) renderHealth();
 }
@@ -675,6 +680,7 @@ function countdownCard(play = true) {
     <div class="cd-foot"><span class="src">${srcLink(D.outlook.src)} · revised monthly</span>${play ? '<button class="btn cd-play" id="cdPlay"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z"/></svg>Play it on the map</button>' : ''}</div></div>`;
 }
 function renderRail() {
+  if (simpleView()) return;
   const M = MONTHS[state.month], st = D.stage[M.k], secs = $('#secs');
   let html = state.mode === 'outlook' ? countdownCard() + guideRail(M, NOW, MONTHS, D) : state.mode === 'water' ? countdownCard(false) : '';
   if (state.mode === 'pacific') {
@@ -855,16 +861,17 @@ let renderedOnce = false;
 function setMonth(i) {
   if (i === state.month && renderedOnce) return;
   state.month = i; updateTimeline(); updateBadge(); renderRail(); renderCharts(); updateEvents(); updatePac(); applyStage();
+  announce('month', { month: i });
 }
 // other modules (the temperature card) follow the selected town and the view through these events
 const announce = (type, detail) => document.dispatchEvent(new CustomEvent('bantay:' + type, { detail }));
 function selectMuni(name) { state.sel = name; if (G.ok) G.sync(); renderRail(); if (state.mode === 'outlook') renderCharts(); announce('select', { town: name }); }
-function setMode(m) {
+function setMode(m, fly = true) { // fly: frame the view's preset; Simple view switches without moving the camera
   state.mode = m; $$('.modes button').forEach(b => b.setAttribute('aria-pressed', b.dataset.mode === m));
   const pac = m === 'pacific';
   $('#pac').toggleAttribute('hidden', !pac); $('#gl').hidden = pac; $('#labels').hidden = pac; $('#vpCtl').hidden = pac; if ($('#attrib')) $('#attrib').hidden = pac;
   if (pac && !P.box && PAC) initPac();
-  if (G.ok && !pac) { G.flyPreset(m === 'water' ? 'water' : 'd3', m === 'water' ? 1000 : 900); $('#v3d').setAttribute('aria-pressed', 'true'); $('#v2d').setAttribute('aria-pressed', 'false'); G.dirty = true; }
+  if (G.ok && !pac && fly) { G.flyPreset(m === 'water' ? 'water' : 'd3', m === 'water' ? 1000 : 900); $('#v3d').setAttribute('aria-pressed', 'true'); $('#v2d').setAttribute('aria-pressed', 'false'); G.dirty = true; }
   state.dam = null; updateTitle(); updateLegend(); updateBadge(); renderRail(); renderCharts(); applyLayers(); applyLive();
   announce('mode', { mode: m });
 }
@@ -945,12 +952,23 @@ async function boot() {
   try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', reTheme); } catch (e) { }
   new MutationObserver(reTheme).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
   let rt = 0; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(renderCharts, 120); });
+  addEventListener('offline', updateStatus); addEventListener('online', updateStatus);
   onLive(key => {
     if (key === 'health') { updateStatus(); return; }
     if (key === 'osm') { if (G.ok && LIVE.osm?.ok) G.setOSM(LIVE.osm); return; }
     refreshAll(key === 'enso' || key === 'dams' || key === 'fires');
   });
   startLive(Object.entries(B.munis).map(([name, m]) => ({ name, lon: m.label[0], lat: m.label[1] })));
+  // what js/simple.js reads and calls: the same data, month, town and view the rest of the page uses
+  window.bantayApp = {
+    get D() { return D; }, get B() { return B; }, get MONTHS() { return MONTHS; }, get NOW() { return NOW; }, get STAGES() { return STAGES; }, get SRC() { return SRC; }, state,
+    setMonth: i => { stopPlay(); setMonth(i); },
+    selectTown: (name, fly = true) => { selectMuni(name); if (name && fly && G.ready) G.focusMuni(name); },
+    setMode, stopPlay,
+    refresh: () => { updateTimeline(); updateEvents(); renderRail(); renderCharts(); },
+    openSources: openDrawer,
+  };
+  announce('ready', window.bantayApp);
 }
 // Hotlines load on their own, so they still work if the rest of the page fails to start.
 const guideP = loadGuide().catch(e => { console.warn('Hotlines and tips did not load:', e && e.message); $('#guideBtn').hidden = true; return null; });
