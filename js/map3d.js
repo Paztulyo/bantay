@@ -4,6 +4,7 @@
 // WorldCover maps tree cover, pines in the highland pine belt, broadleaf below and above it.
 // Vector layers (roads, rivers, places) come from OpenStreetMap; boundaries from PSA PSGC.
 import { esc, css, clamp, showTip, hideTip, TEST } from './util.js';
+import { damIcon } from './icons.js';
 
 export const AREA = [120.38, 16.08, 121.0, 16.99]; // W S E N (matches api/landcover.js)
 const PPD = 1500;
@@ -526,9 +527,18 @@ export function createMap({ canvas, vp, labelsEl, msgEl, state, onSelect, hoverE
     labels.push(o); return o;
   }
   const damLabels = [];
+  // what each dam is for, so a dam on the map isn't taken for the towns' tap water (Wikipedia: Ambuklao, Binga, San Roque)
+  const DAM_USE = { Ambuklao: 'Hydropower. It doesn’t supply tap water.', Binga: 'Hydropower. It doesn’t supply tap water.', 'San Roque': 'Power, irrigation and flood control downstream. It doesn’t supply tap water.' };
   function buildBaseLabels(b, agno) {
     MUNI.forEach((m, k) => addLabel(esc(m.n), m.label[0], m.label[1], m.n === 'Baguio City' ? 'city muni' : 'muni', { pri: m.n === 'Baguio City' ? 9 : 6, lift: 0.1, extra: { k } }));
-    for (const [id, d] of Object.entries(agno.dams)) damLabels.push(addLabel(esc(id) + '<span class="lv"></span>', d.lon, d.lat, 'dam', { pri: 5, lift: 0.06, extra: { dam: id } }));
+    for (const [id, d] of Object.entries(agno.dams)) {
+      const o = addLabel(damIcon() + esc(id) + '<span class="lv"></span>', d.lon, d.lat, 'dam', { pri: 5, lift: 0.06, extra: { dam: id } });
+      if (DAM_USE[id]) {
+        o.el.addEventListener('pointerenter', ev => showTip(`<b>${esc(id)}</b><br>${esc(DAM_USE[id])}`, ev.clientX, ev.clientY));
+        o.el.addEventListener('pointerleave', hideTip);
+      }
+      damLabels.push(o);
+    }
   }
   function buildOsmLabels(rivers) {
     const munis = new Set(MUNI.map(m => m.n.replace(' City', '')));

@@ -12,7 +12,7 @@ const { BASE, LAUNCH } = require(path.join(here, '..', 'tests', 'env'));
 const LANG = process.argv[2] || 'tl', PHONE = process.argv.includes('phone');
 
 // kept in English by design: agencies, towns, dams, sources, PAGASA's stage and alert names, bulletin terms
-const KEEP = /^(Bantay El Niño|Simple|El Niño 2026–27|Benguet · CAR|PAGASA|NOAA CPC|CPC|Outlook|Live|3D|OK|ER|Globe|Smart|Wangal|NHWL|RONI.*|Niño [\d.+]+.*|.*(OpenStreetMap|OpenMapTiles|OpenFreeMap|ESA WorldCover|AWS Terrain|Natural Earth|PSA PSGC|Wikipedia|Inquirer|Philstar|Manila Times|Daily Tribune|GMA News|PIA|SunStar|PTV|ANN|GuruPress|BaguioCityGuide|DOH|DENR|BFP|DA-CAR|DA via|Itogon LGU|Task Force).*|Dry condition|Dry spell|Drought|Benguet: (Dry condition|Dry spell|Drought)|Non-Flood Watch|Rule curve.*|Normal high water|contributors ·|Timeline|.*Advisory No\. \d.*|.*Diagnostic Discussion.*|.*Climate Outlook.*|.*Dam Information.*)$/;
+const KEEP = /^(Bantay El Niño|Simple|El Niño 2026–27|Benguet · CAR|PAGASA|NOAA CPC|CPC|Outlook|Live|3D|OK|ER|Globe|Smart|Wangal|NHWL|RONI.*|Niño [\d.+]+.*|.*(OpenStreetMap|OpenMapTiles|OpenFreeMap|ESA WorldCover|AWS Terrain|Natural Earth|PSA PSGC|Wikipedia|Inquirer|Philstar|Manila Times|Daily Tribune|GMA News|PIA|SunStar|PTV|ANN|GuruPress|BaguioCityGuide|DOH|DENR|BFP|DA-CAR|DA via|Itogon LGU|Task Force|DBM 2023 water districts|non-compliant list).*|Dry condition|Dry spell|Drought|Benguet: (Dry condition|Dry spell|Drought)|Non-Flood Watch|Rule curve.*|Normal high water|contributors ·|Timeline|.*Advisory No\. \d.*|.*Diagnostic Discussion.*|.*Climate Outlook.*|.*Dam Information.*)$/;
 const COMMON = new Set('the of and to in for from with by on is are a an not no at as or than this that it its be has have was were will can new now next past last more less every each all only about over under near into out up down vs per their your you we our how what which when'.split(' '));
 
 async function walk(browser, lang) {
@@ -64,7 +64,10 @@ async function walk(browser, lang) {
   if (!PHONE) { await click('#ovTab'); await grab(); await click('#ovTab'); await click('#legTab'); await grab(); await click('#legTab'); }
   // Simple view: its panel, with a town picked and each month of the outlook shown on the map
   await click('.viewsw [data-view="simple"]'); await page.waitForTimeout(600); await grab();
-  try { await page.selectOption('#sTown', 'La Trinidad'); await page.waitForTimeout(500); await grab(); } catch (e) { /* no picker: nothing to read */ }
+  // each kind of water line: a water district with numbers (La Trinidad), one with only its site (Baguio), none (Atok)
+  for (const town of ['Atok', 'Baguio City', 'La Trinidad']) {
+    try { await page.selectOption('#sTown', town); await page.waitForTimeout(500); await grab(); } catch (e) { /* no picker: nothing to read */ }
+  }
   for (let i = 1; i <= 4; i++) if (await click(`.s-runs li:nth-child(${i}) button`)) await grab();
   await click('.viewsw [data-view="detailed"]');
   await click('#guideBtn'); await page.waitForTimeout(500); await grab();

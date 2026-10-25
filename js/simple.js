@@ -6,7 +6,7 @@
 // the page like the rest of it (js/i18n.js). Simple also carries the Install button (js/pwa.js).
 // The outlook figures are app.js's own (data/outlook.json), the actions are guide.js's (data/guide.json).
 import { $, esc, MN, MF, fmtDate, TEST } from './util.js';
-import { loadGuide, phaseFor, openGuide, phoneIcon } from './guide.js';
+import { loadGuide, phaseFor, openGuide, phoneIcon, telHref } from './guide.js';
 import { installState, install } from './pwa.js';
 
 const VIEW_KEY = 'bantay.view', TOWN_KEY = 'bantay.town', HIDE_KEY = 'bantay.installHidden', HIDE_DAYS = 30;
@@ -24,6 +24,7 @@ const ICON = {
   chev: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>',
   x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M7 10H6a2 2 0 00-2 2v7a2 2 0 002 2h12a2 2 0 002-2v-7a2 2 0 00-2-2h-1"/></svg>',
+  ext: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>',
 };
 
 /* ---------------- the switch ---------------- */
@@ -110,7 +111,23 @@ function areaHTML(o) { // under the town picker
   return `<h2 class="s-h" id="sAreaH" tabindex="-1">What this means for ${esc(state.sel || 'Benguet')}</h2>
       <div class="s-now"><span class="sw s-sw${st ? '' : ' none'}${st && now.phase === 'outlook' ? ' hatch' : ''}"${st ? ` style="background-color:var(--stage${st.s})"` : ''}></span><b>${esc(label)}</b><span>Now · ${esc(monthYear(now))}</span></div>
       <p class="s-sum">${summary(o).map(t => `<span>${esc(t)}</span>`).join(' ')}</p>
-      <p class="s-src"><span>Source:</span> ${source()}</p>`;
+      <p class="s-src"><span>Source:</span> ${source()}</p>${waterHTML(state.sel)}`;
+}
+// who supplies the picked town's water: its water district, from the same entries as the hotline list (numbers to tap,
+// or its site), or, where there is none, who to ask (data/guide.json)
+function waterHTML(town) {
+  const W = G && G.water; if (!W || !town) return '';
+  const links = ids => [].concat(ids || []).filter(id => G.src[id]).map(id => `<a href="${esc(G.src[id].u)}" target="_blank" rel="noopener" title="${esc(G.src[id].t)}">${esc(G.src[id].s)}</a>`).join(' <span aria-hidden="true">·</span> ');
+  const wd = W.towns[town] && G.hotlines.flatMap(g => g.items).find(it => it.n === W.towns[town]);
+  let body;
+  if (wd) {
+    const calls = wd.nums.map(x => `<a class="s-call" href="${telHref(x.v)}">${phoneIcon}<span>${esc(x.v)}</span></a>`).join('')
+      + (wd.link && G.src[wd.link] ? `<a class="s-call" href="${esc(G.src[wd.link].u)}" target="_blank" rel="noopener">${ICON.ext}<span>Official site</span></a>` : '');
+    body = `<b class="s-wname">${esc(wd.n)}</b>${wd.note ? `<p class="s-wnote">${esc(wd.note)}</p>` : ''}${calls ? `<div class="s-calls">${calls}</div>` : ''}${wd.src ? `<p class="s-src"><span>Source:</span> ${links(wd.src)}</p>` : ''}`;
+  } else {
+    body = `<p class="s-wnote"><span>${esc(W.other.replace('{town}', town))}</span> <span>${esc(W.ask)}</span></p><p class="s-src"><span>Source:</span> ${links(W.src)}</p>`;
+  }
+  return `<div class="s-water" id="sWater"><span class="s-label">Water</span>${body}</div>`;
 }
 function outlookHTML(o) { // which month is shown is marked by mark(), so a tap on a month doesn't redraw the card
   const { D, NOW, STAGES } = api;

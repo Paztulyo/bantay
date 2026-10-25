@@ -466,6 +466,12 @@ Simple and Detailed views,"To install, open this page in Chrome or Safari first.
 Simple and Detailed views,Use your browser’s menu: Install app.,Gamitin ang menu ng browser mo: Install app.,Usarem ti menu ti browser-mo: Install app.
 Simple and Detailed views,Hide,Itago,Ilemmeng
 Simple and Detailed views,Offline · live readings paused,Offline · nakahinto ang mga live na sukat,Offline · nasardeng dagiti live a rukod
+"Your area's water, and the dams on the map",Official site,Opisyal na site,Opisyal a site
+"Your area's water, and the dams on the map",Ask your barangay hall about outages and rationing.,Magtanong sa barangay hall tungkol sa pagkawala ng tubig at rasyon.,Agsaludsod iti barangay hall maipanggep iti pannakaputed ti danum ken rasion.
+"Your area's water, and the dams on the map","Dams: hydropower, not tap water","Mga dam: hydropower, hindi tubig sa gripo","Dagiti dam: hydropower, saan a danum iti gripo"
+"Your area's water, and the dams on the map",Hydropower. It doesn’t supply tap water.,Hydropower. Hindi ito nagbibigay ng tubig sa gripo.,Hydropower. Saan nga agited daytoy iti danum iti gripo.
+"Your area's water, and the dams on the map","Power, irrigation and flood control downstream. It doesn’t supply tap water.","Kuryente, patubig at kontrol sa baha sa ibaba ng ilog. Hindi ito nagbibigay ng tubig sa gripo.","Koryente, irigasion ken pannakakontrol ti layus iti baba ti karayan. Saan nga agited daytoy iti danum iti gripo."
+"Your area's water, and the dams on the map",Ambuklao and Binga make power. San Roque also irrigates farms and holds back floods downstream. None of them supplies tap water: Baguio’s comes from underground sources.,Kuryente ang gawa ng Ambuklao at Binga. Nagpapatubig din ng mga sakahan ang San Roque at pumipigil sa baha sa ibaba ng ilog. Wala sa kanila ang nagbibigay ng tubig sa gripo: sa ilalim ng lupa nagmumula ang tubig ng Baguio.,Koryente ti aramiden ti Ambuklao ken Binga. Mangpadanum met ti San Roque kadagiti talon ken lapdanna ti layus iti baba ti karayan. Awan kadakuada ti agited iti danum iti gripo: iti uneg ti daga ti pagtaudan ti danum ti Baguio.
 Phrases found later in the code's less common states,"Latest weekly reading, traditional:","Pinakabagong lingguhang sukat, traditional:","Kabaruan a linawas a rukod, traditional:"
 Phrases found later in the code's less common states,"RONI, 3-month","RONI, 3 buwan","RONI, 3 a bulan"
 Phrases found later in the code's less common states,CPC weekly OISST,Lingguhang OISST ng CPC,Linawas nga OISST ti CPC
@@ -549,6 +555,7 @@ Timeline and key events,Agno dams vs normal high water: $1,Mga dam ng Agno kumpa
 Timeline and key events,$1 active fire detections in and around Benguet in the past $2 days,$1 aktibong sunog na natukoy sa loob at paligid ng Benguet sa nakaraang $2 araw,$1 nga aktibo nga uram a nadlaw iti uneg ken aglawlaw ti Benguet iti napalabas a $2 nga aldaw
 Timeline and key events,No active fires detected in the past $1 days,Walang natukoy na aktibong sunog sa nakaraang $1 araw,Awan ti nadlaw nga aktibo nga uram iti napalabas a $1 nga aldaw
 Timeline and key events,$1 dated,$1 na may petsa,$1 nga addaan petsa
+Your area's water in Simple,"No water district serves $1, so water systems vary by barangay.","Walang water district sa $1, kaya iba-iba ang sistema ng tubig bawat barangay.","Awan ti water district iti $1, isu nga agduduma ti sistema ti danum iti tunggal barangay."
 The town card in Detailed,$1 km² · $2,$1 km² · $2,$1 km² · $2
 The town card in Detailed,Low $1 m,Pinakamababa $1 m,Kababaan $1 m
 The town card in Detailed,Median $1 m,Gitna $1 m,Tengnga $1 m

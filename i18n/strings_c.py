@@ -175,6 +175,16 @@ C = [
 ("Use your browser’s menu: Install app.", "Gamitin ang menu ng browser mo: Install app.", "Usarem ti menu ti browser-mo: Install app."),
 ("Hide", "Itago", "Ilemmeng"),
 ("Offline · live readings paused", "Offline · nakahinto ang mga live na sukat", "Offline · nasardeng dagiti live a rukod"),
+# ---- Your area's water, and the dams on the map (js/simple.js, js/map3d.js, js/app.js)
+("Official site", "Opisyal na site", "Opisyal a site"),
+("Ask your barangay hall about outages and rationing.", "Magtanong sa barangay hall tungkol sa pagkawala ng tubig at rasyon.", "Agsaludsod iti barangay hall maipanggep iti pannakaputed ti danum ken rasion."),
+("Dams: hydropower, not tap water", "Mga dam: hydropower, hindi tubig sa gripo", "Dagiti dam: hydropower, saan a danum iti gripo"),
+("Hydropower. It doesn’t supply tap water.", "Hydropower. Hindi ito nagbibigay ng tubig sa gripo.", "Hydropower. Saan nga agited daytoy iti danum iti gripo."),
+("Power, irrigation and flood control downstream. It doesn’t supply tap water.", "Kuryente, patubig at kontrol sa baha sa ibaba ng ilog. Hindi ito nagbibigay ng tubig sa gripo.",
+ "Koryente, irigasion ken pannakakontrol ti layus iti baba ti karayan. Saan nga agited daytoy iti danum iti gripo."),
+("Ambuklao and Binga make power. San Roque also irrigates farms and holds back floods downstream. None of them supplies tap water: Baguio’s comes from underground sources.",
+ "Kuryente ang gawa ng Ambuklao at Binga. Nagpapatubig din ng mga sakahan ang San Roque at pumipigil sa baha sa ibaba ng ilog. Wala sa kanila ang nagbibigay ng tubig sa gripo: sa ilalim ng lupa nagmumula ang tubig ng Baguio.",
+ "Koryente ti aramiden ti Ambuklao ken Binga. Mangpadanum met ti San Roque kadagiti talon ken lapdanna ti layus iti baba ti karayan. Awan kadakuada ti agited iti danum iti gripo: iti uneg ti daga ti pagtaudan ti danum ti Baguio."),
 ]
 # month and weekday names, in the language and short
 CAL = {

@@ -15,9 +15,11 @@ https://bantay-el-nino-eta.vercel.app still serves the site; the page's canonica
   `osm` (OpenStreetMap via Overpass), `views` (visitor count in Upstash Redis).
 - The browser fetches Open-Meteo (weather by town), AWS Terrain Tiles and OpenFreeMap vector tiles directly.
 - `data/outlook.json` is editorial: updated by hand each month from PAGASA's outlook, with the advisory cited.
-  `data/guide.json` holds the hotlines and tips, numbers checked against official sites. Benguet's `drydays` come from
-  PAGASA's forecast dry days table, a picture inside the outlook PDF (page 21 of the 21 Oct 2026 issue); the `temp`
-  line is still BaguioCityGuide's reading of the September maps, since the new temperature maps are vector drawings.
+  `data/guide.json` holds the hotlines and tips, numbers checked against official sites, and each town's water
+  provider (`water`: Benguet's only water districts are Baguio's and La Trinidad's, per DBM's 2023 lists; the other
+  towns get "ask your barangay hall"). Benguet's `drydays` come from PAGASA's forecast dry days table, a picture
+  inside the outlook PDF (page 21 of the 21 Oct 2026 issue); the `temp` line is still BaguioCityGuide's reading of the
+  September maps, since the new temperature maps are vector drawings.
 - Keys live only in Vercel environment variables: `FIRMS_MAP_KEY`, and `KV_REST_API_URL` + `KV_REST_API_TOKEN`
   (or `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`). Never put a key in code, a commit or a log. This repo is public.
 - `vercel.json` serves `/js/` and `/css/` with `must-revalidate`, so changes show without cache-busting.
@@ -29,10 +31,11 @@ https://bantay-el-nino-eta.vercel.app still serves the site; the page's canonica
   The choice: `?lang=` first, then the saved choice, then the phone's language.
 - Views: `js/simple.js` and `css/simple.css`. Simple hides the chips, the Outlook/Pacific/Water views, the rail's
   sections, the timeline and the charts, and shows `#simple` beside the map: the town, what PAGASA's outlook means now
-  (source and date), the months ahead as a projected dry period (never a countdown), three things to do from
-  `guide.json`, and help. It reads app.js's data through `window.bantayApp` and the `bantay:ready`, `bantay:month` and
-  `bantay:select` events; app.js skips drawing the rail and charts while Simple shows. The choice: `?view=` first, then
-  the saved choice, then Simple (test runs with `?test=1` start in Detailed). The town is remembered too.
+  (source and date) and, for a picked town, who supplies its water, the months ahead as a projected dry period (never
+  a countdown), three things to do from `guide.json`, and help. It reads app.js's data through `window.bantayApp` and
+  the `bantay:ready`, `bantay:month` and `bantay:select` events; app.js skips drawing the rail and charts while Simple
+  shows. The choice: `?view=` first, then the saved choice, then Simple (test runs with `?test=1` start in Detailed).
+  The town is remembered too.
 - App install: `manifest.webmanifest`, icons in `img/` (`tests/make_icons.js` draws them from the logo), `sw.js`, and
   `js/pwa.js` (registers the worker, holds Chrome's install prompt for Simple's Install button, iPhone steps, hidden once
   installed). The worker keeps the page, code and dated editorial files for offline use, network first, and never

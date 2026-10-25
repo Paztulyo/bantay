@@ -43,6 +43,17 @@ html:not(.view-simple) #simple{display:none}
 .s-now span:last-child{font-size:13px;color:var(--muted)}
 .s-sum{margin:8px 0 0;font-size:16px;line-height:1.55}
 
+/* under it, the town's water: who supplies it and how to reach them */
+.s-water{margin-top:14px;padding-top:12px;border-top:1px solid var(--g-hair,var(--line))}
+.s-water .s-label{margin-bottom:4px}
+.s-wname{display:block;font-size:16px;font-weight:700;color:var(--ink)}
+.s-wnote{margin:4px 0 0;font-size:15px;line-height:1.5}
+.s-calls{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.s-call{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border-radius:12px;font-size:15px;font-weight:700;color:var(--forest);
+  text-decoration:none;background:var(--g-inset,var(--paper));border:1.5px solid var(--line-strong)}
+.s-call:hover{border-color:var(--teal)}
+.s-call svg{width:17px;height:17px;flex:none}
+
 /* 3: the outlook, month by month */
 .s-period{display:flex;flex-direction:column;gap:2px;margin:12px 0 0;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--stage2) 14%,transparent)}
 .s-period span{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--amber)}

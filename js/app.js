@@ -4,7 +4,7 @@ import { $, $$, NS, css, clamp, fmt1, fmt2, esc, MN, MF, manila, ymKey, fmtDate,
 import { createMap, AREA } from './map3d.js';
 import { LIVE, SOURCES, startLive, onLive, setHealth } from './live.js';
 import { loadGuide, initGuide, guideInited, guideRail, guideWater, openGuide } from './guide.js';
-import { hico, flame } from './icons.js';
+import { hico, flame, damIcon } from './icons.js';
 
 let D, B, AG, PAC, SRC, MONTHS, NOW, TODAY, STAGES;
 let G = { ok: false, ready: false };
@@ -597,6 +597,7 @@ function updateLegend() {
     return;
   }
   const fires = state.layers.fires && LIVE.fires?.status === 'ok' ? `<div class="row"><span class="firedot">${flame()}</span>Active fire, past ${LIVE.fires.days} days (${(LIVE.fires.fires || []).length})</div>` : '';
+  const dams = state.mode === 'water' || state.layers.rivers ? `<div class="row"><span class="damkey">${damIcon('')}</span>Dams: hydropower, not tap water</div>` : '';
   if (state.layers.rain && LIVE.wx && state.mode !== 'pacific') {
     lg.innerHTML = `<div class="eyebrow">Dry days, last 30 (model)</div>
       <div class="row" style="gap:0">${[4, 13, 19, 24, 29].map(d => `<span class="sw" style="border-radius:0;width:22px;background:rgb(${dryColor(d)})"></span>`).join('')}</div>
@@ -607,14 +608,14 @@ function updateLegend() {
     lg.innerHTML = `<div class="eyebrow">Water</div>
       <div class="row"><span class="ln" style="background:var(--water);height:4px"></span>Agno River (OpenStreetMap)</div>
       <div class="row"><span class="ln" style="background:#4f95bb;opacity:.8"></span>Other rivers (OpenStreetMap)</div>
-      <div class="row"><span class="sw" style="background:#78b0cc"></span>Water (ESA WorldCover 2021)</div>${fires}`;
+      <div class="row"><span class="sw" style="background:#78b0cc"></span>Water (ESA WorldCover 2021)</div>${dams}${fires}`;
     return;
   }
   lg.innerHTML = `<div class="eyebrow">Benguet dry stage (PAGASA)</div>
     ${[1, 2, 3].map(s => `<div class="row"><span class="sw" style="background:${stageVar(s)}"></span>${STAGES[s].n}</div>`).join('')}
     <div class="row"><span class="sw hatch" style="background-color:var(--stage1)"></span>Stripes: outlook month</div>
     <div class="row"><span class="sw" style="background:linear-gradient(90deg,#a1b06e,#dbc28c)"></span>Ground dries with the stage</div>
-    <div class="row"><span class="tree-ico" aria-hidden="true"></span>Trees: ESA WorldCover tree cover</div>${fires}`;
+    <div class="row"><span class="tree-ico" aria-hidden="true"></span>Trees: ESA WorldCover tree cover</div>${dams}${fires}`;
 }
 function updateTitle() {
   const t = $('#vpTitle');
@@ -754,7 +755,8 @@ function renderRail() {
       ${basin ? `<p class="src">Flood status, ${esc(basin.name)}: <b>${esc(basin.status)}</b></p>` : ''}
       <p class="src">${srcLink('pag_dam')} · capacities and locations: ${srcLink('wiki_dams')}</p></div>
       <div class="sec"><div class="sec-h"><h3>${hico('info')}Reading the water</h3></div>
-      <p class="note" style="margin-top:0">${DL.every(d => d.rdev == null || d.level >= d.rule) ? `As of ${fmtDate(DL[0].iso)}, all three reservoirs sit above their rule curves` : `As of ${fmtDate(DL[0].iso)}, ${DL.filter(d => d.rule != null && d.level < d.rule).map(d => d.id).join(' and ')} sit below the rule curve`}${DL.every(d => d.dev > -3) ? ', at or near normal high water' : ''}. The test is the dry months. ${dryDaysLine()}</p></div>` + guideWater();
+      <p class="note" style="margin-top:0">${DL.every(d => d.rdev == null || d.level >= d.rule) ? `As of ${fmtDate(DL[0].iso)}, all three reservoirs sit above their rule curves` : `As of ${fmtDate(DL[0].iso)}, ${DL.filter(d => d.rule != null && d.level < d.rule).map(d => d.id).join(' and ')} sit below the rule curve`}${DL.every(d => d.dev > -3) ? ', at or near normal high water' : ''}. The test is the dry months. ${dryDaysLine()}</p>
+      <p class="note">Ambuklao and Binga make power. San Roque also irrigates farms and holds back floods downstream. None of them supplies tap water: Baguio’s comes from underground sources. ${srcLink('wiki_dams')} · ${srcLink('trib_bwd')}</p></div>` + guideWater();
   }
   secs.innerHTML = html;
   secs.querySelectorAll('[data-guide]').forEach(b => b.addEventListener('click', () => openGuide(b.dataset.guide, b)));

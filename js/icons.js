@@ -22,6 +22,8 @@ const P = {
 
 // A burning flame for active fires: three tongues that flicker at different rates over a pulsing ground glow
 // (css/brief.css). Its base sits at the bottom centre. Solid fills, no gradient ids, so many can share a page.
+// a dam: water held behind a wall. On the map's dam labels and the legend key
+export const damIcon = (cls = 'dam-ico') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h3l4 16.5h-7z" fill="currentColor"/><path d="M3 9.5c1.8 1.2 3.7 1.2 5.5 0s3.7-1.2 5.5 0M3 14.5c1.8 1.2 3.7 1.2 5.5 0s3.7-1.2 5.5 0M2 20.5h20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`;
 export const flame = () => '<svg class="flame" viewBox="0 0 24 28" aria-hidden="true"><ellipse class="fl-g" cx="12" cy="24.2" rx="7.5" ry="2.4"/>'
   + '<path class="fl-o" d="M12 1c1.6 4.6 7.4 8.5 7.4 15.6A7.4 7.4 0 0 1 4.6 16.6c0-3.7 1.9-6.2 3.8-8.3.3 2.5 1.4 3.9 2.6 4.4C11.2 9.4 11 5.2 12 1z"/>'
   + '<path class="fl-m" d="M12.3 8.6c1 3 4.4 5.4 4.4 9.8a4.7 4.7 0 0 1-9.4 0c0-2.3 1.1-3.9 2.4-5.2.2 1.5.9 2.4 1.7 2.8-.1-2.5.3-4.8.9-7.4z"/>'

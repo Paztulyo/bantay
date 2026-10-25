@@ -38,6 +38,8 @@ const mobile = W < 768, tag = `${W}${dark ? '_dark' : ''}${rm ? '_rm' : ''}`;
       text: p.textContent.replace(/\s+/g, ' '), badge: document.querySelector('#mbadge .mbadge-h b')?.textContent, tl: document.querySelector('#tlRead b')?.textContent,
       lblSel: document.querySelector('#labels .lbl.sel')?.textContent.trim() || '', wxTown: document.querySelector('#wxcard .wxc-place b')?.textContent.trim() || '',
       spill: document.documentElement.scrollWidth - innerWidth, store: { view: localStorage.getItem('bantay.view'), town: localStorage.getItem('bantay.town') }, url: location.search,
+      water: p.querySelector('#sWater')?.innerText.replace(/\s+/g, ' ').trim() || '', waterLabel: p.querySelector('#sWater .s-label')?.textContent.trim() || '',
+      waterTel: [...p.querySelectorAll('#sWater a[href^="tel:"]')].map(a => a.getAttribute('href')), waterSite: p.querySelector('#sWater a.s-call[target="_blank"]')?.getAttribute('href') || '',
     };
   });
 
@@ -63,6 +65,15 @@ const mobile = W < 768, tag = `${W}${dark ? '_dark' : ''}${rm ? '_rm' : ''}`;
   ok(s.h2[2] === 'What you can do right now' && s.acts === 3 && s.more, `4: three things to do and See more (${s.acts})`);
   ok(s.h2[3] === 'Get help' && s.sos === 'tel:911' && s.hot && s.srcBtn && s.langBtns === 3, '5: 911, all hotlines, sources and the languages in one place');
   ok(!s.install, 'no Install button where the browser offers no install');
+  ok(!s.water, 'no water line until a town is picked');
+  // the dams on the map carry an icon; on larger screens the legend says what they are for
+  const dams = await page.evaluate(() => ({ icons: document.querySelectorAll('#labels .lbl.dam svg.dam-ico').length, legend: document.querySelector('#legend')?.textContent || '' }));
+  ok(dams.icons === 3 && (mobile || /Dams: hydropower, not tap water/.test(dams.legend)), `the dams carry an icon${mobile ? '' : ', and the legend says they make power, not tap water'} (${dams.icons})`);
+  if (!mobile) {
+    const tip = await page.evaluate(() => { const l = [...document.querySelectorAll('#labels .lbl.dam')].find(e => e.style.display !== 'none' && e.getBoundingClientRect().width); if (!l) return ''; l.dispatchEvent(new PointerEvent('pointerenter', { clientX: 400, clientY: 300, pointerType: 'mouse' })); return document.querySelector('#tip').textContent; });
+    ok(/doesn’t supply tap water/.test(tip), `hovering a dam says what it is for (${tip})`);
+    await page.evaluate(() => document.querySelector('#tip').style.opacity = '0');
+  }
   ok(s.spill <= 0, `no sideways scroll (${s.spill})`);
   // big, clear switch and readable text
   const look = await page.evaluate(() => {
@@ -96,6 +107,18 @@ const mobile = W < 768, tag = `${W}${dark ? '_dark' : ''}${rm ? '_rm' : ''}`;
   ok(s.lblSel === 'La Trinidad' && s.wxTown === 'La Trinidad', `the map label and the weather card follow (${s.lblSel}, ${s.wxTown})`);
   ok(/PAGASA rates dry stages by province, not by town\./.test(s.sum), 'the summary says why it reads the same for every town');
   ok(s.store.town === 'La Trinidad', 'the town is remembered');
+  // its water: La Trinidad Water District's numbers to tap, with their source
+  ok(/^water La Trinidad Water District/i.test(s.water) && s.waterTel.join() === 'tel:+639985550093,tel:+639985550062' && /Source: La Trinidad MDRRMO/.test(s.water), `the town's water: its water district, numbers to tap and the source (${s.water})`);
+  await page.selectOption('#sTown', 'Atok');
+  await until(() => document.querySelector('#sAreaH')?.textContent === 'What this means for Atok');
+  s = await st();
+  ok(/No water district serves Atok, so water systems vary by barangay\. Ask your barangay hall about outages and rationing\./.test(s.water) && /Source: DBM 2023 water districts · non-compliant list/.test(s.water) && !s.waterTel.length, `a town with no water district says so and who to ask (${s.water})`);
+  await page.selectOption('#sTown', 'Baguio City');
+  await until(() => document.querySelector('#sAreaH')?.textContent === 'What this means for Baguio City');
+  s = await st();
+  ok(/^water Baguio Water District We couldn’t confirm a current hotline/i.test(s.water) && s.waterSite === 'https://baguiowaterdistrict.gov.ph/' && !s.waterTel.length, `Baguio: its water district and official site, no unconfirmed number (${s.water})`);
+  await page.selectOption('#sTown', 'La Trinidad');
+  await until(() => document.querySelector('#sAreaH')?.textContent === 'What this means for La Trinidad');
 
   // ---- a month from the outlook, shown on the map
   await page.evaluate(() => { window.__runs = [...document.querySelectorAll('.s-runs button')]; });
@@ -135,6 +158,7 @@ const mobile = W < 768, tag = `${W}${dark ? '_dark' : ''}${rm ? '_rm' : ''}`;
   await page.click('.viewsw [data-view="detailed"]'); await page.waitForTimeout(500);
   s = await st();
   ok(!s.simple && s.mode === 'water', 'Detailed goes back to the Water view');
+  ok(await page.evaluate(() => /None of them supplies tap water: Baguio’s comes from underground sources\./.test(document.querySelector('#secs').textContent)), 'the Water view says what the dams are for, and where Baguio’s tap water comes from');
 
   // ---- the saved choice wins over the test default; the town comes back
   await page.click('.viewsw [data-view="simple"]'); await page.waitForTimeout(300);
@@ -153,6 +177,7 @@ const mobile = W < 768, tag = `${W}${dark ? '_dark' : ''}${rm ? '_rm' : ''}`;
   const english = ['What this means', 'Your area', 'Outlook for the coming months', 'Projected dry period', 'What you can do right now', 'See more', 'Get help', 'All hotlines', 'Tap a month', 'An outlook is a forecast', 'issued 21', 'is not in a dry stage', 'more dry days than usual'];
   const left = english.filter(e => s.text.includes(e));
   ok(!left.length, `Tagalog: no English left in the panel${left.length ? ' (' + left.join(', ') + ')' : ''}`);
+  ok(s.waterLabel === 'Tubig' && /Sanggunian: La Trinidad MDRRMO/.test(s.water), `Tagalog: the water line (${s.water})`);
   await page.click('.viewsw [data-view="detailed"]'); await page.waitForTimeout(400);
   s = await st();
   ok(!s.simple && s.lang === 'tl', 'switching views keeps Tagalog');
